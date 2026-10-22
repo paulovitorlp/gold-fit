@@ -8,7 +8,7 @@ Projeto desenvolvido como trabalho acadêmico do curso de Ciência da Computaç�
 
 Desenvolver um sistema web para gerenciamento de produtos, estoque, clientes, pedidos e pagamentos, com integração futura a um agente de Inteligência Artificial através do WhatsApp.
 
-O sistema utiliza um banco de dados SQL compartilhado entre o site e as futuras integrações.
+O sistema utilizará um banco de dados SQL compartilhado entre o site e as futuras integrações, permitindo que informações de produtos, preços, tamanhos e estoque sejam consultadas e atualizadas de forma centralizada.
 
 ## Tecnologias
 
@@ -18,7 +18,8 @@ O sistema utiliza um banco de dados SQL compartilhado entre o site e as futuras 
 - PostgreSQL
 - SQL
 - Supabase
-- Git e GitHub
+- Git
+- GitHub
 
 ## Banco de Dados
 
@@ -26,20 +27,20 @@ O banco de dados PostgreSQL já possui a estrutura principal do sistema.
 
 Atualmente foram implementadas 14 tabelas:
 
-- usuarios
-- clientes
-- produtos
-- modelos_produto
-- variacoes_produto
-- tamanhos
-- estoque
-- imagens_produto
-- pedidos
-- itens_pedido
-- pagamentos
-- movimentacoes_estoque
-- atendimentos_whatsapp
-- mensagens_whatsapp
+- `usuarios`
+- `clientes`
+- `produtos`
+- `modelos_produto`
+- `variacoes_produto`
+- `tamanhos`
+- `estoque`
+- `imagens_produto`
+- `pedidos`
+- `itens_pedido`
+- `pagamentos`
+- `movimentacoes_estoque`
+- `atendimentos_whatsapp`
+- `mensagens_whatsapp`
 
 Também foram implementados:
 
@@ -51,12 +52,13 @@ Também foram implementados:
 - Triggers
 - Controle automático de estoque após pagamento aprovado
 - Validação de integridade do banco
+- Auditoria da estrutura e dos relacionamentos
 
 ## Módulo de Estoque
 
 A primeira interface web implementada é o painel de controle de estoque.
 
-Funcionalidades atuais:
+### Funcionalidades atuais
 
 - Visualização das variações de produtos
 - Pesquisa de produtos
@@ -71,29 +73,59 @@ Funcionalidades atuais:
 
 Neste estágio, os dados exibidos pela interface ainda são dados temporários do frontend.
 
-A integração da interface com o banco PostgreSQL será realizada nas próximas etapas.
+A integração da interface com o banco PostgreSQL será realizada nas próximas etapas do projeto.
 
 ## Produto utilizado para teste
 
-Produto:
+**Produto:** Conjunto Top e Short Canelado
 
-Conjunto Top e Short Canelado
+**Marca:** ALO
 
-Marca:
-
-ALO
-
-Cores:
+**Cores:**
 
 - Marrom
 - Terracota
 
-Tamanhos:
+**Tamanhos:**
 
 - P
 - M
 - G
 - GG
+
+## Organização do Banco de Dados
+
+A estrutura principal do catálogo segue o relacionamento:
+
+```text
+Produto
+   ↓
+Modelo
+   ↓
+Variação
+   ↓
+Tamanho
+   ↓
+Estoque
+```
+
+O fluxo de vendas foi estruturado para funcionar da seguinte forma:
+
+```text
+Cliente
+   ↓
+Pedido
+   ↓
+Itens do Pedido
+   ↓
+Pagamento
+   ↓
+Pagamento aprovado
+   ↓
+Baixa automática no estoque
+   ↓
+Registro da movimentação
+```
 
 ## Próximas etapas
 
@@ -106,17 +138,59 @@ Tamanhos:
 - Agente de Inteligência Artificial
 - Sincronização automática de estoque entre site e WhatsApp
 
-## Estrutura do projeto
+## Estrutura do Projeto
 
 ```text
 gold-fit/
 ├── banco-de-dados/
-├── documentacao/
+│   ├── 01_criar_banco.sql
+│   ├── 02_criar_tabelas.sql
+│   ├── 03_inserir_dados.sql
+│   ├── 04_atualizar_dados.sql
+│   ├── 05_consultas.sql
+│   ├── 06_triggers.sql
+│   ├── 07_views.sql
+│   ├── 08_indices.sql
+│   ├── 09_validacao_banco.sql
+│   └── 10_auditoria_estrutura.sql
+│
 ├── site/
 │   ├── css/
 │   │   └── style.css
 │   ├── js/
 │   │   └── estoque.js
 │   └── index.html
+│
+├── .gitignore
 └── README.md
-```text
+```
+
+## Status do Projeto
+
+### Concluído
+
+- Modelagem inicial do banco de dados
+- Criação das tabelas
+- Relacionamentos entre tabelas
+- Chaves primárias e estrangeiras
+- Views
+- Triggers
+- Índices
+- Validação do banco de dados
+- Auditoria da estrutura
+- Interface inicial do módulo de estoque
+- Publicação inicial do projeto no GitHub
+
+### Em desenvolvimento
+
+- Integração frontend e banco de dados
+- Painel administrativo para cadastro de produtos
+- Gerenciamento de clientes
+- Gerenciamento de pedidos
+- Integração com pagamentos
+- Integração com WhatsApp
+- Agente de Inteligência Artificial
+
+## Observação
+
+O projeto encontra-se em desenvolvimento e este repositório representa o andamento atual da implementação.
