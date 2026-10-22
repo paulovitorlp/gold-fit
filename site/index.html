@@ -7,109 +7,641 @@
 
     <title>Gold Fit | Controle de Estoque</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="./css/style.css">
 </head>
 
 <body>
 
-    <aside class="sidebar">
+    <div class="layout">
 
-        <div class="logo">
-            <span>GOLD</span> FIT
-        </div>
+        <!-- =====================================================
+             MENU LATERAL
+        ====================================================== -->
 
-        <nav>
-            <a href="#" class="ativo">Estoque</a>
-            <a href="#">Produtos</a>
-            <a href="#">Pedidos</a>
-            <a href="#">Clientes</a>
-        </nav>
+        <aside class="sidebar">
 
-    </aside>
-
-    <main class="conteudo">
-
-        <header class="topo">
-            <div>
-                <h1>Controle de Estoque</h1>
-                <p>Gerenciamento de produtos e variações da Gold Fit.</p>
+            <div class="sidebar-brand">
+                <span>GOLD</span> FIT
             </div>
 
-            <button class="btn-principal">
-                + Novo produto
-            </button>
-        </header>
+            <nav class="sidebar-nav">
 
-        <section class="cards">
+                <a href="#" class="nav-link active">
+                    Estoque
+                </a>
 
-            <div class="card">
-                <span>Total de variações</span>
-                <strong id="totalVariacoes">0</strong>
-            </div>
+                <a href="#" class="nav-link modulo-futuro">
+                    Produtos
+                </a>
 
-            <div class="card">
-                <span>Unidades em estoque</span>
-                <strong id="totalEstoque">0</strong>
-            </div>
+                <a href="#" class="nav-link modulo-futuro">
+                    Pedidos
+                </a>
 
-            <div class="card">
-                <span>Estoque baixo</span>
-                <strong id="estoqueBaixo">0</strong>
-            </div>
+                <a href="#" class="nav-link modulo-futuro">
+                    Clientes
+                </a>
 
-            <div class="card">
-                <span>Sem estoque</span>
-                <strong id="semEstoque">0</strong>
-            </div>
+            </nav>
 
-        </section>
+        </aside>
 
-        <section class="painel">
 
-            <div class="painel-topo">
+        <!-- =====================================================
+             CONTEÚDO
+        ====================================================== -->
+
+        <main class="main-content">
+
+            <header class="topbar">
 
                 <div>
-                    <h2>Estoque atual</h2>
-                    <p>Produtos cadastrados e suas respectivas variações.</p>
+
+                    <h1>
+                        Controle de Estoque
+                    </h1>
+
+                    <p>
+                        Gerenciamento de produtos, variações e disponibilidade da Gold Fit.
+                    </p>
+
                 </div>
 
+                <button
+                    type="button"
+                    id="btnNovoProduto"
+                    class="btn btn-primary"
+                >
+                    + Novo produto
+                </button>
+
+            </header>
+
+
+            <!-- =================================================
+                 CARDS
+            ================================================== -->
+
+            <section class="stats-grid">
+
+                <article class="stat-card">
+
+                    <span>
+                        Total de variações
+                    </span>
+
+                    <strong id="statVariacoes">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <span>
+                        Unidades em estoque
+                    </span>
+
+                    <strong id="statUnidades">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <span>
+                        Estoque baixo
+                    </span>
+
+                    <strong id="statBaixo">
+                        0
+                    </strong>
+
+                </article>
+
+
+                <article class="stat-card">
+
+                    <span>
+                        Sem estoque
+                    </span>
+
+                    <strong id="statSemEstoque">
+                        0
+                    </strong>
+
+                </article>
+
+            </section>
+
+
+            <!-- =================================================
+                 PAINEL DE ESTOQUE
+            ================================================== -->
+
+            <section class="panel">
+
+                <div class="panel-heading">
+
+                    <div>
+
+                        <h2>
+                            Estoque atual
+                        </h2>
+
+                        <p>
+                            Consulte e gerencie os produtos disponíveis na loja.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     FILTROS
+                ============================================== -->
+
+                <div class="filters">
+
+                    <div class="filter-title">
+                        Grupo de produtos
+                    </div>
+
+
+                    <div class="group-filter">
+
+                        <button
+                            type="button"
+                            class="group-button active"
+                            data-grupo="Todos"
+                        >
+                            Todos
+                        </button>
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Feminino"
+                        >
+                            Feminino
+                        </button>
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Masculino"
+                        >
+                            Masculino
+                        </button>
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Calçados"
+                        >
+                            Calçados
+                        </button>
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Acessórios"
+                        >
+                            Acessórios
+                        </button>
+
+                    </div>
+
+
+                    <div class="filter-divider"></div>
+
+
+                    <div class="filter-tools">
+
+                        <div class="filter-control">
+
+                            <label for="filtroCategoria">
+                                Categoria
+                            </label>
+
+                            <select id="filtroCategoria">
+
+                                <option value="Todas">
+                                    Todas as categorias
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="filter-control search-control">
+
+                            <label for="campoPesquisa">
+                                Buscar produto
+                            </label>
+
+                            <div class="search-box">
+
+                                <span class="search-icon">
+                                    ⌕
+                                </span>
+
+                                <input
+                                    type="text"
+                                    id="campoPesquisa"
+                                    placeholder="Produto, marca, cor, tamanho ou SKU..."
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- =============================================
+                     TABELA
+                ============================================== -->
+
+                <div class="table-wrapper">
+
+                    <table class="stock-table">
+
+                        <thead>
+
+                            <tr>
+
+                                <th>Foto</th>
+
+                                <th>Produto</th>
+
+                                <th>Grupo</th>
+
+                                <th>Categoria</th>
+
+                                <th>Marca</th>
+
+                                <th>Cor</th>
+
+                                <th>Tamanho</th>
+
+                                <th>SKU</th>
+
+                                <th>Qtd.</th>
+
+                                <th>Status</th>
+
+                                <th>Ações</th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tabelaEstoque">
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+
+    <!-- =========================================================
+         MODAL CADASTRO / EDIÇÃO
+    ========================================================== -->
+
+    <div
+        id="modalOverlay"
+        class="modal-overlay hidden"
+    >
+
+        <div class="modal">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <h3 id="modalTitulo">
+                        Novo produto
+                    </h3>
+
+                    <p>
+                        Cadastre uma nova variação no estoque da Gold Fit.
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnFecharModal"
+                    class="btn-close"
+                    aria-label="Fechar"
+                >
+                    ×
+                </button>
+
+            </div>
+
+
+            <form id="formProduto">
+
                 <input
-                    type="text"
-                    id="pesquisa"
-                    placeholder="Pesquisar produto, cor, SKU..."
+                    type="hidden"
+                    id="produtoId"
                 >
 
-            </div>
+                <input
+                    type="hidden"
+                    id="fotoBase64"
+                >
 
-            <div class="tabela-container">
 
-                <table>
+                <div class="form-layout">
 
-                    <thead>
-                        <tr>
-                            <th>Produto</th>
-                            <th>Marca</th>
-                            <th>Cor</th>
-                            <th>Tamanho</th>
-                            <th>SKU</th>
-                            <th>Quantidade</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
 
-                    <tbody id="tabelaEstoque">
-                    </tbody>
+                    <!-- FOTO -->
 
-                </table>
+                    <div class="photo-section">
 
-            </div>
+                        <label>
+                            Foto do produto
+                        </label>
 
-        </section>
 
-    </main>
+                        <div class="photo-preview">
 
-    <script src="js/estoque.js"></script>
+                            <img
+                                id="previewImagem"
+                                src=""
+                                alt="Pré-visualização do produto"
+                            >
+
+                        </div>
+
+
+                        <label
+                            for="fotoProduto"
+                            class="upload-button"
+                        >
+                            Selecionar imagem
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="fotoProduto"
+                            accept="image/*"
+                            hidden
+                        >
+
+
+                        <small>
+                            Utilize uma foto da peça, conjunto, modelo ou cor correspondente.
+                        </small>
+
+                    </div>
+
+
+                    <!-- CAMPOS -->
+
+                    <div class="fields-section">
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="produtoGrupo">
+                                    Grupo
+                                </label>
+
+                                <select
+                                    id="produtoGrupo"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecione
+                                    </option>
+
+                                    <option value="Feminino">
+                                        Feminino
+                                    </option>
+
+                                    <option value="Masculino">
+                                        Masculino
+                                    </option>
+
+                                    <option value="Calçados">
+                                        Calçados
+                                    </option>
+
+                                    <option value="Acessórios">
+                                        Acessórios
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="produtoCategoria">
+                                    Categoria
+                                </label>
+
+                                <select
+                                    id="produtoCategoria"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecione o grupo primeiro
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="produtoNome">
+                                    Produto
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="produtoNome"
+                                    required
+                                    placeholder="Ex.: Conjunto Top e Short Canelado"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="produtoMarca">
+                                    Marca
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="produtoMarca"
+                                    required
+                                    placeholder="Ex.: ALO"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="produtoCor">
+                                    Cor
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="produtoCor"
+                                    required
+                                    placeholder="Ex.: Marrom"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="produtoTamanho">
+                                    Tamanho / Numeração
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="produtoTamanho"
+                                    required
+                                    placeholder="Ex.: P, M, G, GG ou 38"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="form-row">
+
+
+                            <div class="form-group">
+
+                                <label for="produtoSku">
+                                    SKU
+                                </label>
+
+                                <input
+                                    type="text"
+                                    id="produtoSku"
+                                    required
+                                    placeholder="Ex.: CTS-ALO-MARROM-P"
+                                >
+
+                            </div>
+
+
+                            <div class="form-group">
+
+                                <label for="produtoQuantidade">
+                                    Quantidade
+                                </label>
+
+                                <input
+                                    type="number"
+                                    id="produtoQuantidade"
+                                    min="0"
+                                    step="1"
+                                    required
+                                    placeholder="0"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-footer">
+
+                    <button
+                        type="button"
+                        id="btnCancelar"
+                        class="btn btn-secondary"
+                    >
+                        Cancelar
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary"
+                    >
+                        Salvar produto
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================================
+         NOTIFICAÇÃO
+    ========================================================== -->
+
+    <div
+        id="toast"
+        class="toast"
+    >
+    </div>
+
+
+    <script src="./js/estoque.js"></script>
 
 </body>
 
