@@ -1,7 +1,7 @@
 // ======================================================
 // GOLD FIT - CONTROLE DE ESTOQUE
-// Dados temporários do frontend
-// Futuramente serão carregados do banco de dados
+// Dados fictícios para demonstração do projeto
+// Futuramente serão carregados diretamente do banco
 // ======================================================
 
 let estoque = [
@@ -12,8 +12,8 @@ let estoque = [
         marca: "ALO",
         cor: "Marrom",
         tamanho: "P",
-        sku: "CTS-ALO-CAN-MARROM",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-MARROM-P",
+        quantidade: 4
     },
 
     {
@@ -22,8 +22,8 @@ let estoque = [
         marca: "ALO",
         cor: "Marrom",
         tamanho: "M",
-        sku: "CTS-ALO-CAN-MARROM",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-MARROM-M",
+        quantidade: 2
     },
 
     {
@@ -32,7 +32,7 @@ let estoque = [
         marca: "ALO",
         cor: "Marrom",
         tamanho: "G",
-        sku: "CTS-ALO-CAN-MARROM",
+        sku: "CTS-ALO-CAN-MARROM-G",
         quantidade: 0
     },
 
@@ -42,8 +42,8 @@ let estoque = [
         marca: "ALO",
         cor: "Marrom",
         tamanho: "GG",
-        sku: "CTS-ALO-CAN-MARROM",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-MARROM-GG",
+        quantidade: 3
     },
 
     {
@@ -52,8 +52,8 @@ let estoque = [
         marca: "ALO",
         cor: "Terracota",
         tamanho: "P",
-        sku: "CTS-ALO-CAN-TERRACOTA",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-TERRACOTA-P",
+        quantidade: 1
     },
 
     {
@@ -62,8 +62,8 @@ let estoque = [
         marca: "ALO",
         cor: "Terracota",
         tamanho: "M",
-        sku: "CTS-ALO-CAN-TERRACOTA",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-TERRACOTA-M",
+        quantidade: 5
     },
 
     {
@@ -72,8 +72,8 @@ let estoque = [
         marca: "ALO",
         cor: "Terracota",
         tamanho: "G",
-        sku: "CTS-ALO-CAN-TERRACOTA",
-        quantidade: 0
+        sku: "CTS-ALO-CAN-TERRACOTA-G",
+        quantidade: 2
     },
 
     {
@@ -82,7 +82,7 @@ let estoque = [
         marca: "ALO",
         cor: "Terracota",
         tamanho: "GG",
-        sku: "CTS-ALO-CAN-TERRACOTA",
+        sku: "CTS-ALO-CAN-TERRACOTA-GG",
         quantidade: 0
     }
 
@@ -93,8 +93,11 @@ let estoque = [
 // ELEMENTOS DA PÁGINA
 // ======================================================
 
-const tabela = document.getElementById("tabelaEstoque");
-const pesquisa = document.getElementById("pesquisa");
+const tabela =
+    document.getElementById("tabelaEstoque");
+
+const pesquisa =
+    document.getElementById("pesquisa");
 
 
 // ======================================================
@@ -139,44 +142,72 @@ function renderizarTabela(lista = estoque) {
 
     lista.forEach(item => {
 
-        const status = definirStatus(item.quantidade);
+        const status =
+            definirStatus(item.quantidade);
 
-        const linha = document.createElement("tr");
+
+        const linha =
+            document.createElement("tr");
+
 
         linha.innerHTML = `
 
-            <td>${item.produto}</td>
-
-            <td>${item.marca}</td>
-
-            <td>${item.cor}</td>
-
-            <td>${item.tamanho}</td>
-
-            <td>${item.sku}</td>
-
-            <td>${item.quantidade}</td>
-
             <td>
-                <span class="status ${status.classe}">
-                    ${status.texto}
-                </span>
+                ${item.produto}
             </td>
 
             <td>
+                ${item.marca}
+            </td>
+
+            <td>
+                ${item.cor}
+            </td>
+
+            <td>
+                ${item.tamanho}
+            </td>
+
+            <td>
+                ${item.sku}
+            </td>
+
+            <td>
+                ${item.quantidade}
+            </td>
+
+            <td>
+
+                <span
+                    class="status ${status.classe}"
+                >
+
+                    ${status.texto}
+
+                </span>
+
+            </td>
+
+            <td>
+
                 <button
                     class="btn-editar"
                     onclick="editarEstoque(${item.id})"
                 >
+
                     Editar
+
                 </button>
+
             </td>
 
         `;
 
+
         tabela.appendChild(linha);
 
     });
+
 
     atualizarResumo();
 
@@ -184,100 +215,90 @@ function renderizarTabela(lista = estoque) {
 
 
 // ======================================================
-// ATUALIZAR CARDS
+// ATUALIZAR CARDS DO PAINEL
 // ======================================================
 
 function atualizarResumo() {
 
-    const totalVariacoes = estoque.length;
+    const totalVariacoes =
+        estoque.length;
 
 
-    const totalEstoque = estoque.reduce(
+    const totalEstoque =
+        estoque.reduce(
 
-        (total, item) => total + item.quantidade,
+            (total, item) =>
+                total + item.quantidade,
 
-        0
+            0
 
-    );
-
-
-    const estoqueBaixo = estoque.filter(
-
-        item =>
-            item.quantidade > 0 &&
-            item.quantidade <= 2
-
-    ).length;
+        );
 
 
-    const semEstoque = estoque.filter(
+    const estoqueBaixo =
+        estoque.filter(
 
-        item => item.quantidade === 0
+            item =>
+                item.quantidade > 0 &&
+                item.quantidade <= 2
 
-    ).length;
+        ).length;
 
 
-    document.getElementById("totalVariacoes").textContent =
+    const semEstoque =
+        estoque.filter(
+
+            item =>
+                item.quantidade === 0
+
+        ).length;
+
+
+    document
+        .getElementById("totalVariacoes")
+        .textContent =
         totalVariacoes;
 
 
-    document.getElementById("totalEstoque").textContent =
+    document
+        .getElementById("totalEstoque")
+        .textContent =
         totalEstoque;
 
 
-    document.getElementById("estoqueBaixo").textContent =
+    document
+        .getElementById("estoqueBaixo")
+        .textContent =
         estoqueBaixo;
 
 
-    document.getElementById("semEstoque").textContent =
+    document
+        .getElementById("semEstoque")
+        .textContent =
         semEstoque;
 
 }
 
 
 // ======================================================
-// ALTERAR ESTOQUE
+// EDITAR QUANTIDADE EM ESTOQUE
 // ======================================================
 
 function editarEstoque(id) {
 
-    const item = estoque.find(
+    const item =
+        estoque.find(
 
-        produto => produto.id === id
+            produto =>
+                produto.id === id
 
-    );
-
-
-    const novaQuantidade = prompt(
-
-        `Atualizar estoque:
-
-${item.produto}
-Cor: ${item.cor}
-Tamanho: ${item.tamanho}
-
-Quantidade atual: ${item.quantidade}
-
-Digite a nova quantidade:`
-
-    );
+        );
 
 
-    if (novaQuantidade === null) {
-        return;
-    }
-
-
-    const quantidade = Number(novaQuantidade);
-
-
-    if (
-        !Number.isInteger(quantidade) ||
-        quantidade < 0
-    ) {
+    if (!item) {
 
         alert(
-            "Digite uma quantidade válida."
+            "Produto não encontrado."
         );
 
         return;
@@ -285,7 +306,55 @@ Digite a nova quantidade:`
     }
 
 
-    item.quantidade = quantidade;
+    const novaQuantidade =
+        prompt(
+
+            `Atualizar estoque:
+
+Produto: ${item.produto}
+
+Marca: ${item.marca}
+
+Cor: ${item.cor}
+
+Tamanho: ${item.tamanho}
+
+Quantidade atual: ${item.quantidade}
+
+Digite a nova quantidade:`
+
+        );
+
+
+    // Usuário cancelou
+    if (novaQuantidade === null) {
+
+        return;
+
+    }
+
+
+    const quantidade =
+        Number(novaQuantidade);
+
+
+    // Validação
+    if (
+        !Number.isInteger(quantidade) ||
+        quantidade < 0
+    ) {
+
+        alert(
+            "Digite uma quantidade inteira válida."
+        );
+
+        return;
+
+    }
+
+
+    item.quantidade =
+        quantidade;
 
 
     salvarEstoque();
@@ -293,18 +362,32 @@ Digite a nova quantidade:`
 
     renderizarTabela();
 
+
+    alert(
+        "Estoque atualizado com sucesso."
+    );
+
 }
 
 
 // ======================================================
-// SALVAR TEMPORARIAMENTE NO NAVEGADOR
+// SALVAR ESTOQUE NO NAVEGADOR
+// ======================================================
+//
+// Nesta fase do projeto utilizamos LocalStorage.
+//
+// Isso permite que o professor altere o estoque
+// durante a demonstração.
+//
+// Futuramente essa função será substituída
+// pela comunicação com PostgreSQL/Supabase.
 // ======================================================
 
 function salvarEstoque() {
 
     localStorage.setItem(
 
-        "goldfit_estoque",
+        "goldfit_estoque_demo_v1",
 
         JSON.stringify(estoque)
 
@@ -321,14 +404,38 @@ function carregarEstoque() {
 
     const dadosSalvos =
         localStorage.getItem(
-            "goldfit_estoque"
+            "goldfit_estoque_demo_v1"
         );
 
 
-    if (dadosSalvos) {
+    if (!dadosSalvos) {
 
-        estoque =
+        return;
+
+    }
+
+
+    try {
+
+        const dados =
             JSON.parse(dadosSalvos);
+
+
+        if (Array.isArray(dados)) {
+
+            estoque =
+                dados;
+
+        }
+
+    }
+
+    catch (erro) {
+
+        console.error(
+            "Erro ao carregar estoque:",
+            erro
+        );
 
     }
 
@@ -336,11 +443,13 @@ function carregarEstoque() {
 
 
 // ======================================================
-// PESQUISA
+// PESQUISAR PRODUTOS
 // ======================================================
 
 pesquisa.addEventListener(
+
     "input",
+
     function () {
 
         const termo =
@@ -387,53 +496,91 @@ pesquisa.addEventListener(
             });
 
 
-        renderizarTabela(resultado);
+        renderizarTabela(
+            resultado
+        );
 
     }
+
 );
 
 
 // ======================================================
-// INICIAR SISTEMA
+// MENU LATERAL
+// ======================================================
+//
+// Os outros módulos ainda não foram desenvolvidos.
 // ======================================================
 
-carregarEstoque();
+const linksMenu =
+    document.querySelectorAll(
+        ".sidebar a"
+    );
 
-renderizarTabela();
-
-// ======================================================
-// MÓDULOS AINDA EM DESENVOLVIMENTO
-// ======================================================
-
-const linksMenu = document.querySelectorAll(".sidebar a");
 
 linksMenu.forEach(link => {
 
-    if (!link.classList.contains("ativo")) {
+    if (
+        !link.classList.contains(
+            "ativo"
+        )
+    ) {
 
-        link.addEventListener("click", function(event) {
+        link.addEventListener(
 
-            event.preventDefault();
+            "click",
 
-            alert("Este módulo está em desenvolvimento.");
+            function (event) {
 
-        });
+                event.preventDefault();
+
+
+                alert(
+                    "Este módulo ainda está em desenvolvimento."
+                );
+
+            }
+
+        );
 
     }
 
 });
 
 
+// ======================================================
+// BOTÃO NOVO PRODUTO
+// ======================================================
+
 const botaoNovoProduto =
-    document.querySelector(".btn-principal");
+    document.querySelector(
+        ".btn-principal"
+    );
 
-botaoNovoProduto.addEventListener(
-    "click",
-    function() {
 
-        alert(
-            "Cadastro de novos produtos será implementado na próxima etapa."
-        );
+if (botaoNovoProduto) {
 
-    }
-);
+    botaoNovoProduto.addEventListener(
+
+        "click",
+
+        function () {
+
+            alert(
+                "O cadastro de novos produtos será implementado na próxima etapa."
+            );
+
+        }
+
+    );
+
+}
+
+
+// ======================================================
+// INICIALIZAÇÃO DO SISTEMA
+// ======================================================
+
+carregarEstoque();
+
+renderizarTabela();
