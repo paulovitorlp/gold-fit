@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Meu Carrinho | Gold Fit</title>
+
+    <link
+        rel="stylesheet"
+        href="./css/carrinho.css"
+    >
+</head>
+
+<body>
+
+    <!-- FAIXA SUPERIOR -->
+
+    <div class="promo-bar">
+        <span>GOLD FIT • FITNESS & LIFESTYLE</span>
+        <span>ENVIO PARA TODO BRASIL</span>
+    </div>
+
+
+    <!-- CABEÇALHO -->
+
+    <header class="cart-header">
+
+        <div class="header-container">
+
+            <a href="./index.html" class="logo">
+                <span>GOLD</span> FIT
+            </a>
+
+            <span class="header-title">
+                MINHA SACOLA
+            </span>
+
+            <button
+                type="button"
+                id="btnContaCarrinho"
+                class="account-button"
+            >
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                >
+                    <circle cx="12" cy="8" r="4"></circle>
+
+                    <path
+                        d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                    ></path>
+                </svg>
+
+                <span id="textoContaCarrinho">
+                    Entrar
+                </span>
+
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="cart-page">
+
+        <div class="page-heading">
+
+            <span class="eyebrow">
+                SUA COMPRA GOLD FIT
+            </span>
+
+            <h1>Meu carrinho</h1>
+
+            <p>
+                Confira os seus produtos antes de finalizar.
+            </p>
+
+        </div>
+
+
+        <!-- CARRINHO COM PRODUTOS -->
+
+        <div
+            id="carrinhoConteudo"
+            class="cart-layout"
+        >
+
+            <div class="cart-main">
+
+
+                <!-- PROGRESSO DE BENEFÍCIOS -->
+
+                <section class="benefit-card">
+
+                    <div class="benefit-top">
+
+                        <div class="benefit-icon">
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.7"
+                            >
+                                <path d="M3 6h11v10H3z"></path>
+                                <path d="M14 10h4l3 3v3h-7z"></path>
+                                <circle cx="7" cy="18" r="2"></circle>
+                                <circle cx="18" cy="18" r="2"></circle>
+                            </svg>
+
+                        </div>
+
+                        <div>
+
+                            <strong id="beneficioTitulo">
+                                Benefícios da sua compra
+                            </strong>
+
+                            <p id="beneficioDescricao">
+                                Confira as informações de entrega.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="progress-track">
+                        <div
+                            id="beneficioProgresso"
+                            class="progress-fill"
+                        ></div>
+                    </div>
+
+                </section>
+
+
+                <!-- ITENS -->
+
+                <section class="cart-products">
+
+                    <div class="section-heading">
+
+                        <h2>
+                            Seus produtos
+                        </h2>
+
+                        <span id="quantidadeItensCarrinho">
+                            0 itens
+                        </span>
+
+                    </div>
+
+                    <div
+                        id="listaCarrinho"
+                        class="cart-list"
+                    ></div>
+
+                </section>
+
+
+                <!-- RECOMENDAÇÕES -->
+
+                <section class="recommendations">
+
+                    <div class="section-heading">
+
+                        <div>
+
+                            <span class="eyebrow">
+                                COMPLETE SEU LOOK
+                            </span>
+
+                            <h2>
+                                Combine com seu pedido
+                            </h2>
+
+                        </div>
+
+                        <a href="./index.html#produtos">
+                            Ver mais
+                        </a>
+
+                    </div>
+
+                    <div
+                        id="recomendadosCarrinho"
+                        class="recommendation-grid"
+                    ></div>
+
+                </section>
+
+
+                <!-- CUPOM -->
+
+                <section class="coupon-card">
+
+                    <div class="coupon-heading">
+
+                        <span class="coupon-icon">%</span>
+
+                        <div>
+
+                            <strong>
+                                Cupom de desconto
+                            </strong>
+
+                            <p>
+                                Tem um cupom? Insira seu código.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="coupon-form">
+
+                        <input
+                            id="campoCupom"
+                            type="text"
+                            placeholder="Digite seu cupom"
+                        >
+
+                        <button
+                            id="btnAplicarCupom"
+                            type="button"
+                        >
+                            APLICAR
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ENTREGA -->
+
+                <section class="delivery-card">
+
+                    <div class="delivery-heading">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                        >
+                            <path d="M3 6h11v10H3z"></path>
+                            <path d="M14 10h4l3 3v3h-7z"></path>
+                            <circle cx="7" cy="18" r="2"></circle>
+                            <circle cx="18" cy="18" r="2"></circle>
+                        </svg>
+
+                        <div>
+
+                            <strong>
+                                Entrega para todo Brasil
+                            </strong>
+
+                            <p>
+                                Consulte seu CEP.
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                    <div class="delivery-form">
+
+                        <input
+                            id="campoCepCarrinho"
+                            type="text"
+                            placeholder="Digite seu CEP"
+                            maxlength="9"
+                            inputmode="numeric"
+                        >
+
+                        <button
+                            id="btnCalcularFrete"
+                            type="button"
+                        >
+                            CALCULAR
+                        </button>
+
+                    </div>
+
+                    <small>
+                        O valor do frete será confirmado no checkout.
+                    </small>
+
+                </section>
+
+            </div>
+
+
+            <!-- RESUMO DO PEDIDO -->
+
+            <aside
+                id="resumoCarrinho"
+                class="cart-summary"
+            >
+
+                <h2>
+                    Resumo do pedido
+                </h2>
+
+                <div class="summary-line">
+
+                    <span>
+                        Subtotal
+                    </span>
+
+                    <strong id="subtotalCarrinho">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <div class="summary-line">
+
+                    <span>
+                        Desconto
+                    </span>
+
+                    <strong id="descontoCarrinho">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <div class="summary-line">
+
+                    <span>
+                        Frete
+                    </span>
+
+                    <strong id="freteCarrinho">
+                        A calcular
+                    </strong>
+
+                </div>
+
+                <div class="summary-divider"></div>
+
+                <div class="summary-total">
+
+                    <span>
+                        Total dos produtos
+                    </span>
+
+                    <strong id="totalCarrinho">
+                        R$ 0,00
+                    </strong>
+
+                </div>
+
+                <p class="total-note">
+                    O frete será acrescentado quando calculado.
+                </p>
+
+
+                <!-- PAGAMENTO -->
+
+                <div class="payment-box">
+
+                    <div class="payment-icon">
+                        $
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Pix ou cartão
+                        </strong>
+
+                        <span>
+                            Formas de pagamento disponíveis
+                            após a integração do checkout.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <!-- FINALIZAR -->
+
+                <button
+                    id="btnFinalizarCompra"
+                    type="button"
+                    class="checkout-button"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                    >
+                        <rect
+                            x="5"
+                            y="10"
+                            width="14"
+                            height="11"
+                            rx="2"
+                        ></rect>
+
+                        <path
+                            d="M8 10V7a4 4 0 0 1 8 0v3"
+                        ></path>
+                    </svg>
+
+                    FINALIZAR COMPRA
+
+                    <span>→</span>
+
+                </button>
+
+
+                <a
+                    href="./index.html#produtos"
+                    class="continue-link"
+                >
+                    ← Continuar comprando
+                </a>
+
+
+                <!-- WHATSAPP -->
+
+                <a
+                    id="btnWhatsCarrinho"
+                    href="https://wa.me/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="whatsapp-cart"
+                >
+
+                    Compartilhar carrinho pelo WhatsApp
+
+                    <span>›</span>
+
+                </a>
+
+
+                <!-- CONFIANÇA -->
+
+                <div class="trust-grid">
+
+                    <div>
+
+                        <span>✓</span>
+
+                        <strong>
+                            Compra segura
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>↺</span>
+
+                        <strong>
+                            Atendimento
+                        </strong>
+
+                    </div>
+
+                    <div>
+
+                        <span>♡</span>
+
+                        <strong>
+                            Gold Fit
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </aside>
+
+        </div>
+
+
+        <!-- CARRINHO VAZIO -->
+
+        <section
+            id="carrinhoVazio"
+            class="cart-empty"
+            hidden
+        >
+
+            <div class="empty-icon">
+                ♡
+            </div>
+
+            <h2>
+                Sua sacola está vazia
+            </h2>
+
+            <p>
+                Que tal escolher algo especial para seu treino?
+            </p>
+
+            <a href="./index.html#produtos">
+                EXPLORAR PRODUTOS
+            </a>
+
+        </section>
+
+    </main>
+
+
+    <!-- RODAPÉ -->
+
+    <footer class="cart-footer">
+
+        <div class="logo">
+            <span>GOLD</span> FIT
+        </div>
+
+        <p>
+            Fitness & Lifestyle • Santarém - PA
+        </p>
+
+    </footer>
+
+
+    <!-- NOTIFICAÇÕES -->
+
+    <div
+        id="toast"
+        class="cart-toast"
+    ></div>
+
+
+    <script src="./js/store-common.js"></script>
+
+    <script src="./js/carrinho.js"></script>
+
+</body>
+
+</html>

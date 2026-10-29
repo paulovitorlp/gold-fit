@@ -1,10 +1,19 @@
-// ======================================================
-// GOLD FIT
-// CONTROLE DE ESTOQUE
-// ======================================================
+const sessaoAdmin =
+    goldFitCarregarSessao();
 
-const STORAGE_KEY =
-    "goldfit_estoque_demo_v4";
+
+if (
+    !sessaoAdmin
+    ||
+    sessaoAdmin.perfil !==
+        "admin"
+) {
+
+    window.location.replace(
+        "../login.html?next=admin/estoque.html"
+    );
+
+}
 
 
 // ======================================================
@@ -39,270 +48,11 @@ const categoriasPorGrupo = {
 
 
 // ======================================================
-// PRODUTOS INICIAIS
-//
-// Produtos pertencentes às linhas da Gold Fit.
-// Quantidades utilizadas apenas para demonstração.
-// ======================================================
-
-const estoqueInicial = [
-
-    {
-        id: 1,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Marrom",
-        tamanho: "P",
-        sku: "CTS-ALO-MARROM-P",
-        quantidade: 4,
-        foto: ""
-    },
-
-    {
-        id: 2,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Marrom",
-        tamanho: "M",
-        sku: "CTS-ALO-MARROM-M",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 3,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Marrom",
-        tamanho: "G",
-        sku: "CTS-ALO-MARROM-G",
-        quantidade: 0,
-        foto: ""
-    },
-
-    {
-        id: 4,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Terracota",
-        tamanho: "P",
-        sku: "CTS-ALO-TERRACOTA-P",
-        quantidade: 3,
-        foto: ""
-    },
-
-    {
-        id: 5,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Terracota",
-        tamanho: "M",
-        sku: "CTS-ALO-TERRACOTA-M",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 6,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Short Canelado",
-        marca: "ALO",
-        cor: "Terracota",
-        tamanho: "GG",
-        sku: "CTS-ALO-TERRACOTA-GG",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 7,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Legging",
-        marca: "ALO",
-        cor: "Preto",
-        tamanho: "G",
-        sku: "CTL-ALO-PRETO-G",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 8,
-        grupo: "Feminino",
-        categoria: "Conjuntos",
-        produto: "Conjunto Top e Legging",
-        marca: "ALO",
-        cor: "Preto",
-        tamanho: "GG",
-        sku: "CTL-ALO-PRETO-GG",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 9,
-        grupo: "Feminino",
-        categoria: "Croppeds",
-        produto: "Cropped ALO",
-        marca: "ALO",
-        cor: "Branco",
-        tamanho: "G",
-        sku: "CRO-ALO-BRANCO-G",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 10,
-        grupo: "Feminino",
-        categoria: "Saias",
-        produto: "Saia ALO",
-        marca: "ALO",
-        cor: "Marrom",
-        tamanho: "P",
-        sku: "SAI-ALO-MARROM-P",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 11,
-        grupo: "Feminino",
-        categoria: "Shorts",
-        produto: "Short Compressão ALO",
-        marca: "ALO",
-        cor: "Cinza",
-        tamanho: "GG",
-        sku: "SHC-ALO-CINZA-GG",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 12,
-        grupo: "Feminino",
-        categoria: "Jaquetas",
-        produto: "Jaqueta Térmica ALO",
-        marca: "ALO",
-        cor: "Preta",
-        tamanho: "G",
-        sku: "JAQ-ALO-PRETA-G",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 13,
-        grupo: "Masculino",
-        categoria: "Camisetas",
-        produto: "Camiseta Importada ON",
-        marca: "ON",
-        cor: "Branca",
-        tamanho: "XL",
-        sku: "CAM-ON-BRANCA-XL",
-        quantidade: 1,
-        foto: ""
-    },
-
-    {
-        id: 14,
-        grupo: "Masculino",
-        categoria: "Camisetas",
-        produto: "Camiseta Importada ON",
-        marca: "ON",
-        cor: "Preta",
-        tamanho: "XL",
-        sku: "CAM-ON-PRETA-XL",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 15,
-        grupo: "Masculino",
-        categoria: "Camisetas",
-        produto: "Camisa Dry Fit Nike",
-        marca: "Nike",
-        cor: "Azul",
-        tamanho: "M",
-        sku: "CAM-NIKE-AZUL-M",
-        quantidade: 3,
-        foto: ""
-    },
-
-    {
-        id: 16,
-        grupo: "Masculino",
-        categoria: "Camisetas",
-        produto: "Camisa Dry Fit Adidas",
-        marca: "Adidas",
-        cor: "Preta",
-        tamanho: "G",
-        sku: "CAM-ADIDAS-PRETA-G",
-        quantidade: 2,
-        foto: ""
-    },
-
-    {
-        id: 17,
-        grupo: "Masculino",
-        categoria: "Shorts",
-        produto: "Short Dry Fit ON",
-        marca: "ON",
-        cor: "Preto",
-        tamanho: "4XL",
-        sku: "SH-ON-PRETO-4XL",
-        quantidade: 0,
-        foto: ""
-    },
-
-    {
-        id: 18,
-        grupo: "Acessórios",
-        categoria: "Meias",
-        produto: "Meia ALO",
-        marca: "ALO",
-        cor: "Rosa",
-        tamanho: "Único",
-        sku: "MEIA-ALO-ROSA",
-        quantidade: 4,
-        foto: ""
-    },
-
-    {
-        id: 19,
-        grupo: "Calçados",
-        categoria: "Tênis",
-        produto: "Tênis ON",
-        marca: "ON",
-        cor: "Branco",
-        tamanho: "38",
-        sku: "TEN-ON-BRANCO-38",
-        quantidade: 1,
-        foto: ""
-    }
-
-];
-
-
-// ======================================================
 // ESTADO
 // ======================================================
 
 let estoque =
-    carregarEstoque();
+    goldFitCarregarEstoque();
 
 
 let grupoSelecionado =
@@ -484,13 +234,15 @@ const toast =
 
 
 // ======================================================
-// INICIALIZAÇÃO
+// INICIAR
 // ======================================================
 
 iniciar();
 
 
 function iniciar() {
+
+    preencherContaAdmin();
 
     prepararFotosPadrao();
 
@@ -499,6 +251,71 @@ function iniciar() {
     atualizarFiltroCategorias();
 
     renderizarTudo();
+
+}
+
+
+// ======================================================
+// CONTA
+// ======================================================
+
+function preencherContaAdmin() {
+
+    if (
+        !sessaoAdmin
+    ) {
+
+        return;
+
+    }
+
+
+    const nome =
+        sessaoAdmin.nome
+        ||
+        "Administrador Gold Fit";
+
+
+    const email =
+        sessaoAdmin.email
+        ||
+        "admin@goldfit.demo";
+
+
+    document
+        .getElementById(
+            "adminNome"
+        )
+        .textContent =
+        nome;
+
+
+    document
+        .getElementById(
+            "adminEmail"
+        )
+        .textContent =
+        email;
+
+
+    document
+        .getElementById(
+            "adminPerfil"
+        )
+        .textContent =
+        "ADMIN";
+
+
+    document
+        .getElementById(
+            "adminAvatar"
+        )
+        .textContent =
+        nome
+            .charAt(
+                0
+            )
+            .toUpperCase();
 
 }
 
@@ -517,7 +334,6 @@ function configurarEventos() {
                 "click",
                 function () {
 
-
                     grupoSelecionado =
                         botao.dataset.grupo;
 
@@ -527,10 +343,13 @@ function configurarEventos() {
 
 
                     botoesGrupo.forEach(
-                        item =>
+                        item => {
+
                             item.classList.remove(
                                 "active"
-                            )
+                            );
+
+                        }
                     );
 
 
@@ -601,7 +420,9 @@ function configurarEventos() {
 
     modalOverlay.addEventListener(
         "click",
-        function (event) {
+        function (
+            event
+        ) {
 
             if (
                 event.target ===
@@ -638,117 +459,94 @@ function configurarEventos() {
     );
 
 
+    document
+        .getElementById(
+            "btnSairAdmin"
+        )
+        .addEventListener(
+            "click",
+            function () {
+
+                goldFitSair();
+
+
+                window.location.href =
+                    "../index.html";
+
+            }
+        );
+
+
     configurarModulosFuturos();
 
 }
 
 
 // ======================================================
-// MÓDULOS FUTUROS
+// MÓDULOS AINDA NÃO IMPLEMENTADOS
+//
+// Produtos NÃO está aqui, porque já existe.
 // ======================================================
 
 function configurarModulosFuturos() {
 
-    const links =
-        document.querySelectorAll(
+    document
+        .querySelectorAll(
             ".modulo-futuro"
-        );
+        )
+        .forEach(
+            link => {
+
+                link.addEventListener(
+                    "click",
+                    function (
+                        event
+                    ) {
+
+                        event.preventDefault();
 
 
-    links.forEach(
-        link => {
-
-            link.addEventListener(
-                "click",
-                function (event) {
-
-                    event.preventDefault();
-
-
-                    const modulo =
-                        link
-                            .textContent
-                            .trim();
+                        const modulo =
+                            link
+                                .querySelector(
+                                    "strong"
+                                )
+                                ?.textContent
+                                ?.trim()
+                            ||
+                            "Módulo";
 
 
-                    mostrarToast(
-                        `O módulo "${modulo}" será implementado na próxima fase do projeto.`
-                    );
+                        mostrarToast(
+                            `O módulo "${modulo}" será criado na próxima etapa.`
+                        );
 
-                }
-            );
-
-        }
-    );
-
-}
-
-
-// ======================================================
-// LOCAL STORAGE
-// ======================================================
-
-function carregarEstoque() {
-
-    const salvo =
-        localStorage.getItem(
-            STORAGE_KEY
-        );
-
-
-    if (salvo) {
-
-        try {
-
-            const dados =
-                JSON.parse(salvo);
-
-
-            if (
-                Array.isArray(dados)
-            ) {
-
-                return dados;
+                    }
+                );
 
             }
-
-        }
-
-        catch (erro) {
-
-            console.error(
-                "Erro ao carregar estoque:",
-                erro
-            );
-
-        }
-
-    }
-
-
-    return JSON.parse(
-        JSON.stringify(
-            estoqueInicial
-        )
-    );
+        );
 
 }
 
+
+// ======================================================
+// SALVAR ESTOQUE
+// ======================================================
 
 function salvarEstoqueLocal() {
 
     try {
 
-        localStorage.setItem(
-            STORAGE_KEY,
-            JSON.stringify(
-                estoque
-            )
+        goldFitSalvarEstoque(
+            estoque
         );
 
     }
 
-    catch (erro) {
+    catch (
+        erro
+    ) {
 
         console.error(
             erro
@@ -756,7 +554,7 @@ function salvarEstoqueLocal() {
 
 
         mostrarToast(
-            "Não foi possível salvar. Tente utilizar imagens menores."
+            "Não foi possível salvar o estoque."
         );
 
     }
@@ -769,6 +567,10 @@ function salvarEstoqueLocal() {
 // ======================================================
 
 function prepararFotosPadrao() {
+
+    let alterou =
+        false;
+
 
     estoque =
         estoque.map(
@@ -783,6 +585,10 @@ function prepararFotosPadrao() {
                             item
                         );
 
+
+                    alterou =
+                        true;
+
                 }
 
 
@@ -792,13 +598,19 @@ function prepararFotosPadrao() {
         );
 
 
-    salvarEstoqueLocal();
+    if (
+        alterou
+    ) {
+
+        salvarEstoqueLocal();
+
+    }
 
 }
 
 
 // ======================================================
-// FILTRO DE CATEGORIAS
+// FILTROS
 // ======================================================
 
 function atualizarFiltroCategorias() {
@@ -859,10 +671,12 @@ function obterCategoriasFiltro() {
 
         return [
             ...new Set(
+
                 estoque.map(
                     item =>
                         item.categoria
                 )
+
             )
         ].sort();
 
@@ -872,7 +686,9 @@ function obterCategoriasFiltro() {
     return (
         categoriasPorGrupo[
             grupoSelecionado
-        ] || []
+        ]
+        ||
+        []
     );
 
 }
@@ -899,37 +715,67 @@ function renderizarResumo() {
 
     statUnidades.textContent =
         estoque.reduce(
+
             (
                 total,
                 item
             ) =>
-                total +
+
+                total
+                +
                 Number(
                     item.quantidade
+                    ||
+                    0
                 ),
+
             0
+
         );
 
 
     statBaixo.textContent =
         estoque.filter(
-            item =>
-                item.quantidade > 0 &&
-                item.quantidade <= 2
+            item => {
+
+                const quantidade =
+                    Number(
+                        item.quantidade
+                        ||
+                        0
+                    );
+
+
+                return (
+                    quantidade >
+                    0
+
+                    &&
+
+                    quantidade <=
+                    2
+                );
+
+            }
         ).length;
 
 
     statSemEstoque.textContent =
         estoque.filter(
             item =>
-                item.quantidade === 0
+                Number(
+                    item.quantidade
+                    ||
+                    0
+                ) ===
+                0
         ).length;
 
 }
 
 
 // ======================================================
-// FILTRAGEM
+// FILTRAR
 // ======================================================
 
 function obterEstoqueFiltrado() {
@@ -970,19 +816,23 @@ function obterEstoqueFiltrado() {
                 ${item.grupo}
                 ${item.categoria}
                 `
-                    .toLowerCase();
-
-
-            const passaPesquisa =
-                texto.includes(
-                    termoPesquisa
-                );
+                .toLowerCase();
 
 
             return (
-                passaGrupo &&
-                passaCategoria &&
-                passaPesquisa
+
+                passaGrupo
+
+                &&
+
+                passaCategoria
+
+                &&
+
+                texto.includes(
+                    termoPesquisa
+                )
+
             );
 
         }
@@ -1002,7 +852,8 @@ function renderizarTabela() {
 
 
     if (
-        lista.length === 0
+        lista.length ===
+        0
     ) {
 
         tabelaEstoque.innerHTML =
@@ -1031,9 +882,17 @@ function renderizarTabela() {
                 item => {
 
 
+                    const quantidade =
+                        Number(
+                            item.quantidade
+                            ||
+                            0
+                        );
+
+
                     const status =
                         obterStatus(
-                            item.quantidade
+                            quantidade
                         );
 
 
@@ -1046,7 +905,9 @@ function renderizarTabela() {
                                 <img
                                     class="product-photo"
                                     src="${item.foto}"
-                                    alt="${escapeHtml(item.produto)}"
+                                    alt="${goldFitEscapeHtml(
+                                        item.produto
+                                    )}"
                                 >
 
                             </td>
@@ -1056,7 +917,7 @@ function renderizarTabela() {
 
                                 <div class="product-name">
 
-                                    ${escapeHtml(
+                                    ${goldFitEscapeHtml(
                                         item.produto
                                     )}
 
@@ -1069,7 +930,7 @@ function renderizarTabela() {
 
                                 <span class="group-label">
 
-                                    ${escapeHtml(
+                                    ${goldFitEscapeHtml(
                                         item.grupo
                                     )}
 
@@ -1082,7 +943,7 @@ function renderizarTabela() {
 
                                 <span class="category-label">
 
-                                    ${escapeHtml(
+                                    ${goldFitEscapeHtml(
                                         item.categoria
                                     )}
 
@@ -1093,7 +954,7 @@ function renderizarTabela() {
 
                             <td>
 
-                                ${escapeHtml(
+                                ${goldFitEscapeHtml(
                                     item.marca
                                 )}
 
@@ -1102,7 +963,7 @@ function renderizarTabela() {
 
                             <td>
 
-                                ${escapeHtml(
+                                ${goldFitEscapeHtml(
                                     item.cor
                                 )}
 
@@ -1111,7 +972,7 @@ function renderizarTabela() {
 
                             <td>
 
-                                ${escapeHtml(
+                                ${goldFitEscapeHtml(
                                     item.tamanho
                                 )}
 
@@ -1122,7 +983,7 @@ function renderizarTabela() {
 
                                 <span class="sku">
 
-                                    ${escapeHtml(
+                                    ${goldFitEscapeHtml(
                                         item.sku
                                     )}
 
@@ -1132,9 +993,7 @@ function renderizarTabela() {
 
 
                             <td>
-
-                                ${item.quantidade}
-
+                                ${quantidade}
                             </td>
 
 
@@ -1143,9 +1002,7 @@ function renderizarTabela() {
                                 <span
                                     class="status ${status.classe}"
                                 >
-
                                     ${status.texto}
-
                                 </span>
 
                             </td>
@@ -1154,6 +1011,7 @@ function renderizarTabela() {
                             <td>
 
                                 <div class="actions">
+
 
                                     <button
                                         type="button"
@@ -1172,11 +1030,13 @@ function renderizarTabela() {
                                         Excluir
                                     </button>
 
+
                                 </div>
 
                             </td>
 
                         </tr>
+
                     `;
 
                 }
@@ -1195,7 +1055,8 @@ function obterStatus(
 ) {
 
     if (
-        quantidade === 0
+        quantidade ===
+        0
     ) {
 
         return {
@@ -1212,7 +1073,8 @@ function obterStatus(
 
 
     if (
-        quantidade <= 2
+        quantidade <=
+        2
     ) {
 
         return {
@@ -1293,11 +1155,12 @@ function abrirModalNovo() {
 
 
 // ======================================================
-// CATEGORIAS DO FORMULÁRIO
+// CATEGORIAS FORM
 // ======================================================
 
 function atualizarCategoriasFormulario(
-    categoriaAtual = ""
+    categoriaAtual =
+        ""
 ) {
 
     const grupo =
@@ -1315,7 +1178,9 @@ function atualizarCategoriasFormulario(
     const categorias =
         categoriasPorGrupo[
             grupo
-        ] || [];
+        ]
+        ||
+        [];
 
 
     categorias.forEach(
@@ -1359,12 +1224,20 @@ function atualizarCategoriasFormulario(
 // EDITAR
 // ======================================================
 
-function editarProduto(id) {
+function editarProduto(
+    id
+) {
 
     const item =
         estoque.find(
             produto =>
-                produto.id === id
+                Number(
+                    produto.id
+                )
+                ===
+                Number(
+                    id
+                )
         );
 
 
@@ -1419,11 +1292,17 @@ function editarProduto(id) {
 
 
     fotoBase64.value =
-        item.foto || "";
+        item.foto
+        ||
+        "";
 
 
     previewImagem.src =
-        item.foto;
+        item.foto
+        ||
+        gerarPlaceholder(
+            item
+        );
 
 
     fotoProduto.value =
@@ -1438,7 +1317,7 @@ function editarProduto(id) {
 
 
 // ======================================================
-// FECHAR MODAL
+// MODAL
 // ======================================================
 
 function fecharModal() {
@@ -1451,7 +1330,7 @@ function fecharModal() {
 
 
 // ======================================================
-// PROCESSAR IMAGEM
+// FOTO
 // ======================================================
 
 function processarImagem(
@@ -1459,7 +1338,9 @@ function processarImagem(
 ) {
 
     const arquivo =
-        event.target.files[0];
+        event.target.files[
+            0
+        ];
 
 
     if (
@@ -1478,7 +1359,7 @@ function processarImagem(
     ) {
 
         mostrarToast(
-            "Selecione um arquivo de imagem válido."
+            "Selecione uma imagem válida."
         );
 
 
@@ -1516,7 +1397,7 @@ function processarImagem(
 
 
                     const limite =
-                        800;
+                        900;
 
 
                     let largura =
@@ -1528,8 +1409,13 @@ function processarImagem(
 
 
                     if (
-                        largura > limite ||
-                        altura > limite
+                        largura >
+                        limite
+
+                        ||
+
+                        altura >
+                        limite
                     ) {
 
 
@@ -1593,7 +1479,7 @@ function processarImagem(
                     const imagemFinal =
                         canvas.toDataURL(
                             "image/jpeg",
-                            0.78
+                            0.82
                         );
 
 
@@ -1621,7 +1507,7 @@ function processarImagem(
 
 
 // ======================================================
-// SALVAR PRODUTO
+// SALVAR
 // ======================================================
 
 function salvarProduto(
@@ -1640,8 +1526,10 @@ function salvarProduto(
     if (
         !Number.isInteger(
             quantidade
-        ) ||
-        quantidade < 0
+        )
+        ||
+        quantidade <
+        0
     ) {
 
         mostrarToast(
@@ -1663,7 +1551,8 @@ function salvarProduto(
     const produto = {
 
         id:
-            idAtual ||
+            idAtual
+            ||
             gerarNovoId(),
 
         grupo:
@@ -1708,12 +1597,18 @@ function salvarProduto(
 
 
     if (
-        !produto.grupo ||
-        !produto.categoria ||
-        !produto.produto ||
-        !produto.marca ||
-        !produto.cor ||
-        !produto.tamanho ||
+        !produto.grupo
+        ||
+        !produto.categoria
+        ||
+        !produto.produto
+        ||
+        !produto.marca
+        ||
+        !produto.cor
+        ||
+        !produto.tamanho
+        ||
         !produto.sku
     ) {
 
@@ -1731,15 +1626,23 @@ function salvarProduto(
         estoque.some(
             item =>
 
-                item.sku
-                    .toUpperCase() ===
+                String(
+                    item.sku
+                )
+                .toUpperCase()
+                ===
                 produto.sku
-                    .toUpperCase()
+                .toUpperCase()
 
                 &&
 
-                item.id !==
+                Number(
+                    item.id
+                )
+                !==
+                Number(
                     produto.id
+                )
         );
 
 
@@ -1748,7 +1651,7 @@ function salvarProduto(
     ) {
 
         mostrarToast(
-            "Já existe uma variação cadastrada com este SKU."
+            "Já existe um produto com este SKU."
         );
 
 
@@ -1772,13 +1675,19 @@ function salvarProduto(
     const indice =
         estoque.findIndex(
             item =>
-                item.id ===
-                produto.id
+                Number(
+                    item.id
+                )
+                ===
+                Number(
+                    produto.id
+                )
         );
 
 
     if (
-        indice >= 0
+        indice >=
+        0
     ) {
 
         estoque[
@@ -1801,7 +1710,7 @@ function salvarProduto(
 
 
         mostrarToast(
-            "Produto cadastrado com sucesso."
+            "Novo produto cadastrado com sucesso."
         );
 
     }
@@ -1812,9 +1721,7 @@ function salvarProduto(
 
     atualizarFiltroCategorias();
 
-
     renderizarTudo();
-
 
     fecharModal();
 
@@ -1832,7 +1739,13 @@ function excluirProduto(
     const item =
         estoque.find(
             produto =>
-                produto.id === id
+                Number(
+                    produto.id
+                )
+                ===
+                Number(
+                    id
+                )
         );
 
 
@@ -1848,7 +1761,7 @@ function excluirProduto(
     const confirmar =
         confirm(
 
-            `Deseja excluir esta variação?
+            `Deseja excluir este produto?
 
 ${item.produto}
 
@@ -1870,7 +1783,13 @@ Tamanho: ${item.tamanho}`
     estoque =
         estoque.filter(
             produto =>
-                produto.id !== id
+                Number(
+                    produto.id
+                )
+                !==
+                Number(
+                    id
+                )
         );
 
 
@@ -1879,25 +1798,25 @@ Tamanho: ${item.tamanho}`
 
     atualizarFiltroCategorias();
 
-
     renderizarTudo();
 
 
     mostrarToast(
-        "Produto excluído do estoque."
+        "Produto excluído."
     );
 
 }
 
 
 // ======================================================
-// NOVO ID
+// ID
 // ======================================================
 
 function gerarNovoId() {
 
     if (
-        estoque.length === 0
+        estoque.length ===
+        0
     ) {
 
         return 1;
@@ -1908,13 +1827,20 @@ function gerarNovoId() {
     return (
 
         Math.max(
+
             ...estoque.map(
                 item =>
-                    item.id
+                    Number(
+                        item.id
+                    )
+                    ||
+                    0
             )
+
         )
 
-        + 1
+        +
+        1
 
     );
 
@@ -1937,23 +1863,28 @@ function gerarPlaceholder(
 
     const nome =
         String(
-            item.produto ||
+            item.produto
+            ||
             "Produto"
         )
-            .split(" ")
-            .slice(
-                0,
-                4
-            )
-            .join(" ");
+        .split(
+            " "
+        )
+        .slice(
+            0,
+            4
+        )
+        .join(
+            " "
+        );
 
 
     const svg =
         `
         <svg
             xmlns="http://www.w3.org/2000/svg"
-            width="600"
-            height="600"
+            width="800"
+            height="1000"
         >
 
             <defs>
@@ -1982,76 +1913,77 @@ function gerarPlaceholder(
 
 
             <rect
-                width="600"
-                height="600"
+                width="800"
+                height="1000"
                 fill="url(#bg)"
             />
 
 
-            <rect
-                x="38"
-                y="38"
-                width="524"
-                height="524"
-                rx="30"
-                fill="rgba(255,255,255,0.10)"
-                stroke="rgba(255,255,255,0.30)"
+            <circle
+                cx="400"
+                cy="430"
+                r="240"
+                fill="rgba(243,198,0,0.95)"
             />
 
 
             <text
-                x="300"
-                y="225"
+                x="400"
+                y="400"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="38"
+                font-size="52"
                 font-weight="700"
-                fill="white"
+                fill="#111111"
             >
-                ${escapeHtml(
-                    item.marca ||
+                ${goldFitEscapeHtml(
+                    item.marca
+                    ||
                     "Gold Fit"
                 )}
             </text>
 
 
             <text
-                x="300"
-                y="305"
+                x="400"
+                y="470"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="27"
+                font-size="28"
                 font-weight="700"
-                fill="white"
+                fill="#111111"
             >
-                ${escapeHtml(
+                ${goldFitEscapeHtml(
                     nome
                 )}
             </text>
 
 
             <text
-                x="300"
-                y="360"
+                x="400"
+                y="530"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="23"
-                fill="white"
+                font-size="21"
+                fill="#111111"
             >
-                ${escapeHtml(
-                    item.cor ||
+                ${goldFitEscapeHtml(
+                    item.cor
+                    ||
                     ""
                 )}
             </text>
 
 
             <text
-                x="300"
-                y="520"
+                x="400"
+                y="900"
                 text-anchor="middle"
                 font-family="Arial"
-                font-size="20"
-                fill="white"
+                font-size="25"
+                font-weight="700"
+                fill="#ffffff"
+                letter-spacing="5"
             >
                 GOLD FIT
             </text>
@@ -2072,7 +2004,7 @@ function gerarPlaceholder(
 
 
 // ======================================================
-// CORES DOS PLACEHOLDERS
+// CORES PLACEHOLDER
 // ======================================================
 
 function obterCorVisual(
@@ -2081,9 +2013,11 @@ function obterCorVisual(
 
     const nome =
         String(
-            cor || ""
+            cor
+            ||
+            ""
         )
-            .toLowerCase();
+        .toLowerCase();
 
 
     if (
@@ -2212,9 +2146,23 @@ function obterCorVisual(
     }
 
 
+    if (
+        nome.includes(
+            "goiaba"
+        )
+    ) {
+
+        return [
+            "#d96d73",
+            "#ee9a9f"
+        ];
+
+    }
+
+
     return [
-        "#b38d24",
-        "#d4af37"
+        "#1b1b1b",
+        "#383200"
     ];
 
 }
@@ -2247,7 +2195,6 @@ function mostrarToast(
 
     toastTimer =
         setTimeout(
-
             function () {
 
                 toast.classList.remove(
@@ -2255,56 +2202,14 @@ function mostrarToast(
                 );
 
             },
-
-            3200
-
+            3000
         );
 
 }
 
 
 // ======================================================
-// SEGURANÇA DO TEXTO
-// ======================================================
-
-function escapeHtml(
-    valor
-) {
-
-    return String(
-        valor
-    )
-
-        .replace(
-            /&/g,
-            "&amp;"
-        )
-
-        .replace(
-            /</g,
-            "&lt;"
-        )
-
-        .replace(
-            />/g,
-            "&gt;"
-        )
-
-        .replace(
-            /"/g,
-            "&quot;"
-        )
-
-        .replace(
-            /'/g,
-            "&#039;"
-        );
-
-}
-
-
-// ======================================================
-// FUNÇÕES DOS BOTÕES DA TABELA
+// DISPONIBILIZAR FUNÇÕES
 // ======================================================
 
 window.editarProduto =

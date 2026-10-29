@@ -1,0 +1,642 @@
+.catalog-page {
+    width:
+        min(
+            1380px,
+            calc(100% - 48px)
+        );
+
+    min-height:
+        650px;
+
+    margin:
+        0
+        auto
+        100px;
+}
+
+
+/* ======================================================
+   BREADCRUMB
+====================================================== */
+
+.catalog-breadcrumb {
+    min-height:
+        70px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        8px;
+
+    color:
+        #999;
+
+    font-size:
+        10px;
+}
+
+
+.catalog-breadcrumb a {
+    color:
+        #777;
+
+    text-decoration:
+        none;
+}
+
+
+.catalog-breadcrumb a:hover {
+    color:
+        #111;
+}
+
+
+.catalog-breadcrumb strong {
+    color:
+        #111;
+
+    font-weight:
+        700;
+}
+
+
+/* ======================================================
+   CABEÇALHO
+====================================================== */
+
+.catalog-heading {
+    min-height:
+        210px;
+
+    padding:
+        42px
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        flex-end;
+
+    justify-content:
+        space-between;
+
+    gap:
+        40px;
+
+    border-top:
+        1px solid
+        #eeeeee;
+
+    border-bottom:
+        1px solid
+        #eeeeee;
+}
+
+
+.catalog-eyebrow {
+    display:
+        block;
+
+    margin-bottom:
+        10px;
+
+    color:
+        #999;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+.catalog-heading h1 {
+    margin:
+        0;
+
+    max-width:
+        850px;
+
+    font-size:
+        clamp(
+            42px,
+            5vw,
+            70px
+        );
+
+    font-weight:
+        900;
+
+    line-height:
+        0.95;
+
+    letter-spacing:
+        -3px;
+}
+
+
+.catalog-heading p {
+    max-width:
+        600px;
+
+    margin:
+        15px
+        0
+        0;
+
+    color:
+        #777;
+
+    font-size:
+        13px;
+
+    line-height:
+        1.6;
+}
+
+
+.catalog-count-box {
+    min-width:
+        130px;
+
+    text-align:
+        right;
+}
+
+
+.catalog-count-box strong {
+    display:
+        block;
+
+    font-size:
+        45px;
+
+    font-weight:
+        900;
+
+    line-height:
+        1;
+}
+
+
+.catalog-count-box span {
+    color:
+        #999;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1px;
+}
+
+
+/* ======================================================
+   FILTROS ATIVOS
+====================================================== */
+
+.active-filters {
+    padding:
+        22px
+        0
+        10px;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+}
+
+
+.active-filter {
+    min-height:
+        32px;
+
+    padding:
+        0
+        11px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    gap:
+        7px;
+
+    background:
+        #111;
+
+    color:
+        white;
+
+    text-decoration:
+        none;
+
+    font-size:
+        9px;
+
+    font-weight:
+        900;
+}
+
+
+.clear-filter {
+    min-height:
+        32px;
+
+    padding:
+        0
+        10px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    color:
+        #777;
+
+    text-decoration:
+        underline;
+
+    font-size:
+        9px;
+
+    font-weight:
+        700;
+}
+
+
+/* ======================================================
+   FILTROS RÁPIDOS
+====================================================== */
+
+.quick-filters {
+    padding:
+        10px
+        0
+        25px;
+
+    display:
+        flex;
+
+    flex-wrap:
+        wrap;
+
+    gap:
+        7px;
+
+    border-bottom:
+        1px solid
+        #eeeeee;
+}
+
+
+.quick-filter-link {
+    min-height:
+        35px;
+
+    padding:
+        0
+        13px;
+
+    display:
+        inline-flex;
+
+    align-items:
+        center;
+
+    border:
+        1px solid
+        #dddddd;
+
+    background:
+        white;
+
+    color:
+        #555;
+
+    text-decoration:
+        none;
+
+    font-size:
+        10px;
+
+    font-weight:
+        700;
+
+    transition:
+        0.2s;
+}
+
+
+.quick-filter-link:hover,
+.quick-filter-link.active {
+    border-color:
+        #111;
+
+    background:
+        #111;
+
+    color:
+        white;
+}
+
+
+/* ======================================================
+   TOOLBAR
+====================================================== */
+
+.catalog-toolbar {
+    margin:
+        30px
+        0;
+
+    display:
+        flex;
+
+    align-items:
+        center;
+
+    justify-content:
+        space-between;
+
+    gap:
+        20px;
+}
+
+
+.catalog-local-search {
+    position:
+        relative;
+
+    width:
+        min(
+            380px,
+            100%
+        );
+}
+
+
+.catalog-local-search svg {
+    position:
+        absolute;
+
+    left:
+        14px;
+
+    top:
+        50%;
+
+    width:
+        18px;
+
+    height:
+        18px;
+
+    transform:
+        translateY(-50%);
+
+    color:
+        #777;
+}
+
+
+.catalog-local-search input {
+    width:
+        100%;
+
+    height:
+        43px;
+
+    padding:
+        0
+        14px
+        0
+        43px;
+
+    border:
+        1px solid
+        #d8d8d8;
+
+    outline:
+        none;
+
+    font-size:
+        11px;
+}
+
+
+.catalog-local-search input:focus {
+    border-color:
+        #f3c600;
+}
+
+
+.catalog-toolbar select {
+    min-width:
+        185px;
+
+    height:
+        43px;
+
+    padding:
+        0
+        12px;
+
+    border:
+        1px solid
+        #d8d8d8;
+
+    background:
+        white;
+
+    outline:
+        none;
+
+    font-size:
+        11px;
+}
+
+
+.catalog-products {
+    margin-top:
+        5px;
+}
+
+
+/* ======================================================
+   VAZIO
+====================================================== */
+
+.catalog-empty {
+    margin-top:
+        30px;
+
+    padding:
+        90px
+        20px;
+
+    background:
+        #f7f7f7;
+
+    text-align:
+        center;
+}
+
+
+.catalog-empty span {
+    color:
+        #b18f00;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+.catalog-empty h2 {
+    margin:
+        10px
+        0;
+
+    font-size:
+        32px;
+
+    font-weight:
+        900;
+}
+
+
+.catalog-empty p {
+    color:
+        #777;
+}
+
+
+.catalog-empty a {
+    display:
+        inline-flex;
+
+    min-height:
+        44px;
+
+    margin-top:
+        15px;
+
+    padding:
+        0
+        20px;
+
+    align-items:
+        center;
+
+    background:
+        #111;
+
+    color:
+        white;
+
+    text-decoration:
+        none;
+
+    font-size:
+        10px;
+
+    font-weight:
+        900;
+}
+
+
+/* ======================================================
+   RESPONSIVO
+====================================================== */
+
+@media (
+    max-width: 780px
+) {
+
+    .catalog-page {
+        width:
+            calc(100% - 24px);
+    }
+
+
+    .catalog-heading {
+        min-height:
+            auto;
+
+        align-items:
+            flex-start;
+
+        flex-direction:
+            column;
+    }
+
+
+    .catalog-heading h1 {
+        font-size:
+            42px;
+
+        letter-spacing:
+            -2px;
+    }
+
+
+    .catalog-count-box {
+        text-align:
+            left;
+    }
+
+
+    .catalog-toolbar {
+        align-items:
+            stretch;
+
+        flex-direction:
+            column;
+    }
+
+
+    .catalog-local-search {
+        width:
+            100%;
+    }
+
+
+    .catalog-toolbar select {
+        width:
+            100%;
+    }
+
+}

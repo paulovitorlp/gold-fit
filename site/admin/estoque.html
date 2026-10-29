@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Gerenciamento de Estoque | Gold Fit
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+</head>
+
+
+<body class="admin-body">
+
+
+    <div class="admin-promo">
+
+        <span>
+            GOLD FIT • PAINEL ADMINISTRATIVO
+        </span>
+
+        <span>
+            GERENCIAMENTO INTERNO
+        </span>
+
+    </div>
+
+
+    <header class="admin-header">
+
+        <div class="admin-header-inner">
+
+
+            <a
+                href="../index.html"
+                class="admin-logo"
+            >
+                <span>
+                    GOLD
+                </span>
+                FIT
+            </a>
+
+
+            <div class="admin-header-title">
+
+                <span>
+                    ADMIN
+                </span>
+
+                <strong>
+                    Painel Gold Fit
+                </strong>
+
+            </div>
+
+
+            <div class="admin-header-actions">
+
+
+                <a
+                    href="../index.html"
+                    class="admin-header-link"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M3 11.5 12 4l9 7.5"
+                        ></path>
+
+                        <path
+                            d="M5.5 10v10h13V10"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Ver loja
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="../login.html"
+                    class="admin-header-link"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"
+                        ></circle>
+
+                        <path
+                            d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Minha conta
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="btnSairAdmin"
+                    class="admin-header-link admin-logout"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
+
+                        <path
+                            d="m15 8 4 4-4 4"
+                        ></path>
+
+                        <path
+                            d="M9 12h10"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Sair
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="admin-layout">
+
+
+        <aside class="admin-sidebar">
+
+
+            <div class="admin-account-card">
+
+
+                <div
+                    id="adminAvatar"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+
+                <div class="admin-account-text">
+
+                    <span>
+                        CONECTADO COMO
+                    </span>
+
+                    <strong id="adminNome">
+                        Administrador
+                    </strong>
+
+                    <small id="adminEmail">
+                    </small>
+
+                </div>
+
+
+                <span
+                    id="adminPerfil"
+                    class="admin-profile-badge"
+                >
+                    ADMIN
+                </span>
+
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+
+                <!-- ESTOQUE -->
+
+                <a
+                    href="./estoque.html"
+                    class="admin-nav-item active"
+                >
+
+                    <span class="admin-nav-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Estoque
+                        </strong>
+
+                        <small>
+                            Variações e quantidades
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <!-- PRODUTOS - AGORA FUNCIONAL -->
+
+                <a
+                    href="./produtos.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Produtos
+                        </strong>
+
+                        <small>
+                            Conteúdo do site
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <!-- PEDIDOS -->
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Pedidos
+                        </strong>
+
+                        <small>
+                            Vendas
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <!-- CLIENTES -->
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        04
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Clientes
+                        </strong>
+
+                        <small>
+                            Cadastros
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <!-- AVALIAÇÕES -->
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        05
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Avaliações
+                        </strong>
+
+                        <small>
+                            Moderação
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+            </nav>
+
+
+            <div class="admin-sidebar-bottom">
+
+                <a
+                    href="../index.html"
+                    class="admin-store-button"
+                >
+                    VOLTAR PARA A LOJA
+                </a>
+
+            </div>
+
+
+        </aside>
+
+
+        <main class="admin-main">
+
+
+            <section class="admin-page-heading">
+
+
+                <div>
+
+                    <span class="admin-eyebrow">
+                        GERENCIAMENTO
+                    </span>
+
+                    <h1>
+                        Estoque
+                    </h1>
+
+                    <p>
+                        Controle de produtos,
+                        cores, tamanhos, SKUs
+                        e disponibilidade da Gold Fit.
+                    </p>
+
+                </div>
+
+
+                <button
+                    id="btnNovoProduto"
+                    type="button"
+                    class="admin-primary-button"
+                >
+
+                    <span>
+                        +
+                    </span>
+
+                    NOVO PRODUTO
+
+                </button>
+
+
+            </section>
+
+
+            <section class="admin-stats">
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        VARIAÇÕES
+                    </span>
+
+                    <strong id="statVariacoes">
+                        0
+                    </strong>
+
+                    <small>
+                        SKUs cadastrados
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        UNIDADES
+                    </span>
+
+                    <strong id="statUnidades">
+                        0
+                    </strong>
+
+                    <small>
+                        Total em estoque
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        ESTOQUE BAIXO
+                    </span>
+
+                    <strong id="statBaixo">
+                        0
+                    </strong>
+
+                    <small>
+                        1 ou 2 unidades
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        INDISPONÍVEIS
+                    </span>
+
+                    <strong id="statSemEstoque">
+                        0
+                    </strong>
+
+                    <small>
+                        Sem unidades
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+            <section class="admin-card">
+
+
+                <div class="admin-card-heading">
+
+                    <div>
+
+                        <span>
+                            CATÁLOGO
+                        </span>
+
+                        <h2>
+                            Gerenciamento de estoque
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="admin-toolbar">
+
+
+                    <div class="admin-group-buttons">
+
+
+                        <button
+                            type="button"
+                            class="group-button active"
+                            data-grupo="Todos"
+                        >
+                            Todos
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Feminino"
+                        >
+                            Feminino
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Masculino"
+                        >
+                            Masculino
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Calçados"
+                        >
+                            Calçados
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="group-button"
+                            data-grupo="Acessórios"
+                        >
+                            Acessórios
+                        </button>
+
+
+                    </div>
+
+
+                    <div class="admin-filter-area">
+
+
+                        <div class="admin-search">
+
+
+                            <svg
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="1.8"
+                            >
+
+                                <circle
+                                    cx="11"
+                                    cy="11"
+                                    r="7"
+                                ></circle>
+
+                                <path
+                                    d="m20 20-4-4"
+                                ></path>
+
+                            </svg>
+
+
+                            <input
+                                id="campoPesquisa"
+                                type="text"
+                                placeholder="Buscar produto, SKU, cor..."
+                            >
+
+
+                        </div>
+
+
+                        <select id="filtroCategoria">
+
+                            <option value="Todas">
+                                Todas as categorias
+                            </option>
+
+                        </select>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="admin-table-wrapper">
+
+
+                    <table class="admin-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Foto
+                                </th>
+
+                                <th>
+                                    Produto
+                                </th>
+
+                                <th>
+                                    Grupo
+                                </th>
+
+                                <th>
+                                    Categoria
+                                </th>
+
+                                <th>
+                                    Marca
+                                </th>
+
+                                <th>
+                                    Cor
+                                </th>
+
+                                <th>
+                                    Tam.
+                                </th>
+
+                                <th>
+                                    SKU
+                                </th>
+
+                                <th>
+                                    Qtd.
+                                </th>
+
+                                <th>
+                                    Status
+                                </th>
+
+                                <th>
+                                    Ações
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tabelaEstoque">
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+    <!-- ==================================================
+         MODAL
+    ================================================== -->
+
+    <div
+        id="modalOverlay"
+        class="modal-overlay hidden"
+    >
+
+
+        <div class="admin-modal">
+
+
+            <div class="admin-modal-header">
+
+
+                <div>
+
+                    <span>
+                        GOLD FIT
+                    </span>
+
+                    <h2 id="modalTitulo">
+                        Novo produto
+                    </h2>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="btnFecharModal"
+                    class="modal-close"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+            <form id="formProduto">
+
+
+                <input
+                    type="hidden"
+                    id="produtoId"
+                >
+
+
+                <input
+                    type="hidden"
+                    id="fotoBase64"
+                >
+
+
+                <div class="modal-product-layout">
+
+
+                    <div class="modal-photo-area">
+
+
+                        <div class="modal-preview">
+
+                            <img
+                                id="previewImagem"
+                                src=""
+                                alt="Pré-visualização"
+                            >
+
+                        </div>
+
+
+                        <label
+                            for="fotoProduto"
+                            class="upload-button"
+                        >
+                            SELECIONAR FOTO
+                        </label>
+
+
+                        <input
+                            type="file"
+                            id="fotoProduto"
+                            accept="image/*"
+                            hidden
+                        >
+
+
+                        <small>
+                            A imagem será comprimida
+                            antes de ser armazenada.
+                        </small>
+
+
+                    </div>
+
+
+                    <div class="modal-form-area">
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-field">
+
+                                <label for="produtoGrupo">
+                                    Grupo
+                                </label>
+
+                                <select
+                                    id="produtoGrupo"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecione
+                                    </option>
+
+                                    <option value="Feminino">
+                                        Feminino
+                                    </option>
+
+                                    <option value="Masculino">
+                                        Masculino
+                                    </option>
+
+                                    <option value="Calçados">
+                                        Calçados
+                                    </option>
+
+                                    <option value="Acessórios">
+                                        Acessórios
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoCategoria">
+                                    Categoria
+                                </label>
+
+                                <select
+                                    id="produtoCategoria"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Selecione o grupo primeiro
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field form-field-full">
+
+                                <label for="produtoNome">
+                                    Produto
+                                </label>
+
+                                <input
+                                    id="produtoNome"
+                                    type="text"
+                                    required
+                                    placeholder="Ex.: Conjunto Basic Run"
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoMarca">
+                                    Marca
+                                </label>
+
+                                <input
+                                    id="produtoMarca"
+                                    type="text"
+                                    required
+                                    placeholder="ALO"
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoCor">
+                                    Cor
+                                </label>
+
+                                <input
+                                    id="produtoCor"
+                                    type="text"
+                                    required
+                                    placeholder="Rosa"
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoTamanho">
+                                    Tamanho
+                                </label>
+
+                                <input
+                                    id="produtoTamanho"
+                                    type="text"
+                                    required
+                                    placeholder="P, M, G, 38..."
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoQuantidade">
+                                    Quantidade
+                                </label>
+
+                                <input
+                                    id="produtoQuantidade"
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-field form-field-full">
+
+                                <label for="produtoSku">
+                                    SKU
+                                </label>
+
+                                <input
+                                    id="produtoSku"
+                                    type="text"
+                                    required
+                                    placeholder="BASIC-ALO-ROSA-P"
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="admin-modal-footer">
+
+
+                    <button
+                        type="button"
+                        id="btnCancelar"
+                        class="secondary-button"
+                    >
+                        CANCELAR
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="admin-primary-button"
+                    >
+                        SALVAR PRODUTO
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div
+        id="toast"
+        class="admin-toast"
+    >
+    </div>
+
+
+    <script src="../js/store-common.js"></script>
+
+    <script src="../js/estoque.js"></script>
+
+
+</body>
+
+</html>

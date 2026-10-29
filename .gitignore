@@ -1,4 +1,37 @@
+
+# Editor
 .vscode/
+.idea/
+
+# Ambiente e credenciais
 .env
 .env.*
+!.env.example
+*.pem
+*.key
+
+# Dependências
 node_modules/
+
+# Backups do banco de dados
+*.backup
+*.dump
+*.bak
+*.sql.gz
+
+# Arquivos temporários
+*.log
+*.tmp
+*.temp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Builds futuros
+dist/
+build/
+.next/
+.vercel/
+coverage/

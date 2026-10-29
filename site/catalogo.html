@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Catálogo | Gold Fit
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="./css/loja.css"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="./css/catalogo.css"
+    >
+
+
+</head>
+
+
+<body>
+
+
+    <!-- ==================================================
+         PROMO
+    ================================================== -->
+
+    <div class="promo-bar">
+
+        <div class="promo-track">
+
+            <span>
+                GOLD FIT • MODA FITNESS
+            </span>
+
+            <span>
+                ENVIO PARA TODO BRASIL
+            </span>
+
+            <span>
+                COMPRE ONLINE
+            </span>
+
+            <span>
+                FITNESS & LIFESTYLE
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <header class="header">
+
+
+        <div class="header-top">
+
+
+            <button
+                id="btnMenu"
+                class="mobile-menu"
+                type="button"
+                aria-label="Abrir menu"
+            >
+                ☰
+            </button>
+
+
+            <a
+                href="./index.html"
+                class="logo"
+            >
+                <span>
+                    GOLD
+                </span>
+                FIT
+            </a>
+
+
+            <div class="header-search">
+
+                <input
+                    type="text"
+                    id="pesquisaTopoCatalogo"
+                    placeholder="O que você está buscando?"
+                >
+
+
+                <button
+                    type="button"
+                    id="btnPesquisaCatalogo"
+                    aria-label="Pesquisar"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    >
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        ></circle>
+
+                        <path
+                            d="m20 20-4-4"
+                        ></path>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+
+            <div class="header-actions">
+
+
+                <button
+                    id="btnContaCatalogo"
+                    type="button"
+                    class="header-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"
+                        ></circle>
+
+                        <path
+                            d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span
+                        class="header-button-text"
+                        id="textoContaCatalogo"
+                    >
+                        Entrar
+                    </span>
+
+                </button>
+
+
+                <button
+                    id="btnFavoritosCatalogo"
+                    type="button"
+                    class="header-button icon-only"
+                    aria-label="Favoritos"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
+                        ></path>
+
+                    </svg>
+
+                </button>
+
+
+                <button
+                    id="btnCarrinhoCatalogo"
+                    type="button"
+                    class="header-button cart-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M6 8h12l1 13H5L6 8Z"
+                        ></path>
+
+                        <path
+                            d="M9 9V6a3 3 0 0 1 6 0v3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span class="cart-label">
+                        Carrinho
+                    </span>
+
+
+                    <strong id="contadorCarrinhoCatalogo">
+                        0
+                    </strong>
+
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- MENU -->
+
+
+        <nav
+            id="mainNav"
+            class="navigation"
+        >
+
+
+            <a
+                href="./index.html"
+                class="nav-item nav-link"
+            >
+                INÍCIO
+            </a>
+
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Feminino"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Feminino"
+                >
+                    FEMININO
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Feminino"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Masculino"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Masculino"
+                >
+                    MASCULINO
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Masculino"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Calçados"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Calçados"
+                >
+                    CALÇADOS
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Calçados"
+                ></div>
+
+            </div>
+
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Acessórios"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Acessórios"
+                >
+                    ACESSÓRIOS
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Acessórios"
+                ></div>
+
+            </div>
+
+
+            <a
+                href="./index.html#lancamentos"
+                class="nav-item nav-link"
+            >
+                LANÇAMENTOS
+            </a>
+
+
+        </nav>
+
+
+    </header>
+
+
+    <!-- ==================================================
+         CATÁLOGO
+    ================================================== -->
+
+    <main class="catalog-page">
+
+
+        <!-- BREADCRUMB -->
+
+
+        <div
+            id="catalogBreadcrumb"
+            class="catalog-breadcrumb"
+        ></div>
+
+
+        <!-- CABEÇALHO -->
+
+
+        <section class="catalog-heading">
+
+
+            <div>
+
+                <span class="catalog-eyebrow">
+                    GOLD FIT COLLECTION
+                </span>
+
+
+                <h1 id="catalogTitle">
+                    Catálogo
+                </h1>
+
+
+                <p id="catalogDescription">
+                    Produtos disponíveis na Gold Fit.
+                </p>
+
+            </div>
+
+
+            <div class="catalog-count-box">
+
+                <strong id="catalogCount">
+                    0
+                </strong>
+
+                <span>
+                    PRODUTOS
+                </span>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- FILTROS ATIVOS -->
+
+
+        <div
+            id="activeFilters"
+            class="active-filters"
+        ></div>
+
+
+        <!-- FILTROS RÁPIDOS -->
+
+
+        <div
+            id="quickFilters"
+            class="quick-filters"
+        ></div>
+
+
+        <!-- FERRAMENTAS -->
+
+
+        <section class="catalog-toolbar">
+
+
+            <div class="catalog-local-search">
+
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                >
+
+                    <circle
+                        cx="11"
+                        cy="11"
+                        r="7"
+                    ></circle>
+
+                    <path
+                        d="m20 20-4-4"
+                    ></path>
+
+                </svg>
+
+
+                <input
+                    id="catalogSearch"
+                    type="text"
+                    placeholder="Buscar nesta seleção"
+                >
+
+            </div>
+
+
+            <select id="catalogSort">
+
+                <option value="default">
+                    Ordenar por
+                </option>
+
+                <option value="nome">
+                    Nome A-Z
+                </option>
+
+                <option value="menorPreco">
+                    Menor preço
+                </option>
+
+                <option value="maiorPreco">
+                    Maior preço
+                </option>
+
+            </select>
+
+
+        </section>
+
+
+        <!-- PRODUTOS -->
+
+
+        <section
+            id="catalogProducts"
+            class="products-grid catalog-products"
+        ></section>
+
+
+        <!-- VAZIO -->
+
+
+        <section
+            id="catalogEmpty"
+            class="catalog-empty"
+            hidden
+        >
+
+            <span>
+                GOLD FIT
+            </span>
+
+            <h2>
+                Nenhum produto disponível.
+            </h2>
+
+            <p>
+                Não encontramos produtos
+                para os filtros selecionados.
+            </p>
+
+            <a href="./catalogo.html">
+                VER TODO O CATÁLOGO
+            </a>
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+
+        <div class="footer-grid">
+
+
+            <div>
+
+                <div class="logo footer-logo">
+
+                    <span>
+                        GOLD
+                    </span>
+                    FIT
+
+                </div>
+
+                <p>
+                    Fitness & Lifestyle
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    LOJA
+                </strong>
+
+                <a href="./catalogo.html?grupo=Feminino">
+                    Feminino
+                </a>
+
+                <a href="./catalogo.html?grupo=Masculino">
+                    Masculino
+                </a>
+
+                <a href="./catalogo.html?grupo=Calçados">
+                    Calçados
+                </a>
+
+                <a href="./catalogo.html?grupo=Acessórios">
+                    Acessórios
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    CONTA
+                </strong>
+
+                <a href="./login.html">
+                    Minha conta
+                </a>
+
+                <span>
+                    Meus pedidos
+                </span>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    GOLD FIT
+                </strong>
+
+                <span>
+                    Santarém - PA
+                </span>
+
+                <span>
+                    Atendimento online
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+            © 2026 Gold Fit
+        </div>
+
+
+    </footer>
+
+
+    <div
+        id="toastCatalogo"
+        class="toast"
+    ></div>
+
+
+    <script src="./js/store-common.js"></script>
+
+    <script src="./js/catalogo.js"></script>
+
+
+</body>
+
+</html>

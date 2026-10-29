@@ -1,0 +1,512 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Produto | Gold Fit</title>
+    <link rel="stylesheet" href="./css/produto.css">
+</head>
+<body>
+
+    <div class="promo-bar">
+        <div class="promo-content">
+            <span>GOLD FIT • FITNESS & LIFESTYLE</span>
+            <span>ENVIO PARA TODO BRASIL</span>
+        </div>
+    </div>
+
+    <header class="product-header">
+        <div class="product-header-container">
+
+            <a href="./index.html" class="logo">
+                <span>GOLD</span> FIT
+            </a>
+
+            <button
+                type="button"
+                id="btnMenuProduto"
+                class="product-mobile-menu"
+                aria-label="Abrir menu de categorias"
+                aria-controls="menuCategoriasProduto"
+                aria-expanded="false"
+            >
+                <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.7"
+                    stroke-linecap="round"
+                >
+                    <path d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+
+            <nav
+                id="menuCategoriasProduto"
+                class="product-nav"
+                aria-label="Navegação de produtos"
+            >
+
+                <a class="product-nav-home" href="./index.html">
+                    INÍCIO
+                </a>
+
+                <div
+                    class="product-nav-department"
+                    data-product-department="Feminino"
+                >
+                    <button
+                        type="button"
+                        class="product-nav-trigger"
+                        data-product-menu-trigger="Feminino"
+                        aria-expanded="false"
+                    >
+                        FEMININO
+                        <span class="product-nav-chevron">⌄</span>
+                    </button>
+
+                    <div
+                        class="product-nav-panel"
+                        data-product-menu-panel="Feminino"
+                    ></div>
+                </div>
+
+                <div
+                    class="product-nav-department"
+                    data-product-department="Masculino"
+                >
+                    <button
+                        type="button"
+                        class="product-nav-trigger"
+                        data-product-menu-trigger="Masculino"
+                        aria-expanded="false"
+                    >
+                        MASCULINO
+                        <span class="product-nav-chevron">⌄</span>
+                    </button>
+
+                    <div
+                        class="product-nav-panel"
+                        data-product-menu-panel="Masculino"
+                    ></div>
+                </div>
+
+                <div
+                    class="product-nav-department"
+                    data-product-department="Calçados"
+                >
+                    <button
+                        type="button"
+                        class="product-nav-trigger"
+                        data-product-menu-trigger="Calçados"
+                        aria-expanded="false"
+                    >
+                        CALÇADOS
+                        <span class="product-nav-chevron">⌄</span>
+                    </button>
+
+                    <div
+                        class="product-nav-panel"
+                        data-product-menu-panel="Calçados"
+                    ></div>
+                </div>
+
+                <div
+                    class="product-nav-department"
+                    data-product-department="Acessórios"
+                >
+                    <button
+                        type="button"
+                        class="product-nav-trigger"
+                        data-product-menu-trigger="Acessórios"
+                        aria-expanded="false"
+                    >
+                        ACESSÓRIOS
+                        <span class="product-nav-chevron">⌄</span>
+                    </button>
+
+                    <div
+                        class="product-nav-panel"
+                        data-product-menu-panel="Acessórios"
+                    ></div>
+                </div>
+
+            </nav>
+
+            <div class="product-header-actions">
+
+                <button
+                    type="button"
+                    id="btnContaProduto"
+                    class="icon-button"
+                    aria-label="Minha conta"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <circle cx="12" cy="8" r="4"></circle>
+                        <path d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"></path>
+                    </svg>
+                </button>
+
+                <button
+                    type="button"
+                    id="btnCarrinhoProduto"
+                    class="icon-button cart-icon"
+                    aria-label="Carrinho"
+                >
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M6 8h12l1 13H5L6 8Z"></path>
+                        <path d="M9 9V6a3 3 0 0 1 6 0v3"></path>
+                    </svg>
+
+                    <span id="contadorCarrinhoProduto">0</span>
+                </button>
+
+            </div>
+        </div>
+    </header>
+
+    <main>
+
+        <section class="product-layout">
+
+            <div class="product-gallery">
+
+                <div
+                    id="miniaturasProduto"
+                    class="thumbnails"
+                ></div>
+
+                <div
+                    class="main-image"
+                    id="areaImagemPrincipal"
+                >
+                    <img
+                        id="imagemPrincipal"
+                        src=""
+                        alt=""
+                    >
+
+                    <button
+                        id="btnZoom"
+                        type="button"
+                        class="zoom-button"
+                        aria-label="Ampliar imagem"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        >
+                            <circle cx="10.5" cy="10.5" r="6.5"></circle>
+                            <path d="m16 16 5 5M10.5 7.5v6M7.5 10.5h6"></path>
+                        </svg>
+                    </button>
+
+                    <button
+                        id="btnFavoritarProduto"
+                        type="button"
+                        class="favorite-product"
+                        aria-label="Favoritar produto"
+                    >
+                        ♡
+                    </button>
+
+                </div>
+            </div>
+
+            <aside class="product-details">
+
+                <div class="breadcrumb">
+                    <a href="./index.html">Início</a>
+                    <span>·</span>
+                    <a href="./index.html#produtos">Produtos</a>
+                    <span>·</span>
+                    <strong id="breadcrumbProduto">Produto</strong>
+                </div>
+
+                <span id="produtoMarca" class="brand-name"></span>
+                <h1 id="produtoNome"></h1>
+
+                <div class="price-row">
+                    <div id="produtoPreco" class="price"></div>
+                    <p class="installment">
+                        Pagamento via Pix ou cartão
+                    </p>
+                </div>
+
+                <div class="product-divider"></div>
+
+                <div class="shipping-highlight">
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.7"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+                        <path d="M3 6h11v10H3z"></path>
+                        <path d="M14 10h4l3 3v3h-7z"></path>
+                        <circle cx="7" cy="18" r="2"></circle>
+                        <circle cx="18" cy="18" r="2"></circle>
+                    </svg>
+
+                    <span>Envio para todo Brasil</span>
+                </div>
+
+                <div class="option-section">
+                    <div class="option-title">
+                        <strong>COR</strong>
+                        <span id="corAtual"></span>
+                    </div>
+
+                    <div
+                        id="coresProduto"
+                        class="option-buttons"
+                    ></div>
+                </div>
+
+                <div class="option-section">
+                    <div class="option-title">
+                        <strong>TAMANHO</strong>
+                        <span id="tamanhoAtual"></span>
+                    </div>
+
+                    <div
+                        id="tamanhosProduto"
+                        class="option-buttons"
+                    ></div>
+
+                    <button
+                        type="button"
+                        id="btnGuiaMedidas"
+                        class="size-guide"
+                    >
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.7"
+                            stroke-linecap="round"
+                        >
+                            <path d="M3 7h18v10H3z"></path>
+                            <path d="M7 7v4M11 7v2M15 7v4M19 7v2"></path>
+                        </svg>
+
+                        Guia de medidas
+                    </button>
+                </div>
+
+                <div
+                    id="statusEstoque"
+                    class="stock-status"
+                ></div>
+
+                <div class="quantity-row">
+                    <strong>QUANTIDADE</strong>
+
+                    <div class="quantity-control">
+                        <button type="button" id="btnDiminuir">−</button>
+                        <span id="quantidadeProduto">1</span>
+                        <button type="button" id="btnAumentar">+</button>
+                    </div>
+                </div>
+
+                <button
+                    id="btnAdicionar"
+                    type="button"
+                    class="add-cart"
+                >
+                    ADICIONAR À SACOLA
+                </button>
+
+                <button
+                    id="btnComprarAgora"
+                    type="button"
+                    class="buy-now"
+                >
+                    COMPRAR AGORA
+                </button>
+
+                <div class="accordion-list">
+
+                    <details>
+                        <summary>
+                            MEIOS DE PAGAMENTO
+                            <span>⌄</span>
+                        </summary>
+
+                        <p>
+                            Pagamento disponível via Pix ou cartão.
+                        </p>
+                    </details>
+
+                    <details>
+                        <summary>
+                            MEIOS DE ENVIO
+                            <span>⌄</span>
+                        </summary>
+
+                        <div class="shipping">
+                            <strong>Calcular entrega</strong>
+
+                            <div>
+                                <input
+                                    id="campoCep"
+                                    type="text"
+                                    placeholder="Digite seu CEP"
+                                    maxlength="9"
+                                >
+
+                                <button
+                                    id="btnCalcularCep"
+                                    type="button"
+                                >
+                                    CALCULAR
+                                </button>
+                            </div>
+                        </div>
+                    </details>
+
+                </div>
+
+            </aside>
+
+        </section>
+
+        <section class="product-information">
+
+            <div>
+                <span>DESCRIÇÃO GERAL</span>
+                <h2>Sobre o produto</h2>
+
+                <p id="descricaoProduto">
+                    Produto selecionado pela Gold Fit para unir
+                    conforto, performance e estilo.
+                </p>
+            </div>
+
+            <div class="specifications">
+
+                <div>
+                    <span>Marca</span>
+                    <strong id="infoMarca"></strong>
+                </div>
+
+                <div>
+                    <span>Categoria</span>
+                    <strong id="infoCategoria"></strong>
+                </div>
+
+                <div>
+                    <span>Grupo</span>
+                    <strong id="infoGrupo"></strong>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section id="avaliacoes" class="reviews-section">
+
+            <span class="section-label">AVALIAÇÕES</span>
+            <h2>Opiniões de clientes</h2>
+
+            <div class="rating-summary">
+
+                <div>
+                    <strong>—</strong>
+                    <span>☆☆☆☆☆</span>
+                    <p>Este produto ainda não possui avaliações.</p>
+                </div>
+
+                <button
+                    id="btnAvaliarProduto"
+                    type="button"
+                >
+                    AVALIAR PRODUTO
+                </button>
+
+            </div>
+
+        </section>
+
+        <section class="related">
+
+            <span class="section-label">
+                VOCÊ TAMBÉM PODE GOSTAR
+            </span>
+
+            <h2>Outros produtos</h2>
+
+            <div
+                id="produtosRelacionados"
+                class="related-grid"
+            ></div>
+
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="logo footer-logo">
+            <span>GOLD</span> FIT
+        </div>
+
+        <span>Santarém - PA</span>
+    </footer>
+
+    <a
+        class="whatsapp-float"
+        href="https://wa.me/?text=Ol%C3%A1%2C%20vim%20pelo%20site%20da%20Gold%20Fit."
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label="Falar com a Gold Fit pelo WhatsApp"
+    >
+        <svg viewBox="0 0 32 32" aria-hidden="true">
+            <path
+                fill="currentColor"
+                d="M16.02 3C8.84 3 3 8.73 3 15.78c0 2.43.7 4.8 2.03 6.84L3.7 29l6.62-1.72a13.2 13.2 0 0 0 5.69 1.29h.01C23.2 28.57 29 22.84 29 15.78S23.2 3 16.02 3Zm0 23.4h-.01a10.95 10.95 0 0 1-5.58-1.5l-.4-.23-3.93 1.02.99-3.77-.26-.39a10.5 10.5 0 0 1-1.64-5.75c0-5.86 4.86-10.62 10.84-10.62 5.97 0 10.83 4.76 10.83 10.62S22 26.4 16.02 26.4Zm5.94-7.95c-.33-.16-1.93-.94-2.23-1.05-.3-.1-.52-.16-.74.16-.22.32-.85 1.05-1.04 1.27-.19.21-.38.24-.71.08-.33-.16-1.38-.5-2.63-1.59a9.78 9.78 0 0 1-1.82-2.22c-.19-.32-.02-.5.14-.66.15-.14.33-.37.49-.56.16-.19.22-.32.33-.53.11-.21.05-.4-.03-.56-.08-.16-.74-1.75-1.01-2.4-.27-.64-.54-.55-.74-.56h-.63c-.22 0-.57.08-.87.4-.3.32-1.14 1.1-1.14 2.68 0 1.58 1.17 3.11 1.34 3.32.16.21 2.3 3.46 5.58 4.85.78.33 1.39.53 1.86.68.78.24 1.5.21 2.06.13.63-.09 1.93-.78 2.2-1.54.27-.77.27-1.43.19-1.56-.08-.14-.3-.22-.63-.38Z"
+            />
+        </svg>
+    </a>
+
+    <div id="zoomModal" class="zoom-modal hidden">
+
+        <button
+            id="btnFecharZoom"
+            class="zoom-close"
+            type="button"
+        >
+            ×
+        </button>
+
+        <img id="imagemZoom" src="" alt="">
+
+    </div>
+
+    <div id="toastProduto" class="toast"></div>
+
+    <script src="./js/store-common.js"></script>
+    <script src="./js/menu-produto.js"></script>
+    <script src="./js/produto.js"></script>
+
+</body>
+</html>

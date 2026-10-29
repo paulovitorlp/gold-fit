@@ -2,646 +2,1246 @@
 <html lang="pt-BR">
 
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Gold Fit | Controle de Estoque</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <link rel="stylesheet" href="./css/style.css">
+    <title>
+        Gold Fit | Moda Fitness
+    </title>
+
+    <link
+        rel="stylesheet"
+        href="./css/loja.css"
+    >
+
 </head>
+
 
 <body>
 
-    <div class="layout">
 
-        <!-- =====================================================
-             MENU LATERAL
-        ====================================================== -->
+    <!-- ==================================================
+         BARRA PROMOCIONAL
+    ================================================== -->
 
-        <aside class="sidebar">
+    <div class="promo-bar">
 
-            <div class="sidebar-brand">
-                <span>GOLD</span> FIT
-            </div>
+        <div class="promo-track">
 
-            <nav class="sidebar-nav">
+            <span>
+                GOLD FIT • MODA FITNESS
+            </span>
 
-                <a href="#" class="nav-link active">
-                    Estoque
-                </a>
+            <span>
+                ENVIO PARA TODO BRASIL
+            </span>
 
-                <a href="#" class="nav-link modulo-futuro">
-                    Produtos
-                </a>
+            <span>
+                COMPRE ONLINE
+            </span>
 
-                <a href="#" class="nav-link modulo-futuro">
-                    Pedidos
-                </a>
+            <span>
+                FITNESS & LIFESTYLE
+            </span>
 
-                <a href="#" class="nav-link modulo-futuro">
-                    Clientes
-                </a>
-
-            </nav>
-
-        </aside>
-
-
-        <!-- =====================================================
-             CONTEÚDO
-        ====================================================== -->
-
-        <main class="main-content">
-
-            <header class="topbar">
-
-                <div>
-
-                    <h1>
-                        Controle de Estoque
-                    </h1>
-
-                    <p>
-                        Gerenciamento de produtos, variações e disponibilidade da Gold Fit.
-                    </p>
-
-                </div>
-
-                <button
-                    type="button"
-                    id="btnNovoProduto"
-                    class="btn btn-primary"
-                >
-                    + Novo produto
-                </button>
-
-            </header>
-
-
-            <!-- =================================================
-                 CARDS
-            ================================================== -->
-
-            <section class="stats-grid">
-
-                <article class="stat-card">
-
-                    <span>
-                        Total de variações
-                    </span>
-
-                    <strong id="statVariacoes">
-                        0
-                    </strong>
-
-                </article>
-
-
-                <article class="stat-card">
-
-                    <span>
-                        Unidades em estoque
-                    </span>
-
-                    <strong id="statUnidades">
-                        0
-                    </strong>
-
-                </article>
-
-
-                <article class="stat-card">
-
-                    <span>
-                        Estoque baixo
-                    </span>
-
-                    <strong id="statBaixo">
-                        0
-                    </strong>
-
-                </article>
-
-
-                <article class="stat-card">
-
-                    <span>
-                        Sem estoque
-                    </span>
-
-                    <strong id="statSemEstoque">
-                        0
-                    </strong>
-
-                </article>
-
-            </section>
-
-
-            <!-- =================================================
-                 PAINEL DE ESTOQUE
-            ================================================== -->
-
-            <section class="panel">
-
-                <div class="panel-heading">
-
-                    <div>
-
-                        <h2>
-                            Estoque atual
-                        </h2>
-
-                        <p>
-                            Consulte e gerencie os produtos disponíveis na loja.
-                        </p>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =============================================
-                     FILTROS
-                ============================================== -->
-
-                <div class="filters">
-
-                    <div class="filter-title">
-                        Grupo de produtos
-                    </div>
-
-
-                    <div class="group-filter">
-
-                        <button
-                            type="button"
-                            class="group-button active"
-                            data-grupo="Todos"
-                        >
-                            Todos
-                        </button>
-
-                        <button
-                            type="button"
-                            class="group-button"
-                            data-grupo="Feminino"
-                        >
-                            Feminino
-                        </button>
-
-                        <button
-                            type="button"
-                            class="group-button"
-                            data-grupo="Masculino"
-                        >
-                            Masculino
-                        </button>
-
-                        <button
-                            type="button"
-                            class="group-button"
-                            data-grupo="Calçados"
-                        >
-                            Calçados
-                        </button>
-
-                        <button
-                            type="button"
-                            class="group-button"
-                            data-grupo="Acessórios"
-                        >
-                            Acessórios
-                        </button>
-
-                    </div>
-
-
-                    <div class="filter-divider"></div>
-
-
-                    <div class="filter-tools">
-
-                        <div class="filter-control">
-
-                            <label for="filtroCategoria">
-                                Categoria
-                            </label>
-
-                            <select id="filtroCategoria">
-
-                                <option value="Todas">
-                                    Todas as categorias
-                                </option>
-
-                            </select>
-
-                        </div>
-
-
-                        <div class="filter-control search-control">
-
-                            <label for="campoPesquisa">
-                                Buscar produto
-                            </label>
-
-                            <div class="search-box">
-
-                                <span class="search-icon">
-                                    ⌕
-                                </span>
-
-                                <input
-                                    type="text"
-                                    id="campoPesquisa"
-                                    placeholder="Produto, marca, cor, tamanho ou SKU..."
-                                >
-
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <!-- =============================================
-                     TABELA
-                ============================================== -->
-
-                <div class="table-wrapper">
-
-                    <table class="stock-table">
-
-                        <thead>
-
-                            <tr>
-
-                                <th>Foto</th>
-
-                                <th>Produto</th>
-
-                                <th>Grupo</th>
-
-                                <th>Categoria</th>
-
-                                <th>Marca</th>
-
-                                <th>Cor</th>
-
-                                <th>Tamanho</th>
-
-                                <th>SKU</th>
-
-                                <th>Qtd.</th>
-
-                                <th>Status</th>
-
-                                <th>Ações</th>
-
-                            </tr>
-
-                        </thead>
-
-
-                        <tbody id="tabelaEstoque">
-                        </tbody>
-
-                    </table>
-
-                </div>
-
-            </section>
-
-        </main>
-
-    </div>
-
-
-    <!-- =========================================================
-         MODAL CADASTRO / EDIÇÃO
-    ========================================================== -->
-
-    <div
-        id="modalOverlay"
-        class="modal-overlay hidden"
-    >
-
-        <div class="modal">
-
-            <div class="modal-header">
-
-                <div>
-
-                    <h3 id="modalTitulo">
-                        Novo produto
-                    </h3>
-
-                    <p>
-                        Cadastre uma nova variação no estoque da Gold Fit.
-                    </p>
-
-                </div>
-
-
-                <button
-                    type="button"
-                    id="btnFecharModal"
-                    class="btn-close"
-                    aria-label="Fechar"
-                >
-                    ×
-                </button>
-
-            </div>
-
-
-            <form id="formProduto">
-
-                <input
-                    type="hidden"
-                    id="produtoId"
-                >
-
-                <input
-                    type="hidden"
-                    id="fotoBase64"
-                >
-
-
-                <div class="form-layout">
-
-
-                    <!-- FOTO -->
-
-                    <div class="photo-section">
-
-                        <label>
-                            Foto do produto
-                        </label>
-
-
-                        <div class="photo-preview">
-
-                            <img
-                                id="previewImagem"
-                                src=""
-                                alt="Pré-visualização do produto"
-                            >
-
-                        </div>
-
-
-                        <label
-                            for="fotoProduto"
-                            class="upload-button"
-                        >
-                            Selecionar imagem
-                        </label>
-
-
-                        <input
-                            type="file"
-                            id="fotoProduto"
-                            accept="image/*"
-                            hidden
-                        >
-
-
-                        <small>
-                            Utilize uma foto da peça, conjunto, modelo ou cor correspondente.
-                        </small>
-
-                    </div>
-
-
-                    <!-- CAMPOS -->
-
-                    <div class="fields-section">
-
-
-                        <div class="form-row">
-
-
-                            <div class="form-group">
-
-                                <label for="produtoGrupo">
-                                    Grupo
-                                </label>
-
-                                <select
-                                    id="produtoGrupo"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Selecione
-                                    </option>
-
-                                    <option value="Feminino">
-                                        Feminino
-                                    </option>
-
-                                    <option value="Masculino">
-                                        Masculino
-                                    </option>
-
-                                    <option value="Calçados">
-                                        Calçados
-                                    </option>
-
-                                    <option value="Acessórios">
-                                        Acessórios
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="produtoCategoria">
-                                    Categoria
-                                </label>
-
-                                <select
-                                    id="produtoCategoria"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Selecione o grupo primeiro
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="form-row">
-
-
-                            <div class="form-group">
-
-                                <label for="produtoNome">
-                                    Produto
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="produtoNome"
-                                    required
-                                    placeholder="Ex.: Conjunto Top e Short Canelado"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="produtoMarca">
-                                    Marca
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="produtoMarca"
-                                    required
-                                    placeholder="Ex.: ALO"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="form-row">
-
-
-                            <div class="form-group">
-
-                                <label for="produtoCor">
-                                    Cor
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="produtoCor"
-                                    required
-                                    placeholder="Ex.: Marrom"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="produtoTamanho">
-                                    Tamanho / Numeração
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="produtoTamanho"
-                                    required
-                                    placeholder="Ex.: P, M, G, GG ou 38"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-
-                        <div class="form-row">
-
-
-                            <div class="form-group">
-
-                                <label for="produtoSku">
-                                    SKU
-                                </label>
-
-                                <input
-                                    type="text"
-                                    id="produtoSku"
-                                    required
-                                    placeholder="Ex.: CTS-ALO-MARROM-P"
-                                >
-
-                            </div>
-
-
-                            <div class="form-group">
-
-                                <label for="produtoQuantidade">
-                                    Quantidade
-                                </label>
-
-                                <input
-                                    type="number"
-                                    id="produtoQuantidade"
-                                    min="0"
-                                    step="1"
-                                    required
-                                    placeholder="0"
-                                >
-
-                            </div>
-
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-                <div class="modal-footer">
-
-                    <button
-                        type="button"
-                        id="btnCancelar"
-                        class="btn btn-secondary"
-                    >
-                        Cancelar
-                    </button>
-
-
-                    <button
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        Salvar produto
-                    </button>
-
-                </div>
-
-            </form>
+            <span>
+                SANTARÉM - PA
+            </span>
 
         </div>
 
     </div>
 
 
-    <!-- =========================================================
-         NOTIFICAÇÃO
-    ========================================================== -->
+    <!-- ==================================================
+         HEADER
+    ================================================== -->
+
+    <header class="header">
+
+
+        <div class="header-top">
+
+
+            <button
+                id="btnMenu"
+                class="mobile-menu"
+                type="button"
+                aria-label="Abrir menu"
+            >
+                ☰
+            </button>
+
+
+            <a
+                href="./index.html"
+                class="logo"
+            >
+                <span>
+                    GOLD
+                </span>
+                FIT
+            </a>
+
+
+            <div class="header-search">
+
+                <input
+                    type="text"
+                    id="pesquisaTopo"
+                    placeholder="O que você está buscando?"
+                >
+
+
+                <button
+                    type="button"
+                    id="btnPesquisaTopo"
+                    aria-label="Pesquisar"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                    >
+
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        ></circle>
+
+                        <path
+                            d="m20 20-4-4"
+                        ></path>
+
+                    </svg>
+
+                </button>
+
+            </div>
+
+
+            <div class="header-actions">
+
+
+                <button
+                    id="btnConta"
+                    type="button"
+                    class="header-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"
+                        ></circle>
+
+                        <path
+                            d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span
+                        class="header-button-text"
+                        id="textoConta"
+                    >
+                        Entrar
+                    </span>
+
+                </button>
+
+
+                <button
+                    id="btnFavoritos"
+                    type="button"
+                    class="header-button icon-only"
+                    aria-label="Favoritos"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
+                        ></path>
+
+                    </svg>
+
+                </button>
+
+
+                <button
+                    id="btnCarrinho"
+                    type="button"
+                    class="header-button cart-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M6 8h12l1 13H5L6 8Z"
+                        ></path>
+
+                        <path
+                            d="M9 9V6a3 3 0 0 1 6 0v3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span class="cart-label">
+                        Carrinho
+                    </span>
+
+
+                    <strong id="contadorCarrinho">
+                        0
+                    </strong>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ==================================================
+             MENU PRINCIPAL
+        ================================================== -->
+
+        <nav
+            id="mainNav"
+            class="navigation"
+        >
+
+
+            <a
+                href="./index.html"
+                class="nav-item nav-link active"
+            >
+                INÍCIO
+            </a>
+
+
+            <!-- FEMININO -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Feminino"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Feminino"
+                >
+
+                    FEMININO
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Feminino"
+                ></div>
+
+            </div>
+
+
+            <!-- MASCULINO -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Masculino"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Masculino"
+                >
+
+                    MASCULINO
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Masculino"
+                ></div>
+
+            </div>
+
+
+            <!-- CALÇADOS -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Calçados"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Calçados"
+                >
+
+                    CALÇADOS
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Calçados"
+                ></div>
+
+            </div>
+
+
+            <!-- ACESSÓRIOS -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Acessórios"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Acessórios"
+                >
+
+                    ACESSÓRIOS
+
+                    <span class="nav-chevron">
+                        ⌄
+                    </span>
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Acessórios"
+                ></div>
+
+            </div>
+
+
+            <button
+                id="navLancamentos"
+                class="nav-item"
+                type="button"
+            >
+                LANÇAMENTOS
+            </button>
+
+
+        </nav>
+
+
+    </header>
+
+
+    <!-- ==================================================
+         CONTEÚDO
+    ================================================== -->
+
+    <main>
+
+
+        <!-- ==================================================
+             HERO
+        ================================================== -->
+
+        <section class="hero">
+
+
+            <div class="hero-slide active">
+
+
+                <div class="hero-content">
+
+                    <span class="hero-small">
+                        GOLD FIT
+                    </span>
+
+
+                    <h1>
+
+                        NOVA
+
+                        <strong>
+                            COLEÇÃO
+                        </strong>
+
+                    </h1>
+
+
+                    <p>
+                        Performance, conforto e estilo
+                        para acompanhar sua rotina.
+                    </p>
+
+
+                    <button
+                        class="hero-button"
+                        data-scroll="produtos"
+                    >
+                        COMPRAR AGORA
+                    </button>
+
+                </div>
+
+
+                <div class="hero-art">
+
+                    <div class="hero-word">
+                        MOVE
+                    </div>
+
+                    <div class="yellow-circle">
+                    </div>
+
+                    <div class="hero-mark">
+                        GF
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="hero-slide">
+
+
+                <div class="hero-content">
+
+                    <span class="hero-small">
+                        FITNESS & LIFESTYLE
+                    </span>
+
+
+                    <h1>
+
+                        TREINE
+
+                        <strong>
+                            COM ESTILO
+                        </strong>
+
+                    </h1>
+
+
+                    <p>
+                        Peças selecionadas para treino,
+                        esporte e dia a dia.
+                    </p>
+
+
+                    <a
+                        class="hero-button hero-link"
+                        href="./catalogo.html?grupo=Feminino"
+                    >
+                        VER FEMININO
+                    </a>
+
+                </div>
+
+
+                <div class="hero-art hero-art-second">
+
+                    <div class="hero-word">
+                        FIT
+                    </div>
+
+                    <div class="yellow-circle">
+                    </div>
+
+                    <div class="hero-mark">
+                        26
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="hero-slide">
+
+
+                <div class="hero-content">
+
+                    <span class="hero-small">
+                        PERFORMANCE
+                    </span>
+
+
+                    <h1>
+
+                        SUA
+
+                        <strong>
+                            MELHOR VERSÃO
+                        </strong>
+
+                    </h1>
+
+
+                    <p>
+                        ALO, Nike, Adidas e ON
+                        em uma seleção Gold Fit.
+                    </p>
+
+
+                    <a
+                        class="hero-button hero-link"
+                        href="./catalogo.html?grupo=Masculino"
+                    >
+                        VER MASCULINO
+                    </a>
+
+                </div>
+
+
+                <div class="hero-art hero-art-third">
+
+                    <div class="hero-word">
+                        RUN
+                    </div>
+
+                    <div class="yellow-circle">
+                    </div>
+
+                    <div class="hero-mark">
+                        GF
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                class="slider-arrow slider-prev"
+                id="slideAnterior"
+                type="button"
+            >
+                ‹
+            </button>
+
+
+            <button
+                class="slider-arrow slider-next"
+                id="slideProximo"
+                type="button"
+            >
+                ›
+            </button>
+
+
+            <div class="slider-dots">
+
+                <button
+                    class="slider-dot active"
+                    data-slide-index="0"
+                ></button>
+
+                <button
+                    class="slider-dot"
+                    data-slide-index="1"
+                ></button>
+
+                <button
+                    class="slider-dot"
+                    data-slide-index="2"
+                ></button>
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             DESTAQUES
+        ================================================== -->
+
+        <section
+            id="produtos"
+            class="products-section"
+        >
+
+
+            <div class="section-header">
+
+
+                <div>
+
+                    <span>
+                        SELECIONADOS PARA VOCÊ
+                    </span>
+
+                    <h2>
+                        Destaques
+                    </h2>
+
+                </div>
+
+
+                <div class="catalog-search">
+
+                    <input
+                        id="pesquisaProduto"
+                        type="text"
+                        placeholder="Buscar produto"
+                    >
+
+                </div>
+
+
+            </div>
+
+
+            <div class="filter-row">
+
+
+                <div class="filters">
+
+                    <button
+                        class="filter-button active"
+                        data-grupo="Todos"
+                    >
+                        Todos
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-grupo="Feminino"
+                    >
+                        Feminino
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-grupo="Masculino"
+                    >
+                        Masculino
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-grupo="Calçados"
+                    >
+                        Calçados
+                    </button>
+
+                    <button
+                        class="filter-button"
+                        data-grupo="Acessórios"
+                    >
+                        Acessórios
+                    </button>
+
+                </div>
+
+
+                <span id="contadorProdutos">
+                </span>
+
+
+            </div>
+
+
+            <div
+                id="listaProdutos"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             FEMININO
+        ================================================== -->
+
+        <section
+            id="feminino"
+            class="department-section department-light"
+        >
+
+
+            <div class="department-heading">
+
+                <span>
+                    GOLD FIT WOMEN
+                </span>
+
+                <h2>
+                    Feminino
+                </h2>
+
+                <p>
+                    Conjuntos, croppeds,
+                    jaquetas e peças para treino e rotina.
+                </p>
+
+                <a
+                    href="./catalogo.html?grupo=Feminino"
+                    class="department-link"
+                >
+                    VER TODO FEMININO →
+                </a>
+
+            </div>
+
+
+            <div
+                id="listaFeminino"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             MASCULINO
+        ================================================== -->
+
+        <section
+            id="masculino"
+            class="department-section department-dark"
+        >
+
+
+            <div class="department-heading">
+
+                <span>
+                    GOLD FIT MEN
+                </span>
+
+                <h2>
+                    Masculino
+                </h2>
+
+                <p>
+                    Dry fit, compressão,
+                    camisetas e shorts.
+                </p>
+
+                <a
+                    href="./catalogo.html?grupo=Masculino"
+                    class="department-link"
+                >
+                    VER TODO MASCULINO →
+                </a>
+
+            </div>
+
+
+            <div
+                id="listaMasculino"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             CALÇADOS
+        ================================================== -->
+
+        <section
+            id="calcados"
+            class="department-section department-light"
+        >
+
+
+            <div class="department-heading">
+
+                <span>
+                    PERFORMANCE
+                </span>
+
+                <h2>
+                    Calçados
+                </h2>
+
+                <p>
+                    Tênis esportivos e lifestyle.
+                </p>
+
+                <a
+                    href="./catalogo.html?grupo=Calçados"
+                    class="department-link"
+                >
+                    VER TODOS OS CALÇADOS →
+                </a>
+
+            </div>
+
+
+            <div
+                id="listaCalcados"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             ACESSÓRIOS
+        ================================================== -->
+
+        <section
+            id="acessorios"
+            class="department-section department-soft"
+        >
+
+
+            <div class="department-heading">
+
+                <span>
+                    DETALHES
+                </span>
+
+                <h2>
+                    Acessórios
+                </h2>
+
+                <p>
+                    Itens para completar
+                    seu look e seu treino.
+                </p>
+
+                <a
+                    href="./catalogo.html?grupo=Acessórios"
+                    class="department-link"
+                >
+                    VER TODOS OS ACESSÓRIOS →
+                </a>
+
+            </div>
+
+
+            <div
+                id="listaAcessorios"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             BENEFÍCIOS
+        ================================================== -->
+
+        <section class="benefits">
+
+
+            <article>
+
+                <span class="benefit-icon">
+                    01
+                </span>
+
+                <div>
+
+                    <strong>
+                        ENVIO NACIONAL
+                    </strong>
+
+                    <p>
+                        Entregamos em todo Brasil
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article>
+
+                <span class="benefit-icon">
+                    02
+                </span>
+
+                <div>
+
+                    <strong>
+                        COMPRA SEGURA
+                    </strong>
+
+                    <p>
+                        Pagamento protegido
+                    </p>
+
+                </div>
+
+            </article>
+
+
+            <article>
+
+                <span class="benefit-icon">
+                    03
+                </span>
+
+                <div>
+
+                    <strong>
+                        ATENDIMENTO GOLD FIT
+                    </strong>
+
+                    <p>
+                        Online e presencial
+                    </p>
+
+                </div>
+
+            </article>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             LANÇAMENTOS
+        ================================================== -->
+
+        <section
+            id="lancamentos"
+            class="products-section"
+        >
+
+
+            <div class="section-header">
+
+                <div>
+
+                    <span>
+                        NOVIDADES
+                    </span>
+
+                    <h2>
+                        Lançamentos
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="listaLancamentos"
+                class="products-grid"
+            ></div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             AVALIAÇÕES
+        ================================================== -->
+
+        <section class="reviews">
+
+
+            <div class="reviews-heading">
+
+                <span>
+                    GOLD FIT COMMUNITY
+                </span>
+
+                <h2>
+                    Quem compra,
+                    recomenda.
+                </h2>
+
+                <p>
+                    Avaliações verificadas,
+                    comentários e fotos reais
+                    farão parte da experiência Gold Fit.
+                </p>
+
+            </div>
+
+
+            <div class="reviews-grid">
+
+
+                <article>
+
+                    <div class="stars">
+                        ★★★★★
+                    </div>
+
+                    <strong>
+                        Avaliações verificadas
+                    </strong>
+
+                    <p>
+                        Clientes poderão avaliar
+                        produtos realmente comprados.
+                    </p>
+
+                </article>
+
+
+                <article>
+
+                    <div class="photo-box">
+                        +
+                    </div>
+
+                    <strong>
+                        Fotos dos clientes
+                    </strong>
+
+                    <p>
+                        Fotos reais poderão acompanhar
+                        as avaliações.
+                    </p>
+
+                </article>
+
+
+                <article>
+
+                    <div class="stars">
+                        ☆☆☆☆☆
+                    </div>
+
+                    <strong>
+                        Sua opinião importa
+                    </strong>
+
+                    <p>
+                        Notas, comentários
+                        e experiências de compra.
+                    </p>
+
+                </article>
+
+
+            </div>
+
+
+        </section>
+
+
+        <!-- ==================================================
+             NEWSLETTER
+        ================================================== -->
+
+        <section class="newsletter">
+
+
+            <div>
+
+                <span>
+                    NOVIDADES GOLD FIT
+                </span>
+
+                <h2>
+                    Fique por dentro.
+                </h2>
+
+            </div>
+
+
+            <div class="newsletter-form">
+
+                <input
+                    type="email"
+                    placeholder="Seu melhor e-mail"
+                >
+
+                <button type="button">
+                    CADASTRAR
+                </button>
+
+            </div>
+
+
+        </section>
+
+
+    </main>
+
+
+    <!-- ==================================================
+         FOOTER
+    ================================================== -->
+
+    <footer class="footer">
+
+
+        <div class="footer-grid">
+
+
+            <div>
+
+                <div class="logo footer-logo">
+
+                    <span>
+                        GOLD
+                    </span>
+                    FIT
+
+                </div>
+
+                <p>
+                    Fitness & Lifestyle
+                </p>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    LOJA
+                </strong>
+
+                <a href="./catalogo.html?grupo=Feminino">
+                    Feminino
+                </a>
+
+                <a href="./catalogo.html?grupo=Masculino">
+                    Masculino
+                </a>
+
+                <a href="./catalogo.html?grupo=Calçados">
+                    Calçados
+                </a>
+
+                <a href="./catalogo.html?grupo=Acessórios">
+                    Acessórios
+                </a>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    CONTA
+                </strong>
+
+                <a href="./login.html">
+                    Minha conta
+                </a>
+
+                <span>
+                    Meus pedidos
+                </span>
+
+                <span>
+                    Favoritos
+                </span>
+
+            </div>
+
+
+            <div class="footer-column">
+
+                <strong>
+                    GOLD FIT
+                </strong>
+
+                <span>
+                    Santarém - PA
+                </span>
+
+                <span>
+                    Atendimento online
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+        <div class="footer-bottom">
+            © 2026 Gold Fit
+        </div>
+
+
+    </footer>
+
 
     <div
         id="toast"
         class="toast"
-    >
-    </div>
+    ></div>
 
 
-    <script src="./js/estoque.js"></script>
+    <script src="./js/store-common.js"></script>
+
+    <script src="./js/loja.js"></script>
+
 
 </body>
 

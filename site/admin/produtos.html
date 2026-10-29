@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Gerenciamento de Produtos | Gold Fit
+    </title>
+
+
+    <link
+        rel="stylesheet"
+        href="../css/style.css"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="../css/produtos-admin.css"
+    >
+
+</head>
+
+
+<body class="admin-body">
+
+
+    <div class="admin-promo">
+
+        <span>
+            GOLD FIT • PAINEL ADMINISTRATIVO
+        </span>
+
+        <span>
+            GERENCIAMENTO DO SITE
+        </span>
+
+    </div>
+
+
+    <header class="admin-header">
+
+
+        <div class="admin-header-inner">
+
+
+            <a
+                href="../index.html"
+                class="admin-logo"
+            >
+                <span>
+                    GOLD
+                </span>
+                FIT
+            </a>
+
+
+            <div class="admin-header-title">
+
+                <span>
+                    ADMIN
+                </span>
+
+                <strong>
+                    Painel Gold Fit
+                </strong>
+
+            </div>
+
+
+            <div class="admin-header-actions">
+
+
+                <a
+                    href="../index.html"
+                    class="admin-header-link"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M3 11.5 12 4l9 7.5"
+                        ></path>
+
+                        <path
+                            d="M5.5 10v10h13V10"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Ver loja
+                    </span>
+
+                </a>
+
+
+                <a
+                    href="../login.html"
+                    class="admin-header-link"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"
+                        ></circle>
+
+                        <path
+                            d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Minha conta
+                    </span>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="btnSairAdmin"
+                    class="admin-header-link admin-logout"
+                >
+
+                    <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M10 5H5v14h5"
+                        ></path>
+
+                        <path
+                            d="m15 8 4 4-4 4"
+                        ></path>
+
+                        <path
+                            d="M9 12h10"
+                        ></path>
+
+                    </svg>
+
+                    <span>
+                        Sair
+                    </span>
+
+                </button>
+
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+    <div class="admin-layout">
+
+
+        <aside class="admin-sidebar">
+
+
+            <div class="admin-account-card">
+
+
+                <div
+                    id="adminAvatar"
+                    class="admin-avatar"
+                >
+                    A
+                </div>
+
+
+                <div class="admin-account-text">
+
+                    <span>
+                        CONECTADO COMO
+                    </span>
+
+                    <strong id="adminNome">
+                        Administrador
+                    </strong>
+
+                    <small id="adminEmail">
+                    </small>
+
+                </div>
+
+
+                <span class="admin-profile-badge">
+                    ADMIN
+                </span>
+
+
+            </div>
+
+
+            <nav class="admin-nav">
+
+
+                <a
+                    href="./estoque.html"
+                    class="admin-nav-item"
+                >
+
+                    <span class="admin-nav-number">
+                        01
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Estoque
+                        </strong>
+
+                        <small>
+                            Variações e quantidades
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="./produtos.html"
+                    class="admin-nav-item active"
+                >
+
+                    <span class="admin-nav-number">
+                        02
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Produtos
+                        </strong>
+
+                        <small>
+                            Conteúdo do site
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        03
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Pedidos
+                        </strong>
+
+                        <small>
+                            Vendas
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        04
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Clientes
+                        </strong>
+
+                        <small>
+                            Cadastros
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+                <a
+                    href="#"
+                    class="admin-nav-item modulo-futuro"
+                >
+
+                    <span class="admin-nav-number">
+                        05
+                    </span>
+
+                    <div>
+
+                        <strong>
+                            Avaliações
+                        </strong>
+
+                        <small>
+                            Moderação
+                        </small>
+
+                    </div>
+
+                </a>
+
+
+            </nav>
+
+
+            <div class="admin-sidebar-bottom">
+
+                <a
+                    href="../index.html"
+                    class="admin-store-button"
+                >
+                    VOLTAR PARA A LOJA
+                </a>
+
+            </div>
+
+
+        </aside>
+
+
+        <main class="admin-main">
+
+
+            <section class="admin-page-heading">
+
+
+                <div>
+
+                    <span class="admin-eyebrow">
+                        CATÁLOGO DO SITE
+                    </span>
+
+                    <h1>
+                        Produtos
+                    </h1>
+
+                    <p>
+                        Escolha o que aparece no site,
+                        quais produtos são destaque,
+                        lançamentos, preço e ordem.
+                    </p>
+
+                </div>
+
+
+                <a
+                    href="./estoque.html"
+                    class="admin-primary-button product-stock-link"
+                >
+                    GERENCIAR ESTOQUE
+                </a>
+
+
+            </section>
+
+
+            <section class="admin-stats">
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        PRODUTOS
+                    </span>
+
+                    <strong id="statProdutos">
+                        0
+                    </strong>
+
+                    <small>
+                        Modelos cadastrados
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        PUBLICADOS
+                    </span>
+
+                    <strong id="statPublicados">
+                        0
+                    </strong>
+
+                    <small>
+                        Visíveis no site
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        DESTAQUES
+                    </span>
+
+                    <strong id="statDestaques">
+                        0
+                    </strong>
+
+                    <small>
+                        Home principal
+                    </small>
+
+                </article>
+
+
+                <article class="admin-stat">
+
+                    <span>
+                        LANÇAMENTOS
+                    </span>
+
+                    <strong id="statLancamentos">
+                        0
+                    </strong>
+
+                    <small>
+                        Seção de novidades
+                    </small>
+
+                </article>
+
+
+            </section>
+
+
+            <section class="admin-card">
+
+
+                <div class="admin-card-heading">
+
+                    <span>
+                        SITE GOLD FIT
+                    </span>
+
+                    <h2>
+                        Gerenciamento de produtos
+                    </h2>
+
+                </div>
+
+
+                <div class="product-admin-toolbar">
+
+
+                    <div class="admin-search product-admin-search">
+
+                        <svg
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1.8"
+                        >
+
+                            <circle
+                                cx="11"
+                                cy="11"
+                                r="7"
+                            ></circle>
+
+                            <path
+                                d="m20 20-4-4"
+                            ></path>
+
+                        </svg>
+
+
+                        <input
+                            id="campoPesquisaProduto"
+                            type="text"
+                            placeholder="Buscar produto ou marca..."
+                        >
+
+                    </div>
+
+
+                    <select id="filtroProdutoSite">
+
+                        <option value="Todos">
+                            Todos
+                        </option>
+
+                        <option value="Publicados">
+                            Publicados
+                        </option>
+
+                        <option value="Ocultos">
+                            Ocultos
+                        </option>
+
+                        <option value="Destaques">
+                            Destaques
+                        </option>
+
+                        <option value="Lancamentos">
+                            Lançamentos
+                        </option>
+
+                    </select>
+
+
+                </div>
+
+
+                <div class="admin-table-wrapper">
+
+
+                    <table class="admin-table product-admin-table">
+
+
+                        <thead>
+
+                            <tr>
+
+                                <th>
+                                    Foto
+                                </th>
+
+                                <th>
+                                    Produto
+                                </th>
+
+                                <th>
+                                    Departamento
+                                </th>
+
+                                <th>
+                                    Preço
+                                </th>
+
+                                <th>
+                                    Site
+                                </th>
+
+                                <th>
+                                    Destaque
+                                </th>
+
+                                <th>
+                                    Lançamento
+                                </th>
+
+                                <th>
+                                    Ordem
+                                </th>
+
+                                <th>
+                                    Ação
+                                </th>
+
+                            </tr>
+
+                        </thead>
+
+
+                        <tbody id="tabelaProdutosSite">
+                        </tbody>
+
+
+                    </table>
+
+
+                </div>
+
+
+            </section>
+
+
+        </main>
+
+
+    </div>
+
+
+    <!-- ==================================================
+         MODAL PRODUTO
+    ================================================== -->
+
+    <div
+        id="modalProdutoOverlay"
+        class="modal-overlay hidden"
+    >
+
+
+        <div class="admin-modal product-admin-modal">
+
+
+            <div class="admin-modal-header">
+
+
+                <div>
+
+                    <span>
+                        PRODUTO DO SITE
+                    </span>
+
+                    <h2>
+                        Editar produto
+                    </h2>
+
+                </div>
+
+
+                <button
+                    id="btnFecharProduto"
+                    type="button"
+                    class="modal-close"
+                >
+                    ×
+                </button>
+
+
+            </div>
+
+
+            <form id="formProdutoSite">
+
+
+                <input
+                    type="hidden"
+                    id="produtoSiteChave"
+                >
+
+
+                <input
+                    type="hidden"
+                    id="produtoSiteFotoBase64"
+                >
+
+
+                <div class="product-edit-layout">
+
+
+                    <div class="product-edit-image">
+
+
+                        <div class="modal-preview">
+
+                            <img
+                                id="produtoSitePreview"
+                                src=""
+                                alt="Foto principal"
+                            >
+
+                        </div>
+
+
+                        <label
+                            for="produtoSiteFoto"
+                            class="upload-button"
+                        >
+                            ALTERAR FOTO PRINCIPAL
+                        </label>
+
+
+                        <input
+                            id="produtoSiteFoto"
+                            type="file"
+                            accept="image/*"
+                            hidden
+                        >
+
+
+                        <button
+                            id="btnRemoverFoto"
+                            type="button"
+                            class="remove-photo-button"
+                        >
+                            Remover foto personalizada
+                        </button>
+
+
+                        <small>
+                            Essa é a foto principal
+                            apresentada na Home e catálogo.
+                        </small>
+
+
+                    </div>
+
+
+                    <div>
+
+
+                        <div class="form-grid">
+
+
+                            <div class="form-field form-field-full">
+
+                                <label for="produtoSiteNome">
+                                    Produto
+                                </label>
+
+                                <input
+                                    id="produtoSiteNome"
+                                    type="text"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoSiteMarca">
+                                    Marca
+                                </label>
+
+                                <input
+                                    id="produtoSiteMarca"
+                                    type="text"
+                                    readonly
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoSitePreco">
+                                    Preço
+                                </label>
+
+                                <input
+                                    id="produtoSitePreco"
+                                    type="number"
+                                    min="0"
+                                    step="0.01"
+                                    required
+                                >
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoSiteGrupo">
+                                    Departamento
+                                </label>
+
+                                <select
+                                    id="produtoSiteGrupo"
+                                    required
+                                >
+
+                                    <option value="Feminino">
+                                        Feminino
+                                    </option>
+
+                                    <option value="Masculino">
+                                        Masculino
+                                    </option>
+
+                                    <option value="Calçados">
+                                        Calçados
+                                    </option>
+
+                                    <option value="Acessórios">
+                                        Acessórios
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoSiteCategoria">
+                                    Categoria
+                                </label>
+
+                                <select
+                                    id="produtoSiteCategoria"
+                                    required
+                                >
+                                </select>
+
+                            </div>
+
+
+                            <div class="form-field">
+
+                                <label for="produtoSiteOrdem">
+                                    Ordem de exibição
+                                </label>
+
+                                <input
+                                    id="produtoSiteOrdem"
+                                    type="number"
+                                    min="0"
+                                    step="1"
+                                    required
+                                >
+
+                            </div>
+
+
+                        </div>
+
+
+                        <div class="product-visibility-box">
+
+
+                            <label class="product-switch-row">
+
+                                <div>
+
+                                    <strong>
+                                        Publicado no site
+                                    </strong>
+
+                                    <span>
+                                        Se desligado, o produto
+                                        desaparece da loja pública.
+                                    </span>
+
+                                </div>
+
+
+                                <input
+                                    id="produtoSitePublicado"
+                                    type="checkbox"
+                                >
+
+                            </label>
+
+
+                            <label class="product-switch-row">
+
+                                <div>
+
+                                    <strong>
+                                        Destaque
+                                    </strong>
+
+                                    <span>
+                                        Exibe na seção Destaques
+                                        da página inicial.
+                                    </span>
+
+                                </div>
+
+
+                                <input
+                                    id="produtoSiteDestaque"
+                                    type="checkbox"
+                                >
+
+                            </label>
+
+
+                            <label class="product-switch-row">
+
+                                <div>
+
+                                    <strong>
+                                        Lançamento
+                                    </strong>
+
+                                    <span>
+                                        Exibe na seção
+                                        Lançamentos da Home.
+                                    </span>
+
+                                </div>
+
+
+                                <input
+                                    id="produtoSiteLancamento"
+                                    type="checkbox"
+                                >
+
+                            </label>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <div class="admin-modal-footer">
+
+
+                    <button
+                        id="btnCancelarProduto"
+                        type="button"
+                        class="secondary-button"
+                    >
+                        CANCELAR
+                    </button>
+
+
+                    <button
+                        type="submit"
+                        class="admin-primary-button"
+                    >
+                        SALVAR ALTERAÇÕES
+                    </button>
+
+
+                </div>
+
+
+            </form>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div
+        id="toastProdutos"
+        class="admin-toast"
+    >
+    </div>
+
+
+    <script src="../js/store-common.js"></script>
+
+    <script src="../js/produtos-admin.js"></script>
+
+
+</body>
+
+</html>
