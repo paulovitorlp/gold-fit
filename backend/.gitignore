@@ -1,0 +1,12 @@
+
+# Configurações privadas
+.env
+.env.local
+.env.*.local
+
+# Dependências do Node.js
+node_modules/
+
+# Arquivos de log
+npm-debug.log*
+*.log
