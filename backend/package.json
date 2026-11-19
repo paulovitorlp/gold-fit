@@ -1,16 +1,15 @@
 {
   "name": "gold-fit-backend",
-  "version": "0.1.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "API local do projeto acadêmico Gold Fit",
+  "description": "Gold Fit Pro - painel, catálogo e gerador de imagens com PostgreSQL",
   "engines": {
     "node": ">=20"
   },
   "scripts": {
     "start": "node src/server.js",
     "dev": "node --watch src/server.js",
-    "criar-admin": "node scripts/criar-admin.js",
-    "check": "node --check src/server.js && node --check scripts/criar-admin.js",
+    "check": "node --check src/server.js && node --check src/db.js && node --check src/routes/modelos-virtuais.js && node --check src/routes/geracao-imagens.js && node --check src/routes/loja.js",
     "test:smoke": "node --test tests/smoke.test.js"
   },
   "dependencies": {

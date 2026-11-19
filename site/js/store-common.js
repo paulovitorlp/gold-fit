@@ -22,6 +22,8 @@ const GOLD_FIT_SEED_VERSION_KEY =
 const GOLD_FIT_SEED_VERSION =
     4;
 
+const GOLD_FIT_SERVER_STOCK_FLAG = "goldfit_estoque_veio_do_banco_v18";
+
 
 // ======================================================
 // PREÇOS PADRÃO
@@ -921,7 +923,7 @@ function goldFitCarregarEstoqueBase() {
 
     if (
         dados.length ===
-        0
+        0 && localStorage.getItem(GOLD_FIT_SERVER_STOCK_FLAG) !== "1"
     ) {
 
         dados =
@@ -971,7 +973,7 @@ function goldFitCarregarEstoqueBase() {
 
     if (
         versaoAtual <
-        GOLD_FIT_SEED_VERSION
+        GOLD_FIT_SEED_VERSION && localStorage.getItem(GOLD_FIT_SERVER_STOCK_FLAG) !== "1"
     ) {
 
         const skusExistentes =
@@ -1324,20 +1326,11 @@ function goldFitCarregarProdutosSite() {
 }
 
 
-function goldFitSalvarProdutosSite(
-    produtos
-) {
-
-    localStorage.setItem(
-
-        GOLD_FIT_PRODUCTS_KEY,
-
-        JSON.stringify(
-            produtos
-        )
-
-    );
-
+function goldFitSalvarProdutosSite(produtos) {
+    localStorage.setItem(GOLD_FIT_PRODUCTS_KEY, JSON.stringify(produtos));
+    return typeof window.goldFitSincronizarPro === "function"
+        ? window.goldFitSincronizarPro("produtos", produtos)
+        : Promise.resolve();
 }
 
 
@@ -1500,20 +1493,73 @@ function goldFitCarregarEstoque() {
 }
 
 
-function goldFitSalvarEstoque(
-    estoque
-) {
+// Modelos publicados são independentes das cores habilitadas para compra.
+// O catálogo e a Home usam este mesmo agrupamento, sem criar SKUs artificiais.
+function goldFitAgruparModelosVitrine(variacoes = goldFitCarregarEstoque(), configuracoes = goldFitCarregarProdutosSite()) {
+    const mapa = new Map();
+    for (const config of Array.isArray(configuracoes) ? configuracoes : []) {
+        if (!config || !config.chave || config.publicado === false) continue;
+        mapa.set(config.chave, {
+            chave: config.chave, produto: config.produto, marca: config.marca,
+            grupo: config.grupo, categoria: config.categoria,
+            preco: Number(config.preco || 0), destaque: Boolean(config.destaque),
+            lancamento: Boolean(config.lancamento), ordem: Number(config.ordem || 9999),
+            variacoes: []
+        });
+    }
+    for (const item of Array.isArray(variacoes) ? variacoes : []) {
+        if (!item || item.publicado === false) continue;
+        const chave = goldFitChaveProduto(item.produto, item.marca);
+        if (!mapa.has(chave)) {
+            mapa.set(chave, {
+                chave, produto: item.produto, marca: item.marca,
+                grupo: item.grupo, categoria: item.categoria,
+                preco: Number(item.preco || 0), destaque: Boolean(item.destaque),
+                lancamento: Boolean(item.lancamento), ordem: Number(item.ordem || 9999),
+                variacoes: []
+            });
+        }
+        mapa.get(chave).variacoes.push(item);
+    }
+    return [...mapa.values()].sort((a, b) => a.ordem - b.ordem);
+}
 
-    localStorage.setItem(
+// A mesma fonte publica do PostgreSQL alimenta os menus da Home,
+// do Catalogo e da pagina de produto. O endpoint ja filtra modelos
+// despublicados e so devolve variacoes com foto de modelo aprovada.
+// Um modelo sem fotos continua elegivel ao menu/card de demonstracao.
+let goldFitConsultaMenuPendente = null;
+function goldFitConsultarModelosPublicados() {
+    if (goldFitConsultaMenuPendente) return goldFitConsultaMenuPendente;
+    const consulta = fetch("/api/loja/estado?visao=publica", {
+        credentials: "same-origin", cache: "no-store"
+    }).then(async resposta => {
+        if (!resposta.ok) throw new Error(`Catalogo indisponivel (HTTP ${resposta.status})`);
+        const dados = await resposta.json();
+        if (!Array.isArray(dados.produtos) || !Array.isArray(dados.estoque)) {
+            throw new Error("Catalogo ainda nao sincronizado com o PostgreSQL");
+        }
+        return goldFitAgruparModelosVitrine(dados.estoque, dados.produtos);
+    });
+    goldFitConsultaMenuPendente = consulta.finally(() => { goldFitConsultaMenuPendente = null; });
+    return goldFitConsultaMenuPendente;
+}
 
-        GOLD_FIT_STOCK_KEY,
+// Normalizacao para cadastros antigos escritos sem acento/espacos.
+function goldFitGrupoMenu(valor) {
+    const grupo = String(valor || "").normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, "").trim().toLocaleLowerCase("pt-BR");
+    if (grupo === "calcados") return "Calçados";
+    if (grupo === "acessorios") return "Acessórios";
+    if (grupo === "feminino") return "Feminino";
+    return String(valor || "").trim();
+}
 
-        JSON.stringify(
-            estoque
-        )
-
-    );
-
+function goldFitSalvarEstoque(estoque) {
+    localStorage.setItem(GOLD_FIT_STOCK_KEY, JSON.stringify(estoque));
+    return typeof window.goldFitSincronizarPro === "function"
+        ? window.goldFitSincronizarPro("estoque", estoque)
+        : Promise.resolve();
 }
 
 
@@ -2054,3 +2100,109 @@ function goldFitSalvarUsuarios(
     );
 
 }
+// GOLD FIT PRO V18: o PostgreSQL e a referencia para o estoque do site.
+// Consultas nunca alteram o banco; salvamentos administrativos sao aguardados.
+(function goldFitInicializarSincronizacaoPro() {
+    if (window.location.protocol === "file:") return;
+    const chaves = [
+        { nome: "estoque", chave: GOLD_FIT_STOCK_KEY },
+        { nome: "produtos", chave: GOLD_FIT_PRODUCTS_KEY }
+    ];
+    let carregando = null;
+    let salvamentosPendentes = 0;
+    let filaGravacao = Promise.resolve();
+    let ultimaConsulta = 0;
+
+    function buscarAtualizacoes() {
+        if (carregando || salvamentosPendentes) return carregando || Promise.resolve();
+        ultimaConsulta = Date.now();
+        carregando = fetch(goldFitEhAreaAdmin() ? "/api/loja/estado" : "/api/loja/estado?visao=publica", { credentials: "same-origin", cache: "no-store" })
+            .then(async res => {
+                if (!res.ok) throw new Error(`API indisponivel (HTTP ${res.status})`);
+                return res.json();
+            })
+            .then(payload => {
+                // Se um salvamento comecou durante o GET, a resposta pode
+                // estar antiga. Nunca sobrescrever o formulario que salva.
+                if (salvamentosPendentes) return;
+                // Ao migrar da V17, nao descartar itens novos que ainda
+                // possam existir apenas neste navegador (salvamento rejeitado).
+                if (goldFitEhAreaAdmin() && Array.isArray(payload.estoque)) {
+                    let local = [];
+                    try { local = JSON.parse(localStorage.getItem(GOLD_FIT_STOCK_KEY) || "[]"); } catch (_) {}
+                    if (Array.isArray(local)) {
+                        const skusBanco = new Set(payload.estoque.map(item => String(item.sku || "").toUpperCase()));
+                        const skusExemplo = new Set(GOLD_FIT_ESTOQUE_INICIAL.map(item => String(item.sku || "").toUpperCase()));
+                        const naoSalvos = local.filter(item => item && item.sku
+                            && !skusBanco.has(String(item.sku).toUpperCase())
+                            && !skusExemplo.has(String(item.sku).toUpperCase()));
+                        if (naoSalvos.length) {
+                            console.warn("Gold Fit Pro: itens apenas neste navegador; a leitura do banco nao os apagou:", naoSalvos.map(item => item.sku));
+                            if (sessionStorage.getItem("goldfit_aviso_nao_sincronizados_v18") !== "1") {
+                                sessionStorage.setItem("goldfit_aviso_nao_sincronizados_v18", "1");
+                                alert(`${naoSalvos.length} produto(s) ainda estao apenas neste navegador. Foram preservados. Abra Estoque e salve esses cadastros novamente para confirmar no PostgreSQL.`);
+                            }
+                            return;
+                        }
+                    }
+                }
+                // O banco pode nao estar inicializado ainda: nao transformar null em [].
+                // O cadastro inicial legado so vale para banco realmente vazio.
+                let alterou = false;
+                if (Array.isArray(payload.estoque)) {
+                    localStorage.setItem(GOLD_FIT_SERVER_STOCK_FLAG, "1");
+                    localStorage.setItem(GOLD_FIT_SEED_VERSION_KEY, String(GOLD_FIT_SEED_VERSION));
+                }
+                for (const item of chaves) {
+                    if (!Array.isArray(payload[item.nome])) continue;
+                    const recebido = JSON.stringify(payload[item.nome]);
+                    if (localStorage.getItem(item.chave) !== recebido) {
+                        localStorage.setItem(item.chave, recebido);
+                        alterou = true;
+                    }
+                }
+                // V27: atualizar apenas os componentes que usam os dados.
+                // O reload completo aqui causava uma segunda navegacao na
+                // abertura de cada pagina (flash/tela branca) e perda de foco.
+                if (alterou) {
+                    window.dispatchEvent(new CustomEvent("goldfit:estado-atualizado", {
+                        detail: { origem: "postgresql" }
+                    }));
+                }
+            })
+            .catch(erro => {
+                console.warn("Gold Fit Pro: nao foi possivel atualizar o site pelo banco:", erro.message);
+            })
+            .finally(() => { carregando = null; });
+        return carregando;
+    }
+
+    window.goldFitSincronizarPro = function(documento, dados) {
+        // A sequencia protege o par produtos/estoque dos writes paralelos do painel.
+        // A promessa rejeita nos erros: nao mostrar "salvo" antes do banco confirmar.
+        salvamentosPendentes++;
+        const acao = filaGravacao.catch(() => {}).then(async () => {
+            const res = await fetch(`/api/loja/estado/${documento}`, {
+                method: "PUT", credentials: "same-origin", cache: "no-store",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ dados })
+            });
+            const resposta = await res.json().catch(() => ({}));
+            if (!res.ok || resposta.status !== "ok") {
+                throw new Error(resposta.mensagem || `Nao foi possivel salvar no banco (HTTP ${res.status}).`);
+            }
+            return resposta;
+        });
+        filaGravacao = acao.catch(() => {});
+        return acao.finally(() => { salvamentosPendentes--; });
+    };
+
+    // A vitrine aberta em outra aba pode atualizar quando o usuario voltar a ela.
+    window.addEventListener("focus", () => {
+        if (Date.now() - ultimaConsulta >= 1000) buscarAtualizacoes();
+    });
+    document.addEventListener("visibilitychange", () => {
+        if (!document.hidden && Date.now() - ultimaConsulta >= 1000) buscarAtualizacoes();
+    });
+    buscarAtualizacoes();
+})();

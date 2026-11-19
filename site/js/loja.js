@@ -570,65 +570,25 @@ function configurarEventos() {
 // ======================================================
 
 function renderizarMenusCatalogo() {
-
-    const grupos = [
-        "Feminino",
-        "Masculino",
-        "Calçados",
-        "Acessórios"
-    ];
-
-
-    grupos.forEach(
-        grupo => {
-
-            const painel =
-                document.querySelector(
-                    `[data-menu-panel="${grupo}"]`
-                );
-
-
-            if (
-                !painel
-            ) {
-
-                return;
-
-            }
-
-
-            painel.innerHTML =
-                criarConteudoMenu(
-                    grupo
-                );
-
-        }
-    );
-
+    const grupos = ["Feminino", "Calçados", "Acessórios"];
+    const renderizar = (modelos) => {
+        grupos.forEach(grupo => {
+            const painel = document.querySelector(`[data-menu-panel="${grupo}"]`);
+            if (painel) painel.innerHTML = criarConteudoMenu(grupo, modelos);
+        });
+    };
+    // Primeira renderizacao local; depois o PostgreSQL confirma os publicados.
+    renderizar(goldFitAgruparModelosVitrine(estoque));
+    if (typeof goldFitConsultarModelosPublicados === "function") {
+        goldFitConsultarModelosPublicados().then(renderizar)
+            .catch(erro => console.warn("Menu nao sincronizado:", erro.message));
+    }
 }
 
 
-function criarConteudoMenu(
-    grupo
-) {
-
-    const disponiveis =
-        estoque.filter(
-            item =>
-
-                item.grupo ===
-                grupo
-
-                &&
-
-                Number(
-                    item.quantidade
-                    ||
-                    0
-                )
-                >
-                0
-        );
+function criarConteudoMenu(grupo, modelos = goldFitAgruparModelosVitrine(estoque)) {
+    const disponiveis = modelos
+        .filter(item => goldFitGrupoMenu(item.grupo) === grupo);
 
 
     if (
@@ -960,7 +920,6 @@ function renderizarTudo() {
 
 
     renderizarDepartamento(
-        "Masculino",
         listaMasculino
     );
 
@@ -984,105 +943,7 @@ function renderizarTudo() {
 // ======================================================
 
 function agruparProdutos() {
-
-    const mapa =
-        new Map();
-
-
-    estoque.forEach(
-        item => {
-
-            const chave =
-                `${item.produto}|${item.marca}`;
-
-
-            if (
-                !mapa.has(
-                    chave
-                )
-            ) {
-
-                mapa.set(
-                    chave,
-                    {
-
-                        chave:
-                            chave,
-
-                        produto:
-                            item.produto,
-
-                        marca:
-                            item.marca,
-
-                        grupo:
-                            item.grupo,
-
-                        categoria:
-                            item.categoria,
-
-                        preco:
-                            Number(
-                                item.preco
-                                ||
-                                goldFitPrecoProduto(
-                                    item.produto
-                                )
-                                ||
-                                0
-                            ),
-
-                        destaque:
-                            Boolean(
-                                item.destaque
-                            ),
-
-                        lancamento:
-                            Boolean(
-                                item.lancamento
-                            ),
-
-                        ordem:
-                            Number(
-                                item.ordem
-                                ||
-                                9999
-                            ),
-
-                        variacoes:
-                            []
-
-                    }
-                );
-
-            }
-
-
-            mapa
-                .get(
-                    chave
-                )
-                .variacoes
-                .push(
-                    item
-                );
-
-        }
-    );
-
-
-    return Array.from(
-        mapa.values()
-    )
-    .sort(
-        (
-            a,
-            b
-        ) =>
-            a.ordem -
-            b.ordem
-    );
-
+    return goldFitAgruparModelosVitrine(estoque);
 }
 
 
@@ -1120,7 +981,7 @@ function renderizarProdutos() {
 
                         ||
 
-                        produto.grupo ===
+                        goldFitGrupoMenu(produto.grupo) ===
                             grupoSelecionado;
 
 
@@ -1196,7 +1057,7 @@ function renderizarDepartamento(
         agruparProdutos()
             .filter(
                 produto =>
-                    produto.grupo ===
+                    goldFitGrupoMenu(produto.grupo) ===
                     grupo
             )
             .slice(
@@ -1995,6 +1856,7 @@ function criarCardProduto(produto) {
     const fotos = goldFitFotosDoProduto(produto);
     const fotoPrincipal = fotos[0] || goldFitPlaceholder(produto);
     const fotoHover = fotos[1] || "";
+    const semFotos = produto.variacoes.length === 0;
     const disponivel = produto.variacoes.some(item => Number(item.quantidade || 0) > 0);
     const favoritado = favoritos.includes(produto.chave);
 
@@ -2003,7 +1865,7 @@ function criarCardProduto(produto) {
             <div class="product-image" data-produto="${encodeURIComponent(produto.chave)}">
                 <img class="product-img-main" src="${fotoPrincipal}" alt="${goldFitEscapeHtml(produto.produto)}">
                 ${fotoHover ? `<img class="product-img-hover" src="${fotoHover}" alt="${goldFitEscapeHtml(produto.produto)} - segunda foto">` : ""}
-                <span class="stock-badge ${disponivel ? "" : "out"}">${disponivel ? "DISPONÍVEL" : "INDISPONÍVEL"}</span>
+                <span class="stock-badge ${semFotos || !disponivel ? "out" : ""}">${semFotos ? "FOTO EM BREVE" : disponivel ? "DISPONÍVEL" : "INDISPONÍVEL"}</span>
                 <button type="button" class="favorite-button ${favoritado ? "active" : ""}" data-favorito="${encodeURIComponent(produto.chave)}" aria-label="Favoritar">${favoritado ? "♥" : "♡"}</button>
             </div>
             <div class="product-info">
@@ -2019,21 +1881,14 @@ function renderizarCategoriasVisuais() {
     if (!container) return;
 
     const mapa = new Map();
-    estoque
-        .filter(item => Number(item.quantidade || 0) > 0)
-        .forEach(item => {
-            const chave = `${item.grupo}|${item.categoria}`;
-            if (!mapa.has(chave)) {
-                mapa.set(chave, {
-                    grupo: item.grupo,
-                    categoria: item.categoria,
-                    item
-                });
-            } else {
-                const atual = mapa.get(chave).item;
-                if (!atual.foto && item.foto) mapa.get(chave).item = item;
-            }
-        });
+    agruparProdutos().forEach(produto => {
+        const chave = `${produto.grupo}|${produto.categoria}`;
+        const foto = produto.variacoes.find(item => item.foto)?.foto || "";
+        const item = { ...produto, foto };
+        if (!mapa.has(chave) || (!mapa.get(chave).item.foto && foto)) {
+            mapa.set(chave, { grupo: produto.grupo, categoria: produto.categoria, item });
+        }
+    });
 
     const prioridade = ["Conjuntos", "Croppeds", "Tops", "Jaquetas", "Shorts", "Macaquinhos", "Saias", "Tênis", "Meias"];
     const categorias = [...mapa.values()].sort((a,b) => {
@@ -2122,3 +1977,9 @@ function tratarCliqueProduto(event) {
         window.location.href = `./produto.html?produto=${encodeURIComponent(chave)}`;
     }
 }
+
+// V27: atualizacao do banco na mesma aba, sem recarregamento da pagina.
+window.addEventListener("goldfit:estado-atualizado", () => {
+    renderizarTudo();
+    renderizarMenusCatalogo();
+});

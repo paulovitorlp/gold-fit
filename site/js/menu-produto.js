@@ -1,363 +1,147 @@
-
-/*
- * GOLD FIT - Menu dinâmico da página de produto.
- *
- * Utiliza o estoque disponível da loja e abre
- * os mesmos filtros do catálogo da Home.
+/* GOLD FIT PRO — menu compartilhado com a Home e o Catálogo.
+ * A estrutura visual usa as mesmas classes/efeitos de loja.css;
+ * este módulo mantém somente os dados e os eventos exclusivos da página de produto.
  */
-
 (function () {
     "use strict";
 
-    const nav = document.getElementById(
-        "menuCategoriasProduto"
-    );
+    const nav = document.getElementById("mainNavProduto");
+    const botaoMobile = document.getElementById("btnMenuProduto");
+    if (!nav || !botaoMobile) return;
 
-    const botaoMobile = document.getElementById(
-        "btnMenuProduto"
-    );
-
-    if (!nav || !botaoMobile) {
-        return;
-    }
-
-    const departamentos = [
-        "Feminino",
-        "Masculino",
-        "Calçados",
-        "Acessórios"
-    ];
-
-
-    /* PROTEÇÃO DE TEXTO */
-
-    function escapar(valor) {
-        if (typeof goldFitEscapeHtml === "function") {
-            return goldFitEscapeHtml(valor);
-        }
-
-        return String(valor ?? "")
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
-
-    /* LINKS DO CATÁLOGO */
+    const departamentos = ["Feminino", "Calçados", "Acessórios"];
+    const escapar = valor => typeof goldFitEscapeHtml === "function"
+        ? goldFitEscapeHtml(valor)
+        : String(valor ?? "").replace(/&/g, "&amp;").replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
     function urlCatalogo(grupo, categoria, nome) {
-        const parametros = new URLSearchParams();
-
-        parametros.set("grupo", grupo);
-
-        if (categoria) {
-            parametros.set("categoria", categoria);
-        }
-
-        if (nome) {
-            parametros.set("produto", nome);
-        }
-
-        return "./catalogo.html?" + parametros.toString();
+        const params = new URLSearchParams({grupo});
+        if (categoria) params.set("categoria", categoria);
+        if (nome) params.set("produto", nome);
+        return `./catalogo.html?${params.toString()}`;
     }
 
-
-    /* CARREGAR ESTOQUE */
-
-    function estoquePublico() {
-        try {
-            return typeof goldFitCarregarEstoque === "function"
-                ? goldFitCarregarEstoque()
-                : [];
-        }
-        catch (erro) {
-            console.error(
-                "Erro ao montar menu da página do produto:",
-                erro
-            );
-
-            return [];
-        }
-    }
-
-
-    /* MONTAR MENU */
-
-    function renderizarMenu() {
-        const estoque = estoquePublico();
-
-        departamentos.forEach(grupo => {
-
-            const panel = nav.querySelector(
-                '[data-product-menu-panel="' + grupo + '"]'
-            );
-
-            if (!panel) {
-                return;
-            }
-
+    // Modelos publicados, e nao apenas variantes com fotos: tênis e meias
+    // precisam constar no menu mesmo quando a galeria ainda esta vazia.
+    function renderizarMenu(modelos = goldFitAgruparModelosVitrine()) {
+        for (const grupo of departamentos) {
+            const painel = nav.querySelector(`[data-menu-panel="${grupo}"]`);
+            if (!painel) continue;
             const categorias = new Map();
-
-            estoque.forEach(item => {
-
-                if (
-                    item.grupo !== grupo ||
-                    Number(item.quantidade || 0) <= 0
-                ) {
-                    return;
-                }
-
-                const categoria = String(
-                    item.categoria || "Produtos"
-                ).trim();
-
-                const nome = String(
-                    item.produto || ""
-                ).trim();
-
-                if (!nome) {
-                    return;
-                }
-
-                if (!categorias.has(categoria)) {
-                    categorias.set(
-                        categoria,
-                        new Set()
-                    );
-                }
-
+            for (const item of modelos) {
+                if (goldFitGrupoMenu(item.grupo) !== grupo || item.publicado === false) continue;
+                const categoria = String(item.categoria || "Produtos").trim();
+                const nome = String(item.produto || "").trim();
+                if (!nome) continue;
+                if (!categorias.has(categoria)) categorias.set(categoria, new Set());
                 categorias.get(categoria).add(nome);
-            });
-
-
-            /* LISTAR CATEGORIAS E PRODUTOS */
-
-            const secoes = [...categorias.entries()]
-                .sort(
-                    ([a], [b]) =>
-                        a.localeCompare(b, "pt-BR")
-                )
-                .map(([categoria, nomes]) => {
-
-                    const produtos = [...nomes]
-                        .sort(
-                            (a, b) =>
-                                a.localeCompare(b, "pt-BR")
-                        )
-                        .map(nome => `
-                            <a href="${escapar(
-                                urlCatalogo(
-                                    grupo,
-                                    categoria,
-                                    nome
-                                )
-                            )}">
-                                ${escapar(nome)}
-                            </a>
-                        `)
-                        .join("");
-
-                    return `
-                        <div class="product-menu-category">
-
-                            <a href="${escapar(
-                                urlCatalogo(
-                                    grupo,
-                                    categoria
-                                )
-                            )}">
-                                ${escapar(categoria)}
-                            </a>
-
-                            <div class="product-menu-category-items">
-                                ${produtos}
-                            </div>
-
-                        </div>
-                    `;
-                })
-                .join("");
-
-
-            /* PREENCHER DROPDOWN */
-
-            panel.innerHTML = `
-                <div class="product-menu-head">
-
-                    <strong>
-                        ${escapar(grupo)}
-                    </strong>
-
-                    <a href="${escapar(
-                        urlCatalogo(grupo)
-                    )}">
-                        VER TODOS
-                    </a>
-
-                </div>
-
-                ${
-                    secoes
-                        ? `
-                            <div class="product-menu-grid">
-                                ${secoes}
-                            </div>
-                        `
-                        : `
-                            <p class="product-menu-empty">
-                                Nenhum produto disponível no momento.
-                            </p>
-                        `
-                }
-            `;
-        });
-    }
-
-
-    /* FECHAR DROPDOWNS */
-
-    function fecharMenus() {
-        nav.querySelectorAll(
-            ".product-nav-department.open"
-        ).forEach(item => {
-
-            item.classList.remove("open");
-
-            const botao = item.querySelector(
-                ".product-nav-trigger"
-            );
-
-            if (botao) {
-                botao.setAttribute(
-                    "aria-expanded",
-                    "false"
-                );
             }
-        });
+            const secoes = [...categorias.entries()]
+                .sort(([a], [b]) => a.localeCompare(b,"pt-BR"))
+                .map(([categoria, nomes]) => `
+                    <div class="mega-menu-category">
+                        <a class="mega-menu-category-title" href="${escapar(urlCatalogo(grupo,categoria))}">${escapar(categoria)}</a>
+                        <div class="mega-menu-products">${[...nomes].sort((a,b)=>a.localeCompare(b,"pt-BR"))
+                            .map(nome => `<a class="mega-menu-product" href="${escapar(urlCatalogo(grupo,categoria,nome))}">${escapar(nome)}</a>`).join("")}</div>
+                    </div>`).join("");
+            painel.innerHTML = secoes ? `
+                <div class="mega-menu-header">
+                    <div class="mega-menu-label"><span>GOLD FIT</span><strong>${escapar(grupo)}</strong></div>
+                    <a class="mega-menu-all" href="${escapar(urlCatalogo(grupo))}">VER TODO ${escapar(grupo.toUpperCase())} →</a>
+                </div>
+                <div class="mega-menu-grid">${secoes}</div>`
+                : `<div class="mega-menu-empty">Nenhum produto disponível neste departamento.</div>`;
+        }
     }
 
-
-    /* FECHAR MENU MOBILE */
+    function fecharSubmenus() {
+        nav.querySelectorAll(".nav-dropdown.open").forEach(item => {
+            item.classList.remove("open");
+            item.querySelector(".nav-dropdown-trigger")?.setAttribute("aria-expanded", "false");
+        });
+    }
 
     function fecharMobile() {
         nav.classList.remove("open");
-
-        botaoMobile.setAttribute(
-            "aria-expanded",
-            "false"
-        );
-
-        fecharMenus();
+        botaoMobile.setAttribute("aria-expanded", "false");
+        fecharSubmenus();
     }
 
-
-    /* BOTÃO MOBILE */
-
     botaoMobile.addEventListener("click", () => {
-
         const aberto = nav.classList.toggle("open");
-
-        botaoMobile.setAttribute(
-            "aria-expanded",
-            String(aberto)
-        );
-
-        if (!aberto) {
-            fecharMenus();
-        }
+        botaoMobile.setAttribute("aria-expanded", String(aberto));
+        if (!aberto) fecharSubmenus();
     });
 
-
-    /* BOTÕES DE CATEGORIAS */
-
-    nav.querySelectorAll(
-        ".product-nav-trigger"
-    ).forEach(botao => {
-
+    nav.querySelectorAll("[data-menu-toggle]").forEach(botao => {
+        botao.setAttribute("aria-expanded", "false");
         botao.addEventListener("click", () => {
-
-            const departamento = botao.closest(
-                ".product-nav-department"
-            );
-
-            const abrir = !departamento.classList.contains(
-                "open"
-            );
-
-            fecharMenus();
-
+            if (window.innerWidth > 780) return; // No desktop abre por hover, igual à Home.
+            const dropdown = botao.closest(".nav-dropdown");
+            const abrir = !dropdown.classList.contains("open");
+            fecharSubmenus();
             if (abrir) {
-                departamento.classList.add("open");
-
-                botao.setAttribute(
-                    "aria-expanded",
-                    "true"
-                );
+                dropdown.classList.add("open");
+                botao.setAttribute("aria-expanded", "true");
             }
         });
     });
 
-
-    /* CLIQUE FORA DO MENU */
-
-    document.addEventListener("click", evento => {
-
-        if (
-            !nav.contains(evento.target) &&
-            !botaoMobile.contains(evento.target)
-        ) {
+    document.addEventListener("click", event => {
+        if (!nav.contains(event.target) && !botaoMobile.contains(event.target)) fecharMobile();
+    });
+    document.addEventListener("keydown", event => {
+        if (event.key === "Escape") {
             fecharMobile();
+            document.activeElement?.blur?.();
         }
     });
-
-
-    /* TECLA ESC */
-
-    document.addEventListener("keydown", evento => {
-
-        if (evento.key === "Escape") {
-            fecharMobile();
-        }
-    });
-
-
-    /* REDIMENSIONAMENTO */
-
     window.addEventListener("resize", () => {
-
-        if (window.innerWidth > 980) {
-            fecharMobile();
-        }
+        if (window.innerWidth > 780) fecharMobile();
     });
 
-
-    /* ATUALIZAÇÃO DO ESTOQUE */
-
-    window.addEventListener("storage", evento => {
-
-        const chaveEstoque =
-            typeof GOLD_FIT_STOCK_KEY !== "undefined"
-                ? GOLD_FIT_STOCK_KEY
-                : "goldfit_estoque_demo_v4";
-
-        const chaveProdutos =
-            typeof GOLD_FIT_PRODUCTS_KEY !== "undefined"
-                ? GOLD_FIT_PRODUCTS_KEY
-                : "goldfit_produtos_site_v1";
-
-        if (
-            evento.key === chaveEstoque ||
-            evento.key === chaveProdutos
-        ) {
+    const pesquisa = document.getElementById("pesquisaTopoProduto");
+    function buscar() {
+        const termo = pesquisa?.value.trim();
+        window.location.href = `./catalogo.html${termo ? `?busca=${encodeURIComponent(termo)}` : ""}`;
+    }
+    document.getElementById("btnPesquisaTopoProduto")?.addEventListener("click", buscar);
+    pesquisa?.addEventListener("keydown", e => { if (e.key === "Enter") buscar(); });
+    document.getElementById("navLancamentosProduto")?.addEventListener("click", () => {
+        window.location.href = "./index.html#lancamentos";
+    });
+    document.getElementById("btnFavoritosProduto")?.addEventListener("click", () => {
+        const total = typeof favoritos !== "undefined" && Array.isArray(favoritos) ? favoritos.length : 0;
+        if (typeof mostrarToast === "function") {
+            mostrarToast(total ? `${total} produto(s) favoritado(s).` : "Você ainda não possui favoritos.");
+        }
+    });
+    // O produto.js continua responsável pela conta e pelo carrinho da página.
+    function sincronizarMenu() {
+        if (typeof goldFitConsultarModelosPublicados !== "function") return;
+        goldFitConsultarModelosPublicados().then(renderizarMenu)
+            .catch(erro => console.warn("Menu publico nao sincronizado:", erro.message));
+    }
+    window.addEventListener("storage", event => {
+        const chaves = [
+            typeof GOLD_FIT_STOCK_KEY !== "undefined" ? GOLD_FIT_STOCK_KEY : "goldfit_estoque_demo_v4",
+            typeof GOLD_FIT_PRODUCTS_KEY !== "undefined" ? GOLD_FIT_PRODUCTS_KEY : "goldfit_produtos_site_v1"
+        ];
+        if (chaves.includes(event.key)) {
             renderizarMenu();
+            sincronizarMenu();
         }
     });
-
-
-    /* INICIALIZAÇÃO */
-
+    window.addEventListener("pageshow", () => {
+        renderizarMenu();
+        sincronizarMenu();
+    });
+    // V27: manter os departamentos atualizados sem navegação extra.
+    window.addEventListener("goldfit:estado-atualizado", () => {
+        renderizarMenu();
+        sincronizarMenu();
+    });
     renderizarMenu();
-
+    sincronizarMenu();
 })();

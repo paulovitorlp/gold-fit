@@ -1,0 +1,157 @@
+/* GOLD FIT PRO | Ajustes localizados com fonte da loja */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap");
+html, body, button, input, select, textarea {
+    font-family: "Montserrat", Arial, sans-serif;
+}
+.gf-access-page {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 24px;
+    background: #f7f7f7;
+    color: #111111;
+}
+.gf-access-card {
+    width: min(100%, 430px);
+    background: #ffffff;
+    border: 1px solid #e5e5e5;
+    padding: clamp(24px, 5vw, 42px);
+    box-shadow: 0 16px 60px rgba(0,0,0,.06);
+}
+.gf-access-logo {
+    color: #111111;
+    font-size: 27px;
+    font-weight: 900;
+    letter-spacing: -1.3px;
+    text-decoration: none;
+}
+.gf-access-logo span {
+    color: #f3c600;
+}
+.gf-access-kicker {
+    margin: 28px 0 8px;
+    color: #777777;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+.gf-access-card h1 {
+    margin: 0 0 10px;
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 800;
+}
+.gf-access-subtitle {
+    color: #777777;
+    font-size: 12px;
+    line-height: 1.7;
+}
+.gf-access-card label {
+    display: block;
+    margin: 26px 0 9px;
+    font-size: 12px;
+    font-weight: 700;
+}
+.gf-access-card input {
+    width: 100%;
+    padding: 14px;
+    font-size: 13px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+}
+.gf-access-card form button {
+    display: block;
+    width: 100%;
+    margin-top: 16px;
+    padding: 16px;
+    border: 0;
+    background: #f3c600;
+    color: #111111;
+    font-size: 12px;
+    font-weight: 900;
+    cursor: pointer;
+}
+.gf-access-card form button:hover {
+    background: #ffd51a;
+}
+#gfLoginMensagem {
+    min-height: 20px;
+    color: #b32929;
+    font-size: 12px;
+}
+.gf-access-back {
+    display: inline-block;
+    margin-top: 12px;
+    color: #555555;
+    font-size: 12px;
+}
+
+/* Navegação pública: destaque amarelo somente em hover/foco (não fixo). */
+.nav-item.active::after {
+    display: none;
+}
+.nav-item:hover::after,
+.nav-item:focus-visible::after {
+    display: block;
+}
+.nav-chevron,
+.product-nav-chevron {
+    display: none;
+}
+/* Cartões e áreas de formulário adaptáveis, sem distorcer imagens. */
+.gf-model-grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 12px;
+}
+.gf-model-photo img,
+.gf-result img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.gf-generate {
+    min-height: 52px;
+}
+@media (max-width: 1024px) {
+    .gf-model-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+@media (max-width: 640px) {
+    .gf-main {
+        padding: 16px;
+    }
+    .gf-heading h1 {
+        font-size: 24px;
+    }
+    .gf-model-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+    }
+    .gf-card {
+        padding: 14px;
+    }
+    .gf-model-photo {
+        aspect-ratio: 3 / 4;
+    }
+    .gf-upload {
+        min-height: 180px;
+    }
+    .gf-upload img {
+        max-width: 100%;
+        max-height: 320px;
+        object-fit: contain;
+    }
+}
+
+/* V19: atalho do estoque para a galeria do modelo */
+.gf19-estoque-fotos { display:inline-flex; padding:8px 10px; background:#f5c400; color:#111; text-decoration:none; font-size:10px; font-weight:800; white-space:nowrap; margin-right:6px; }
+
+/* V19: estoque com uma linha por modelo e variacoes expansivas */
+.gf19-linha-variacao[hidden] { display:none!important; }
+.gf19-grupo-estoque { background:#fffcf0; border-top:2px solid #dfcf86; }
+.gf19-grupo-estoque td { padding-top:13px!important; padding-bottom:13px!important; }
+.gf19-grupo-estoque strong { display:block; }
+.gf19-grupo-estoque small { display:block; font-size:10px; color:#666; margin-top:4px; }
+.gf19-grupo-toggle { border:1px solid #111; background:white; padding:8px 9px; cursor:pointer; font-size:10px; font-weight:800; margin-bottom:4px; }
+.gf19-linha-variacao { background:#fff; }
+.gf19-linha-variacao td:nth-child(2) { padding-left:22px!important; }

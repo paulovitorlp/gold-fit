@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Acesso administrativo | Gold Fit</title>
+    <link rel="stylesheet" href="../css/pro.css">
+</head>
+<body class="gf-access-page">
+    <main class="gf-access-card">
+        <a class="gf-access-logo" href="../index.html"><span>GOLD</span> FIT</a>
+        <p class="gf-access-kicker">PAINEL ADMINISTRATIVO</p>
+        <h1>Bem-vinda de volta</h1>
+        <p class="gf-access-subtitle">Gerencie o estoque, o catálogo feminino e o estúdio de imagens.</p>
+        <form id="gfLoginForm">
+            <label for="gfSenha">Senha administrativa</label>
+            <input id="gfSenha" type="password" required minlength="12" autocomplete="current-password" placeholder="Digite sua senha de administração">
+            <button type="submit">ENTRAR NO PAINEL</button>
+            <p id="gfLoginMensagem" role="alert" aria-live="polite"></p>
+        </form>
+        <a href="../index.html" class="gf-access-back">Voltar à loja</a>
+    </main>
+    <script src="../js/store-common.js"></script>
+    <script src="../js/admin-acesso.js"></script>
+</body>
+</html>

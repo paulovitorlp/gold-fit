@@ -1,0 +1,137 @@
+/* Gold Fit Pro: galeria por cor e enquadramento sem cortes, V8 */
+.gf8-editor { margin: 18px 0 0; padding: 14px; border: 1px solid #e8e8e8; background: #fff; }
+.gf8-editor h3 { margin: 0 0 8px; font-size: 13px; font-weight: 800; }
+.gf8-editor p { margin: 0 0 14px; line-height: 1.6; font-size: 11px; color: #666; }
+.gf8-editor label { display: block; font-size: 10px; font-weight: 700; margin-bottom: 6px; }
+.gf8-editor select, .gf8-editor input[type="file"] { max-width: 100%; width: 100%; padding: 10px; border: 1px solid #ccc; background: #fff; font-size: 12px; }
+.gf8-editor .gf8-button { padding: 12px; margin-top: 9px; width: 100%; color: #111; background: #f3c600; border: 0; font-size: 11px; font-weight: 800; cursor: pointer; }
+.gf8-editor button:disabled { opacity: .5; cursor: not-allowed; }
+.gf8-editor #gf8GaleriaContador { display: block; margin: 10px 0; font-size: 11px; font-weight: 750; }
+.gf8-fotos { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 9px; }
+.gf8-thumb { display: flex; flex-direction: column; gap: 5px; background: #f8f8f8; padding: 5px; }
+.gf8-thumb img { display: block; width: 100%; height: 125px; object-fit: contain; object-position: center; background: #f1f1f1; }
+.gf8-thumb span { font-size: 9px; }
+.gf8-thumb button { border: 1px solid #ccc; background: #fff; padding: 7px; font-size: 10px; cursor: pointer; }
+.gf8-editor #gf8GaleriaAviso { font-size: 10px; color: #666; margin-top: 12px; }
+.gf8-editor #gf8GaleriaAviso.gf8-erro { color: #b00020; }
+/* Imagens em catálogo: contenção integral da cabeça, pés e roupas; sem zoom automático. */
+.product-card .product-image img, .product-image > img, .related-image img { object-fit: contain !important; object-position: center center !important; transform: none !important; }
+.product-card:hover .product-image img { transform: none !important; }
+/* Detalhe do produto: limitar altura útil a uma tela. */
+.product-layout { min-height: 0 !important; align-items: start; }
+.product-gallery { min-height: 0 !important; }
+.product-gallery .main-image { height: min(72vh, 690px) !important; min-height: 0 !important; aspect-ratio: auto !important; }
+.product-gallery .main-image > img { display: block; height: 100% !important; min-height: 0 !important; width: 100% !important; max-height: 100%; object-fit: contain !important; object-position: center !important; }
+.product-gallery .thumbnail-button img { object-fit: contain !important; }
+.modal-preview img { object-fit: contain !important; object-position: center center !important; }
+@media(max-width:760px) { .product-gallery .main-image { height: min(65vh, 590px) !important; } .gf8-editor { padding: 10px; } }
+
+/* GOLD FIT PRO V11 — detalhe equilibrado, sem cortar fotos e sem excesso de espaco vazio. */
+@media (min-width: 761px) {
+    .product-layout { grid-template-columns: minmax(0, 1.55fr) minmax(330px, .88fr) !important;
+        margin-bottom: 48px !important; align-items: start !important; }
+    .product-gallery .main-image {
+        height: min(82vh, 770px) !important;
+        background: #f4f2f0 !important;
+    }
+}
+.product-gallery .main-image img {
+    object-fit: contain !important;
+    object-position: center center !important;
+    image-rendering: auto;
+}
+.product-gallery .thumbnails { align-self: start; }
+.gf11-aviso-fotos { grid-column: 1 / -1; padding: 8px 12px; margin: 0;
+    color: #616161; font-size: 11px; background: #fff; line-height: 1.5; }
+.gf11-aviso-fotos.gf11-sem-foto { color: #8a6500; }
+.product-option-button.gf11-cor-esgotada { color: #666 !important; background: #fff !important;
+    text-decoration: none !important; border: 1px dashed #a1a1a1 !important; opacity: .82; }
+.product-option-button.gf11-cor-esgotada.active { color: #fff !important;
+    background: #111 !important; opacity: 1; border: 1px solid #111 !important; }
+@media (max-width: 760px) {
+    .product-gallery .main-image { height: min(72vh, 630px) !important; }
+    .product-layout { margin-bottom: 40px !important; }
+}
+
+.gf11-adicionar-cor { margin: 14px 0; padding: 10px; border: 1px solid #ececec; background: #fafafa; }
+.gf11-adicionar-cor small { display: block; margin-top: 7px; color: #666; font-size: 10px; line-height: 1.5; }
+.gf11-nova-cor-campos { display: flex; gap: 8px; align-items: stretch; }
+.gf11-nova-cor-campos input { min-width: 0; flex: 1; padding: 10px; border: 1px solid #ccc; }
+.gf11-nova-cor-campos button { flex-shrink: 0; background: #111; color: white;
+    border: 0; padding: 9px 14px; cursor: pointer; font-weight: 750; font-size: 10px; }
+@media (max-width: 560px) { .gf11-nova-cor-campos { flex-direction: column; } }
+
+/* Gold Fit V14 - Foto central unica, miniaturas abaixo, proporcao preservada */
+@media (min-width: 761px) {
+  .product-gallery { display:flex !important; flex-direction:column !important; align-items:stretch; background:#f7f7f7 !important; }
+  .product-gallery .main-image { order:0; height: min(86vh, 825px) !important; min-height:0 !important; background:#f7f7f7 !important; }
+  .product-gallery .main-image > img { display:block; width:100%;height:100%;max-height:100%; object-fit:contain!important; background:transparent; }
+  .product-gallery .thumbnails { order:1; flex-direction:row!important; justify-content:center; flex-wrap:wrap; align-items:center; padding:12px 8px!important; background:#fff!important; gap:9px; }
+  .product-gallery .thumbnail-button { width:65px; height:80px; aspect-ratio:4/5; flex:0 0 65px; background:#f7f7f7; }
+}
+@media (max-width:760px) {
+  .product-gallery .main-image { background:#f7f7f7!important; height:min(77vh,690px)!important; }
+  .product-gallery .thumbnails { justify-content:center; }
+}
+.product-option-button.gf14-cor-sem-foto { opacity:.42!important; cursor:not-allowed!important; text-decoration:line-through!important; color:#888!important; background:#eee!important; border:1px solid #ddd!important; }
+
+/* V17 — miniaturas do produto a esquerda no desktop, sem cortes nas fotos. */
+@media (min-width: 761px) {
+  .product-gallery {
+    display: grid !important;
+    grid-template-columns: 92px minmax(0, 1fr) !important;
+    grid-template-rows: auto auto;
+    align-items: start !important;
+    gap: 0 !important;
+    background: #fff !important;
+  }
+  .product-gallery .thumbnails {
+    grid-column: 1;
+    grid-row: 1;
+    order: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    justify-content: flex-start !important;
+    align-self: start !important;
+    align-items: center !important;
+    gap: 10px !important;
+    padding: 12px 8px !important;
+    background: #fff !important;
+  }
+  .product-gallery .thumbnail-button {
+    flex: 0 0 auto !important;
+    width: 74px !important;
+    height: 96px !important;
+    aspect-ratio: 4/5;
+  }
+  .product-gallery .main-image {
+    grid-column: 2;
+    grid-row: 1;
+    order: 1 !important;
+    min-width: 0;
+    height: min(86vh, 825px) !important;
+  }
+  .product-gallery #avisoFotosCor { grid-column: 1 / -1; grid-row: 2; }
+}
+@media (min-width: 761px) and (max-width: 980px) {
+  .product-gallery { grid-template-columns: 76px minmax(0, 1fr) !important; }
+  .product-gallery .thumbnail-button { width: 60px !important; height: 78px !important; }
+}
+
+/* V17 — reordenacao por arrastar, subir/descer ou selecionar capa. */
+.gf8-editor .gf8-instrucao-ordem { margin: 2px 0 10px; font-size: 10px; line-height: 1.5; color: #666; }
+.gf8-thumb { border: 1px solid #eee; border-radius: 2px; cursor: grab; }
+.gf8-thumb.gf8-capa { border-color: #d5aa00; background: #fffdf2; }
+.gf8-thumb.gf8-arrastando { opacity: .55; }
+.gf8-thumb .gf8-ordenar { display: flex; gap: 4px; flex-wrap: wrap; }
+.gf8-thumb .gf8-ordenar button { flex: 1 1 30px; min-height: 28px; padding: 5px 2px; font-size: 11px; font-weight: 800; }
+.gf8-thumb .gf8-ordenar button[aria-label^="Definir"] { flex: 1 1 100%; font-size: 9px; background: #f3c600; border-color: #f3c600; }
+.gf8-thumb .gf8-excluir { background: #fff; }
+.gf8-thumb span { font-weight: 700; }
+
+/* V19: classificacao de imagens na tela de Produtos */
+.gf19-classificar { display:flex; gap:9px; align-items:flex-start; margin:10px 0; font-size:12px; line-height:1.5; }
+.gf19-classificar input { width:17px; height:17px; accent-color:#f8c900; flex:none; }
+.gf19-tipo { width:100%; padding:6px 3px; margin:3px 0; border:1px solid #bbb; background:#fff; font-size:10px; cursor:pointer; }
+.gf19-tipo:hover { border-color:#e5b600; }

@@ -1,552 +1,316 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Gerador de Imagens | Gold Fit</title>
-
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/gerador-imagens.css?v=4">
-</head>
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#111111">
+    <title>Estúdio IA | Gold Fit Pro</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/pro.css?v=2">
+    <link rel="stylesheet" href="../css/gerador-estudio.css?v=7">
+    <link rel="stylesheet" href="../css/correcoes-imagens.css?v=13">
+    <link rel="stylesheet" href="../css/variacoes-automaticas.css?v=12">
+    <link rel="stylesheet" href="../css/referencias-produto-v14.css?v=14">
+<style>.gf29-indicator{position:sticky;top:0;z-index:200;background:#fff8da;color:#5a4400;padding:9px 22px;border-left:4px solid #e9bb00;font:600 12px Arial,sans-serif}.gf29-indicator[hidden]{display:none}</style></head>
 <body class="admin-body">
+<div class="gf29-indicator" id="gf29Indicator" hidden>DEMONSTRAÇÃO ACADÊMICA — mesmas telas do painel, dados editáveis neste navegador. API privada; geração de imagens desativada.</div>
+<script src="../js/painel-demo-dados.js?v=29"></script>
+<script src="../js/estudio-demo-dados.js?v=29"></script>
+<script src="../js/static-admin-bridge.js?v=29"></script>
 
-  <div class="admin-promo">
-    <span>GOLD FIT • PAINEL ADMINISTRATIVO</span>
-    <span>ESTÚDIO DE IMAGENS</span>
-  </div>
-
-  <header class="admin-header">
-    <div class="admin-header-inner">
-
-      <a href="../index.html" class="admin-logo">
-        <span>GOLD</span> FIT
-      </a>
-
-      <div class="admin-header-title">
-        <span>ADMIN</span>
-        <strong>Gerador de Imagens</strong>
-      </div>
-
-      <div class="admin-header-actions">
-        <a href="./produtos.html" class="admin-header-link">
-          Voltar aos produtos
-        </a>
-      </div>
-
+    <div class="admin-promo">
+        <span>GOLD FIT • PAINEL ADMINISTRATIVO</span>
+        <span>ESTÚDIO DE IMAGENS</span>
     </div>
-  </header>
-
-  <div class="admin-layout">
-
-    <aside class="admin-sidebar">
-
-      <nav class="admin-nav">
-
-        <a href="./estoque.html" class="admin-nav-item">
-          <span class="admin-nav-number">01</span>
-          <div>
-            <strong>Estoque</strong>
-            <small>Variações e quantidades</small>
-          </div>
-        </a>
-
-        <a href="./produtos.html" class="admin-nav-item">
-          <span class="admin-nav-number">02</span>
-          <div>
-            <strong>Produtos</strong>
-            <small>Conteúdo do site</small>
-          </div>
-        </a>
-
-        <a
-          href="./gerador-imagens.html"
-          class="admin-nav-item active"
-        >
-          <span class="admin-nav-number">06</span>
-          <div>
-            <strong>Gerador IA</strong>
-            <small>Fotografias femininas</small>
-          </div>
-        </a>
-
-      </nav>
-
-      <div class="admin-sidebar-bottom">
-        <a href="../index.html" class="admin-store-button">
-          VOLTAR PARA A LOJA
-        </a>
-      </div>
-
-    </aside>
-
-    <main class="admin-main">
-
-      <section class="admin-page-heading">
-        <div>
-          <span class="admin-eyebrow">GOLD FIT STUDIO</span>
-          <h1>Gerador de imagens</h1>
-          <p>
-            Selecione a modelo, envie as referências
-            e prepare fotografias de moda fitness.
-          </p>
+    <header class="admin-header">
+        <div class="admin-header-inner">
+            <a href="../index.html" class="admin-logo"><span>GOLD</span> FIT</a>
+            <div class="admin-header-title">
+                <span>ADMIN</span>
+                <strong>Gerador de imagens</strong>
+            </div>
+            <div class="admin-header-actions">
+                <a href="./produtos.html" class="admin-header-link">Voltar a Produtos e Estoque</a>
+            </div>
         </div>
-      </section>
+    </header>
 
-      <div class="gf-info">
-        <strong>ESTÚDIO DE IMAGENS • FEMININO</strong>
-        <p>
-          As modelos são consultadas no PostgreSQL.
-          Nesta etapa, a geração ainda é uma preparação
-          local e não utiliza a API de imagens.
-        </p>
-      </div>
-
-      <form id="formGerador" class="gf-form">
-
-        <!-- ========================================
-             01. INFORMAÇÕES DO PRODUTO
-        ========================================= -->
-
-        <section class="gf-card">
-
-          <div class="gf-card-heading">
-            <span class="gf-number">01</span>
-            <div>
-              <h2>Informações do produto</h2>
-              <p>Descreva a roupa e selecione uma modelo.</p>
+    <div class="admin-layout">
+        <aside class="admin-sidebar">
+            <nav class="admin-nav" aria-label="Navegação administrativa">
+                <a href="./produtos.html" class="admin-nav-item">
+                    <span class="admin-nav-number">01</span>
+                    <div><strong>Produtos e Estoque</strong><small>Modelos, cores e publicação</small></div>
+                </a>
+                <a href="./gerador-imagens.html" class="admin-nav-item active" aria-current="page">
+                    <span class="admin-nav-number">02</span>
+                    <div><strong>Gerador IA</strong><small>Estúdio de fotografia</small></div>
+                </a>
+            </nav>
+            <div class="admin-sidebar-bottom">
+                <a href="../index.html" class="admin-store-button">VOLTAR PARA A LOJA</a>
             </div>
-          </div>
+        </aside>
 
-          <div class="gf-fields">
-
-            <label>
-              Nome do produto
-              <input
-                id="produto"
-                type="text"
-                maxlength="150"
-                required
-                placeholder="Ex.: Conjunto Top + Short ALO"
-              >
-            </label>
-
-            <label>
-              Categoria
-              <select id="categoria">
-                <option>Top e short</option>
-                <option>Top e legging</option>
-                <option>Top e saia</option>
-                <option>Short-saia</option>
-                <option>Macaquinho</option>
-                <option>Camiseta</option>
-                <option>Jaqueta</option>
-                <option>Outros</option>
-              </select>
-            </label>
-
-            <label>
-              Tecido
-              <select id="tecido">
-                <option>Canelado</option>
-                <option>Poliamida lisa</option>
-                <option>Dry fit</option>
-                <option>Outro / não confirmado</option>
-              </select>
-            </label>
-
-            <label>
-              Logotipo
-              <select id="logo">
-                <option value="conforme-referencia">
-                  Preservar conforme a foto
-                </option>
-                <option value="sem-logo">
-                  Sem logotipo
-                </option>
-              </select>
-            </label>
-
-          </div>
-
-          <!-- CARROSSEL DE MODELOS -->
-
-          <div class="gf-model-section">
-
-            <div class="gf-model-header">
-              <div>
-                <h3>Selecione a modelo feminina</h3>
-                <p>
-                  Navegue pelas fotos ou clique nas miniaturas.
-                </p>
-              </div>
-
-              <span id="statusModelos" class="gf-model-status">
-                Carregando modelos...
-              </span>
-            </div>
-
-            <div class="gf-model-carousel">
-
-              <button
-                type="button"
-                id="modeloAnterior"
-                class="gf-carousel-arrow"
-                aria-label="Modelo anterior"
-              >
-                &#8249;
-              </button>
-
-              <div
-                class="gf-model-focus"
-                aria-live="polite"
-              >
-
-                <div class="gf-model-photo">
-
-                  <img
-                    id="modeloFotoPrincipal"
-                    alt="Fotografia da modelo selecionada"
-                    hidden
-                  >
-
-                  <div id="modeloPlaceholder"
-                       class="gf-model-placeholder">
-                    <span class="gf-placeholder-icon">👤</span>
-                    <span>Sem foto cadastrada</span>
-                  </div>
-
+        <main class="admin-main gf3-main">
+            <div class="gf3-page-head">
+                <div>
+                    <span class="gf3-kicker">GOLD FIT PRO / ESTÚDIO IA</span>
+                    <h1>Fotografias de produto</h1>
+                    <p>Uma foto principal e referências opcionais de frente, costas, lateral e detalhes. A modelo permanece a mesma.</p>
                 </div>
-
-                <strong id="modeloNome">
-                  Carregando...
-                </strong>
-
-                <span id="modeloCodigoTexto">
-                  Aguarde
-                </span>
-
-                <small id="modeloFotoStatus">
-                  Consultando referências...
-                </small>
-
-              </div>
-
-              <button
-                type="button"
-                id="modeloProximo"
-                class="gf-carousel-arrow"
-                aria-label="Próxima modelo"
-              >
-                &#8250;
-              </button>
-
+                <a class="gf3-head-link" href="./estudio-demo.html">Ver galeria demonstrativa ↗</a>
             </div>
 
-            <div
-              id="miniaturasModelos"
-              class="gf-model-miniaturas"
-              aria-label="Miniaturas das modelos"
-            ></div>
+            <p id="apiStatus" class="gf3-alert" role="status" aria-live="polite">Conectando ao gerador e às modelos...</p>
+            <p class="gf3-help">Sem Docker ou usando GitHub Pages/Live Server? <a href="./estudio-demo.html"><b>Ver modelos e histórico exportado (sem geração)</b></a>.</p>
 
-            <input
-              type="hidden"
-              id="modeloCodigoSelecionado"
-              value=""
-            >
+            <form id="formGerador" class="gf3-form" enctype="multipart/form-data">
+                <section class="gf3-panel">
+                    <div class="gf3-section-title">
+                        <span class="gf3-step">01</span>
+                        <div>
+                            <h2>Selecione a modelo</h2>
+                            <p>Use as setas para trocar; o banco fornece as referências de cada ângulo.</p>
+                        </div>
+                    </div>
 
-            <p class="gf-note">
-              A foto da modelo selecionada será utilizada
-              como referência quando cadastrada no backend.
-              Sem foto cadastrada, será necessário enviar
-              uma referência adicional abaixo.
-            </p>
+                    <div class="gf3-carousel" role="region" aria-roledescription="carrossel" aria-label="Selecionar modelo virtual">
+                        <button id="modeloAnterior" class="gf3-arrow" type="button" aria-label="Modelo anterior" disabled>‹</button>
+                        <div class="gf3-selected-model" aria-live="polite">
+                            <div class="gf3-selected-photo">
+                                <img id="modeloFoto" alt="Foto da modelo selecionada" hidden>
+                                <span id="modeloSemFoto">Carregando foto...</span>
+                            </div>
+                            <div class="gf3-selected-info">
+                                <span class="gf3-selected-label">MODELO SELECIONADA</span>
+                                <strong id="modeloNome">Carregando...</strong>
+                                <span id="modeloCodigo">—</span>
+                                <small id="modeloReferencias">Referências fotográficas</small>
+                            </div>
+                        </div>
+                        <button id="proximaModelo" class="gf3-arrow" type="button" aria-label="Próxima modelo" disabled>›</button>
+                    </div>
+                    <div id="miniaturasModelos" class="gf3-thumbnails" aria-label="Escolher modelo diretamente"></div>
+                    <p id="modeloAviso" class="gf3-help" aria-live="polite">Carregando modelos...</p>
+                </section>
 
-          </div>
+                <section class="gf3-panel">
+                    <div class="gf3-section-title">
+                        <span class="gf3-step">02</span>
+                        <div>
+                            <h2>Fotografia do produto</h2>
+                            <p>Envie uma imagem real da roupa. Não é necessário escrever um prompt.</p>
+                        </div>
+                    </div>
+                    <label class="gf3-upload" for="fotoProduto">
+                        <input id="fotoProduto" type="file" name="fotoProduto" accept="image/jpeg,image/png,image/webp" required>
+                        <span id="uploadIcon" class="gf3-upload-icon" aria-hidden="true">+</span>
+                        <strong id="uploadTitulo">Clique para escolher a fotografia</strong>
+                        <small id="uploadDescricao">JPG, PNG ou WEBP • até 10 MB</small>
+                        <img id="previewProduto" src="" alt="Prévia do produto enviado" hidden>
+                    </label>
+                    <div class="gf14-classificacao-principal">
+                        <label for="origemFotoPrincipal">Tipo da fotografia principal</label>
+                        <select id="origemFotoPrincipal" aria-label="Tipo da foto principal">
+                            <option value="auto">Identificar visualmente durante a geração</option>
+                            <option value="vestida">Produto vestido por uma pessoa</option>
+                            <option value="exposta">Peça exposta (tapete, arara, cabide ou manequim)</option>
+                        </select>
+                        <small>Se mostrar outra pessoa usando a roupa, a IA não deve copiar seu rosto, corpo ou pose. A modelo selecionada vem do banco.</small>
+                    </div>
+                    <div class="gf14-referencias" aria-label="Fotografias adicionais do produto">
+                        <h3>Referências adicionais da peça <small>(opcionais)</small></h3>
+                        <p>Envie até quatro imagens reais da mesma peça. Elas ajudam a preservar costuras, logos, recortes e a modelagem por ângulo. A identidade da modelo continua vindo do banco de modelos.</p>
+                        <div class="gf14-referencias-grid">
+                            <label>Frente adicional
+                                <input id="fotoFrenteExtra" type="file" accept="image/jpeg,image/png,image/webp">
+                                <select id="origemFotoFrenteExtra" aria-label="Tipo da foto FrenteExtra">
+                                    <option value="auto">Identificar visualmente</option>
+                                    <option value="vestida">Vestida por pessoa</option>
+                                    <option value="exposta">Exposta / tapete / arara</option>
+                                </select>
+                                <small>Ex.: detalhe frontal sem cabelo encobrindo</small>
+                            </label>
+                            <label>Costas
+                                <input id="fotoCostas" type="file" accept="image/jpeg,image/png,image/webp">
+                                <select id="origemFotoCostas" aria-label="Tipo da foto Costas">
+                                    <option value="auto">Identificar visualmente</option>
+                                    <option value="vestida">Vestida por pessoa</option>
+                                    <option value="exposta">Exposta / tapete / arara</option>
+                                </select>
+                                <small>Ex.: decote, alças e costuras traseiras</small>
+                            </label>
+                            <label>Lateral
+                                <input id="fotoLado" type="file" accept="image/jpeg,image/png,image/webp">
+                                <select id="origemFotoLado" aria-label="Tipo da foto Lado">
+                                    <option value="auto">Identificar visualmente</option>
+                                    <option value="vestida">Vestida por pessoa</option>
+                                    <option value="exposta">Exposta / tapete / arara</option>
+                                </select>
+                                <small>Ex.: recortes, comprimento e caimento lateral</small>
+                            </label>
+                            <label>Outros / detalhes
+                                <input id="fotoDetalhes" type="file" accept="image/jpeg,image/png,image/webp">
+                                <select id="origemFotoDetalhes" aria-label="Tipo da foto Detalhes">
+                                    <option value="auto">Identificar visualmente</option>
+                                    <option value="vestida">Vestida por pessoa</option>
+                                    <option value="exposta">Exposta / tapete / arara</option>
+                                </select>
+                                <small>Ex.: logo, tecido, acabamento ou bolso</small>
+                            </label>
+                        </div>
+                        <p id="gf14RefsStatus" class="gf14-referencias-status" aria-live="polite">Nenhuma referência adicional selecionada. Até 10 MB por arquivo.</p>
+                    </div>
+                    <div class="gf3-field-wrap">
+                        <label for="nomeProduto">Nome do produto <span>(para identificar no histórico)</span></label>
+                        <input id="nomeProduto" type="text" maxlength="150" placeholder="Ex.: Conjunto top e short branco ALO">
+                    </div>
+                </section>
 
-          <label class="gf-long">
-            Detalhes importantes da roupa
+                <section class="gf3-panel">
+                    <div class="gf3-section-title">
+                        <span class="gf3-step">03</span>
+                        <div>
+                            <h2>Escolha os enquadramentos</h2>
+                            <p>O backend aplica automaticamente instruções diferentes para cada ângulo.</p>
+                        </div>
+                    </div>
+                    <fieldset class="gf3-modes">
+                        <legend class="gf3-sr-only">Modo de geração</legend>
+                        <label class="gf3-mode">
+                            <input type="radio" name="modoGeracao" value="frente" checked>
+                            <span><strong>Apenas frente</strong><small>1 imagem • 1 chamada à API</small></span>
+                        </label>
+                        <label class="gf3-mode">
+                            <input type="radio" name="modoGeracao" value="kit">
+                            <span><strong>Kit completo</strong><small>4 imagens • frente, costas, lado e superior</small></span>
+                        </label>
+                        <label class="gf3-mode">
+                            <input type="radio" name="modoGeracao" value="personalizado">
+                            <span><strong>Personalizado</strong><small>Selecione apenas os ângulos desejados</small></span>
+                        </label>
+                    </fieldset>
+                    <fieldset id="angulosPersonalizados" class="gf3-angles" disabled hidden>
+                        <legend>Selecione um ou mais ângulos</legend>
+                        <label><input name="anguloPersonalizado" type="checkbox" value="frente" checked><span>Frente</span></label>
+                        <label><input name="anguloPersonalizado" type="checkbox" value="costas"><span>Costas</span></label>
+                        <label><input name="anguloPersonalizado" type="checkbox" value="lado"><span>Lado</span></label>
+                        <label><input name="anguloPersonalizado" type="checkbox" value="superior"><span>Superior</span></label>
+                    </fieldset>
+                    <details class="gf3-more">
+                        <summary>Observações sobre a peça <span>(opcional)</span></summary>
+                        <label for="detalhes">Informe somente características reais que a foto não mostra bem</label>
+                        <textarea id="detalhes" maxlength="500" rows="3" placeholder="Ex.: logo branca centralizada no top; sem logo nas costas; tecido canelado."></textarea>
+                    </details>
+                </section>
 
-            <textarea
-              id="detalhes"
-              rows="4"
-              maxlength="2000"
-              placeholder="Ex.: cós alto, tecido canelado, logo centralizado, short de compressão interno, sem bolso..."
-            ></textarea>
-          </label>
+                <div class="gf3-submit-zone">
+                    <button id="btnGerar" class="gf3-generate" type="submit" disabled>GERAR FOTOGRAFIA</button>
+                    <p id="statusGerador" class="gf3-status" role="status" aria-live="polite"></p>
+                    <p class="gf3-cost-note">Cada ângulo gera uma imagem e pode consumir créditos da API. As imagens são salvas automaticamente no computador e registradas no PostgreSQL.</p>
+                </div>
+            </form>
 
-        </section>
+            <section id="resultadoGeracao" class="gf3-panel gf3-results" hidden aria-labelledby="tituloResultado">
+                <div class="gf3-section-title">
+                    <span class="gf3-step">✓</span>
+                    <div>
+                        <h2 id="tituloResultado">Resultado da geração</h2>
+                        <p id="resultadoResumo">As fotografias produzidas aparecem aqui.</p>
+                    </div>
+                </div>
+                <div id="gridResultados" class="gf3-image-grid"></div>
+                <div class="gf3-results-footer">
+                    <a id="baixarZipResultado" class="gf3-cta-outline" href="#" hidden>Baixar tudo em ZIP</a>
+                    <a class="gf3-text-link" href="#historicoGeracoes">Ver no histórico</a>
+                </div>
+                <p id="resultadoAviso" class="gf3-review-note">Confira logotipos, costas, costuras e calçados antes de publicar. Use Aprovar ou Pedir correção em cada fotografia; rejeitar não exclui o PNG.</p>
+            </section>
 
-        <!-- ========================================
-             02. FOTOGRAFIAS DE REFERÊNCIA
-        ========================================= -->
-
-        <section class="gf-card">
-
-          <div class="gf-card-heading">
-            <span class="gf-number">02</span>
-            <div>
-              <h2>Fotografias de referência</h2>
-              <p>
-                Envie uma ou mais fotos reais da roupa.
-                Não é obrigatório ter todos os ângulos.
-              </p>
+            <section id="historicoGeracoes" class="gf3-panel gf3-history" aria-labelledby="tituloHistorico">
+                <div class="gf3-history-header">
+                    <div>
+                        <span class="gf3-kicker">ARQUIVO PERSISTENTE</span>
+                        <h2 id="tituloHistorico">Histórico de gerações</h2>
+                        <p>As imagens continuam disponíveis mesmo que você não faça o download na hora. Cada foto pode ser marcada como aprovada ou como precisando de correção, sem exclusão.</p>
+                    </div>
+                    <button id="atualizarHistorico" class="gf3-cta-outline" type="button">Atualizar histórico</button>
+                </div>
+                <p id="historicoStatus" class="gf3-help" aria-live="polite">Carregando histórico...</p>
+                <div id="listaHistorico" class="gf3-history-grid"></div>
+                <div id="detalhesHistorico" class="gf3-history-detail" hidden>
+                    <div class="gf3-detail-top">
+                        <h3 id="tituloDetalhes">Imagens do lote</h3>
+                        <button id="fecharDetalhes" type="button" class="gf3-close">Fechar detalhes</button>
+                    </div>
+                    <p id="resumoDetalhes" class="gf3-help"></p>
+                    <div id="gridDetalhes" class="gf3-image-grid"></div>
+                    <a id="zipDetalhes" class="gf3-cta-outline" href="#" hidden>Baixar este lote em ZIP</a>
+                </div>
+                <div id="historicoAntigo" class="gf3-old-history" hidden>
+                    <h3>Gerações anteriores à atualização</h3>
+                    <p>Os arquivos registrados anteriormente também ficam disponíveis para consulta.</p>
+                    <div id="listaAntigas" class="gf3-old-grid"></div>
+                </div>
+            </section>
+            <p class="gf3-legal">Fotos feitas com IA exigem revisão humana. Ângulos não presentes na fotografia do produto são aproximações visuais, não documentação fiel dos detalhes ocultos.</p>
+        </main>
+    </div>
+    <div class="gf9-overlay" id="gf9Modal" hidden role="presentation">
+        <div class="gf9-dialog" role="dialog" aria-modal="true" aria-labelledby="gf9Titulo">
+            <div class="gf9-header">
+                <div><span class="gf9-eyebrow">ESTÚDIO IA / CORREÇÃO</span>
+                    <h2 id="gf9Titulo">Corrigir imagem gerada</h2>
+                    <p id="gf9TituloImagem">Fotografia selecionada</p>
+                </div>
+                <button id="gf9Fechar" type="button" aria-label="Fechar correção">×</button>
             </div>
-          </div>
-
-          <div class="gf-photos">
-
-            <label class="gf-upload">
-              <strong>Frente do produto</strong>
-              <span>Opcional</span>
-
-              <input
-                id="fotoFrente"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
-
-              <img id="previewFrente" alt="Frente" hidden>
-            </label>
-
-            <label class="gf-upload">
-              <strong>Costas do produto</strong>
-              <span>Opcional</span>
-
-              <input
-                id="fotoCostas"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
-
-              <img id="previewCostas" alt="Costas" hidden>
-            </label>
-
-            <label class="gf-upload">
-              <strong>Foto com várias cores</strong>
-              <span>Fotografia da coleção</span>
-
-              <input
-                id="fotoColecao"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
-
-              <img id="previewColecao" alt="Coleção" hidden>
-            </label>
-
-            <label class="gf-upload">
-              <strong>Foto adicional da modelo</strong>
-              <span>
-                Necessária se não houver foto cadastrada
-              </span>
-
-              <input
-                id="fotoModelo"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
-
-              <img id="previewModelo" alt="Modelo" hidden>
-            </label>
-
-            <label class="gf-upload">
-              <strong>Detalhe do tecido ou logo</strong>
-              <span>Opcional</span>
-
-              <input
-                id="fotoDetalhe"
-                type="file"
-                accept="image/jpeg,image/png,image/webp"
-              >
-
-              <img id="previewDetalhe" alt="Detalhe" hidden>
-            </label>
-
-          </div>
-
-          <p class="gf-note">
-            Envie pelo menos uma foto real do produto:
-            frente, costas ou coleção.
-            Formatos: JPG, PNG e WEBP, até 10 MB por arquivo.
-          </p>
-
-        </section>
-
-        <!-- ========================================
-             03. CORES DO CONJUNTO
-        ========================================= -->
-
-        <section class="gf-card">
-
-          <div class="gf-card-heading">
-            <span class="gf-number">03</span>
-            <div>
-              <h2>Cores do conjunto</h2>
-              <p>
-                Adicione uma ou várias cores usando
-                a paleta de tonalidades.
-              </p>
+            <div class="gf9-content">
+                <div class="gf9-base">
+                    <strong>Fotografia atual (será preservada)</strong>
+                    <img id="gf9FotoBase" alt="Fotografia original que sera usada na correcao">
+                    <p>A correcao e feita por instrucoes de texto, sem precisar desenhar uma area na foto. A IA pode alterar detalhes adicionais; revise o resultado.</p>
+                    <label class="gf10-raiz"><input id="gf10UsarRaiz" type="checkbox" checked> Usar a fotografia inicial (V1) como base para preservar rosto e nitidez</label>
+                    <small id="gf10BaseInfo">A imagem inicial sera priorizada quando esta ja for uma versao corrigida.</small>
+                </div>
+                <form id="gf9Form" class="gf9-form" enctype="multipart/form-data">
+                    <label for="gf9Tipo">Qual detalhe deve ser corrigido?</label>
+                    <select id="gf9Tipo" required>
+                        <option value="alca_decote">Alça / decote</option>
+                        <option value="costura">Costura / recorte</option>
+                        <option value="logo">Logo / estampa</option>
+                        <option value="cos">Cós / cintura</option>
+                        <option value="tecido">Tecido / textura</option>
+                        <option value="calcado">Calçado</option>
+                        <option value="pose">Pose</option>
+                        <option value="fundo">Fundo / luz</option>
+                        <option value="aumentar_top">Aumentar comprimento do top / cropped</option>
+                        <option value="diminuir_top">Diminuir comprimento do top / cropped</option>
+                        <option value="aumentar_short">Aumentar comprimento do short</option>
+                        <option value="diminuir_short">Diminuir comprimento do short</option>
+                        <option value="ajustar_caimento">Ajustar caimento da roupa</option>
+                        <option value="trocar_cor">Trocar cor da roupa</option>
+                        <option value="outro">Outro detalhe</option>
+                    </select>
+                    <label for="gf9Descricao">Descreva a correção (sem marcar nenhuma área)</label>
+                    <textarea id="gf9Descricao" maxlength="1500" required rows="5" placeholder="Ex.: corrigir apenas a linha branca que contorna a alça do top, seguindo a referência extra. Preservar rosto, pose, cor, tecido, logo e restante da imagem."></textarea>
+                    <label for="gf9Referencia">Foto adicional do detalhe (opcional)</label>
+                    <input type="file" id="gf9Referencia" accept="image/jpeg,image/png,image/webp">
+                    <small>Uma referência de tecido, costura ou peça vestida. Até 10 MB. A pessoa da referência não substituirá a modelo.</small>
+                    <img id="gf9PreviewExtra" class="gf9-extra-preview" alt="Referência adicional" hidden>
+                    <div class="gf9-versions"><strong>Versões anteriores</strong><div id="gf9Versoes">Consultando versões...</div></div>
+                    <p class="gf9-alert" id="gf9Estado" aria-live="polite" role="status"></p>
+                    <div class="gf9-actions"><button id="gf9Cancelar" type="button">Cancelar</button><button id="gf9Enviar" type="submit">GERAR CORREÇÃO</button></div>
+                    <small>Uma correção = uma chamada paga à API. A imagem original permanece salva. Sem marcação de área, a IA processa a foto inteira, portanto confirme rosto e nitidez antes de aprovar.</small>
+                </form>
             </div>
-          </div>
-
-          <div class="gf-color-help">
-            Escolha a tonalidade na paleta ou digite
-            o código HEX. Se houver vários conjuntos
-            na mesma fotografia, informe a posição
-            de cada cor.
-          </div>
-
-          <div id="listaCores" class="gf-colors"></div>
-
-          <button
-            id="btnAdicionarCor"
-            type="button"
-            class="gf-secondary-button"
-          >
-            + ADICIONAR OUTRA COR
-          </button>
-
-          <p class="gf-note">
-            O código HEX ajuda a definir a tonalidade,
-            mas a cor final precisa ser conferida com
-            o produto real.
-          </p>
-
-        </section>
-
-        <!-- ========================================
-             04. PREPARAÇÃO DA GERAÇÃO
-        ========================================= -->
-
-        <section class="gf-card">
-
-          <div class="gf-card-heading">
-            <span class="gf-number">04</span>
-            <div>
-              <h2>Preparação da geração</h2>
-              <p>
-                Marque somente as imagens desejadas.
-                Uma opção já é suficiente.
-              </p>
-            </div>
-          </div>
-
-          <div class="gf-options">
-
-            <label class="gf-check">
-              <input
-                type="checkbox"
-                name="saida"
-                value="frente"
-                checked
-              >
-              <div>
-                <strong>Frente</strong>
-                <small>Vista frontal</small>
-              </div>
-            </label>
-
-            <label class="gf-check">
-              <input
-                type="checkbox"
-                name="saida"
-                value="costas"
-              >
-              <div>
-                <strong>Costas</strong>
-                <small>Vista traseira</small>
-              </div>
-            </label>
-
-            <label class="gf-check">
-              <input
-                type="checkbox"
-                name="saida"
-                value="lado"
-              >
-              <div>
-                <strong>Lado</strong>
-                <small>Vista lateral</small>
-              </div>
-            </label>
-
-            <label class="gf-check">
-              <input
-                type="checkbox"
-                name="saida"
-                value="detalhes"
-              >
-              <div>
-                <strong>Detalhes</strong>
-                <small>Tecido e acabamento</small>
-              </div>
-            </label>
-
-          </div>
-
-          <div class="gf-summary">
-
-            <div>
-              <span>CORES</span>
-              <strong id="totalCores">1</strong>
-            </div>
-
-            <div>
-              <span>TIPOS DE FOTO</span>
-              <strong id="totalAngulos">1</strong>
-            </div>
-
-            <div>
-              <span>IMAGENS SOLICITADAS</span>
-              <strong id="totalImagens">1</strong>
-            </div>
-
-          </div>
-
-          <h3 class="gf-subheading">
-            Prévia das imagens solicitadas
-          </h3>
-
-          <div
-            id="resultadosPrevistos"
-            class="gf-results"
-          ></div>
-
-          <button type="submit" class="gf-button">
-            VALIDAR PREPARAÇÃO
-          </button>
-
-          <p
-            id="statusGerador"
-            role="status"
-            aria-live="polite"
-          ></p>
-
-          <details
-            id="resumoPreparacao"
-            class="gf-details"
-            hidden
-          >
-            <summary>
-              Ver configuração e prompt preparado
-            </summary>
-
-            <pre id="promptPreview"></pre>
-          </details>
-
-        </section>
-
-      </form>
-
-    </main>
-  </div>
-
-  <script src="../js/store-common.js"></script>
-  <script src="../js/gerador-imagens.js?v=4"></script>
-
+        </div>
+    </div>
+    <script src="../js/store-common.js?v=27"></script>
+    <script src="../js/gerador-imagens.js?v=14"></script>
+    <script src="../js/correcoes-imagens.js?v=13"></script>
+    <script src="../js/variacoes-automaticas.js?v=12"></script>
+    <script src="../js/admin-pro.js"></script>
 </body>
 </html>

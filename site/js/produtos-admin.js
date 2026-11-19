@@ -10,7 +10,7 @@ if (
 ) {
 
     window.location.replace(
-        "../login.html?next=admin/produtos.html"
+        "../login.html?modo=admin&next=admin/produtos.html"
     );
 
 }
@@ -22,6 +22,8 @@ if (
 
 const categoriasProdutosAdmin = {
 
+    Masculino: ["Camisetas", "Shorts", "Calças", "Jaquetas", "Conjuntos"],
+
     Feminino: [
         "Conjuntos",
         "Croppeds",
@@ -29,11 +31,6 @@ const categoriasProdutosAdmin = {
         "Macaquinhos",
         "Shorts",
         "Jaquetas"
-    ],
-
-    Masculino: [
-        "Camisetas",
-        "Shorts"
     ],
 
     Calçados: [
@@ -65,6 +62,9 @@ let filtroAtual =
 
 let fotoFoiAlterada =
     false;
+
+// A tabela do site lista MODELOS, e expande todas as cores e tamanhos do estoque.
+let gf19Expandido = new Set();
 
 
 // ======================================================
@@ -199,6 +199,8 @@ function iniciar() {
     configurarEventos();
 
     renderizarTudo();
+    const chave = new URLSearchParams(window.location.search).get("produto");
+    if (chave) abrirEdicao(chave);
 
 }
 
@@ -287,10 +289,84 @@ function configurarEventos() {
 
     tabela.addEventListener(
         "click",
-        function (
+        async function (
             event
         ) {
 
+            const publicar = event.target.closest("[data-gf21-publicar]");
+            if (publicar) {
+                const chave = decodeURIComponent(publicar.dataset.gf21Publicar);
+                const indice = produtosSite.findIndex(p => p.chave === chave);
+                if (indice < 0) return;
+                const antes = produtosSite[indice];
+                const novoValor = publicar.checked;
+                publicar.disabled = true;
+                try {
+                    const resp = await fetch("/api/loja/modelo", {
+                        method: "POST", credentials: "same-origin",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ chave, alteracoes: { publicado: novoValor } })
+                    });
+                    const dados = await resp.json().catch(() => ({}));
+                    if (!resp.ok || dados.status !== "ok") throw new Error(dados.mensagem || "Erro do banco");
+                    produtosSite[indice] = dados.modelo;
+                    localStorage.setItem(GOLD_FIT_PRODUCTS_KEY, JSON.stringify(produtosSite));
+                    renderizarTudo();
+                    mostrarToast(publicar.checked ? (window.GoldFitDemoStatic ? "Publicado nesta demonstração. Cores com foto de modelo ficarão visíveis." : "Publicado no banco. As cores com fotos de modelo ficarão visíveis.") : "Produto retirado do site.");
+                } catch (erro) {
+                    produtosSite[indice] = antes;
+                    localStorage.setItem(GOLD_FIT_PRODUCTS_KEY, JSON.stringify(produtosSite));
+                    publicar.checked = antes.publicado !== false;
+                    publicar.disabled = false;
+                    mostrarToast(`Erro ao publicar: ${erro.message}`);
+                }
+                return;
+            }
+            const abrir = event.target.closest("[data-gf19-abrir]");
+            if (abrir) {
+                const chave = decodeURIComponent(abrir.dataset.gf19Abrir);
+                if (gf19Expandido.has(chave)) gf19Expandido.delete(chave);
+                else gf19Expandido.add(chave);
+                renderizarTabela();
+                return;
+            }
+            const salvar = event.target.closest("[data-gf19-salvar]");
+            if (salvar) {
+                const linha = salvar.closest("tr");
+                const campo = linha?.querySelector("[data-gf19-quantidade]");
+                const quantidade = Number(campo?.value);
+                if (!Number.isSafeInteger(quantidade) || quantidade < 0) {
+                    mostrarToast("Quantidade deve ser um numero inteiro maior ou igual a zero.");
+                    return;
+                }
+                const id = Number(salvar.dataset.gf19Salvar);
+                const estoqueBase = goldFitCarregarEstoqueBase();
+                const indice = estoqueBase.findIndex(item => Number(item.id) === id);
+                if (indice < 0) return mostrarToast("Variacao nao encontrada. Recarregue a pagina.");
+                const anterior = estoqueBase[indice].quantidade;
+                estoqueBase[indice].quantidade = quantidade;
+                salvar.disabled = true;
+                try {
+                    const resposta = await fetch("/api/loja/variacao", {
+                        method: "POST", credentials: "same-origin", cache: "no-store",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ acao: "quantidade", id, quantidade })
+                    });
+                    const dados = await resposta.json().catch(() => ({}));
+                    if (!resposta.ok || dados.status !== "ok") throw new Error(dados.mensagem || "Falha no banco.");
+                    sessionStorage.setItem("gf21_salvo", (window.GoldFitDemoStatic ? "Quantidade atualizada neste navegador." : "Quantidade atualizada no PostgreSQL."));
+                    window.location.reload();
+                    return;
+                    renderizarTudo();
+                    mostrarToast((window.GoldFitDemoStatic ? "Quantidade atualizada neste navegador." : "Quantidade atualizada no PostgreSQL."));
+                } catch (erro) {
+                    estoqueBase[indice].quantidade = anterior;
+                    localStorage.setItem(GOLD_FIT_STOCK_KEY, JSON.stringify(estoqueBase));
+                    salvar.disabled = false;
+                    mostrarToast(`Falha ao salvar no banco: ${erro.message}`);
+                }
+                return;
+            }
             const botao =
                 event.target.closest(
                     "[data-editar-produto]"
@@ -775,7 +851,10 @@ function renderizarTabela() {
                                     }
 
                                 </span>
-
+                                <label class="gf21-publish-switch" title="Publicar ou ocultar este modelo na loja">
+                                    <input type="checkbox" data-gf21-publicar="${encodeURIComponent(item.chave)}" ${item.publicado !== false ? "checked" : ""}>
+                                    <span>PUBLICAR</span>
+                                </label>
                             </td>
 
 
@@ -801,7 +880,10 @@ function renderizarTabela() {
                                             "−"
                                     }
                                 </span>
-
+                                <label class="gf21-publish-switch" title="Publicar ou ocultar este modelo na loja">
+                                    <input type="checkbox" data-gf21-publicar="${encodeURIComponent(item.chave)}" ${item.publicado !== false ? "checked" : ""}>
+                                    <span>PUBLICAR</span>
+                                </label>
                             </td>
 
 
@@ -846,17 +928,27 @@ function renderizarTabela() {
 
                                 <button
                                     type="button"
+                                    class="edit-product-button gf19-abrir"
+                                    data-gf19-abrir="${encodeURIComponent(item.chave)}"
+                                    aria-expanded="${gf19Expandido.has(item.chave)}"
+                                >
+                                    ${gf19Expandido.has(item.chave) ? "OCULTAR CORES" : "CORES / ESTOQUE"}
+                                </button>
+                                <button
+                                    type="button"
                                     class="edit-product-button"
                                     data-editar-produto="${encodeURIComponent(
                                         item.chave
                                     )}"
                                 >
-                                    EDITAR
+                                    EDITAR / FOTOS
                                 </button>
+                                <button type="button" class="edit-product-button gf21-btn-add" data-gf21-add="${encodeURIComponent(item.chave)}">+ COR / TAMANHO</button>
 
                             </td>
 
                         </tr>
+                        ${gf19RenderizarVariacoes(item.chave, variacoes)}
                     `;
 
                 }
@@ -865,6 +957,32 @@ function renderizarTabela() {
 
 }
 
+
+// Um unico modelo; as variacoes sao linhas internas, e a quantidade
+// e salva diretamente na mesma tela. O estoque antigo continua preservado.
+function gf19RenderizarVariacoes(chave, variacoes) {
+    if (!gf19Expandido.has(chave)) return "";
+    const ordem = [...variacoes].sort((a,b) =>
+        String(a.cor).localeCompare(String(b.cor), "pt-BR") ||
+        String(a.tamanho).localeCompare(String(b.tamanho), "pt-BR"));
+    const unidades = ordem.reduce((s,v) => s + Math.max(0,Number(v.quantidade)||0),0);
+    const linhas = ordem.map(v => `<tr>
+        <td>${goldFitEscapeHtml(v.cor)}</td>
+        <td>${goldFitEscapeHtml(v.tamanho)}</td>
+        <td>${goldFitEscapeHtml(v.sku)}</td>
+        <td><input type="number" data-gf19-quantidade min="0" step="1" value="${Math.max(0,Number(v.quantidade)||0)}" aria-label="Quantidade de ${goldFitEscapeHtml(v.sku)}"></td>
+        <td class="gf21-var-actions"><button type="button" data-gf19-salvar="${Number(v.id)}">SALVAR QTD.</button>
+          <button type="button" data-gf21-editar="${Number(v.id)}">EDITAR</button>
+          <button type="button" data-gf21-excluir="${Number(v.id)}">EXCLUIR</button></td>
+    </tr>`).join("");
+    return `<tr class="gf19-detalhes"><td colspan="9">
+        <div class="gf19-variacoes-box">
+            <p><strong>${ordem.length} variaç${ordem.length===1?"ão":"ões"} · ${unidades} unidade(s)</strong> — todas as cores e tamanhos deste modelo.</p>
+            <table class="gf19-variacoes-tabela"><thead><tr><th>Cor</th><th>Tamanho</th><th>SKU</th><th>Quantidade</th><th>Ação</th></tr></thead>
+              <tbody>${linhas}</tbody></table>
+            <small>A cor so aparece na loja depois de ter uma foto de modelo vestindo-a aprovada em EDITAR / FOTOS.</small>
+        </div></td></tr>`;
+}
 
 // ======================================================
 // ABRIR EDIÇÃO
@@ -989,6 +1107,35 @@ function abrirEdicao(
     campoFoto.value =
         "";
 
+
+    const gf21CorCapa = document.getElementById("gf21CorCapa");
+    if (gf21CorCapa) {
+        gf21CorCapa.innerHTML = '<option value="">Automática — primeira cor com foto</option>';
+        const cores = [...new Set(estoque.filter(v => goldFitChaveProduto(v.produto, v.marca) === produto.chave)
+            .map(v => String(v.cor || "").trim()).filter(Boolean))];
+        for (const cor of cores) {
+            const option = document.createElement("option");
+            option.value = cor;
+            option.textContent = cor;
+            gf21CorCapa.appendChild(option);
+        }
+        gf21CorCapa.value = produto.corCapa || "";
+        // Opções sem foto aprovada ficam indisponíveis, sem apagar o estoque.
+        fetch(`/api/galeria-produtos?chave=${encodeURIComponent(produto.chave)}`, { credentials: "same-origin", cache: "no-store" })
+            .then(r => r.ok ? r.json() : Promise.reject(new Error("Galeria indisponível")))
+            .then(dados => {
+                if (campoChave.value !== produto.chave) return;
+                const aprovadas = new Set((dados.fotos || []).filter(f => f.tipoFoto === "modelo")
+                    .map(f => String(f.cor || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase()));
+                for (const opt of gf21CorCapa.options) {
+                    if (!opt.value) continue;
+                    const chave = opt.value.normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim().toLowerCase();
+                    opt.disabled = !aprovadas.has(chave);
+                    if (opt.disabled) opt.textContent += " (sem foto de modelo)";
+                }
+                if (gf21CorCapa.selectedOptions[0]?.disabled) gf21CorCapa.value = "";
+            }).catch(erro => console.warn("Seleção de capa:", erro.message));
+    }
 
     modal.classList.remove(
         "hidden"
@@ -1256,7 +1403,7 @@ function removerFoto() {
 // SALVAR
 // ======================================================
 
-function salvarProdutoSite(
+async function salvarProdutoSite(
     event
 ) {
 
@@ -1353,6 +1500,8 @@ function salvarProdutoSite(
         fotoPrincipal:
             campoFotoBase64.value,
 
+        corCapa: document.getElementById("gf21CorCapa")?.value || "",
+
         publicado:
             campoPublicado.checked,
 
@@ -1368,89 +1517,32 @@ function salvarProdutoSite(
     };
 
 
-    produtosSite[
-        indice
-    ] =
-        produtoAtualizado;
-
-
-    goldFitSalvarProdutosSite(
-        produtosSite
-    );
-
-
-    // ==================================================
-    // SINCRONIZAR CAMPOS COM AS VARIAÇÕES DO ESTOQUE
-    //
-    // Cor, tamanho, SKU e quantidade continuam
-    // pertencendo ao módulo Estoque.
-    // ==================================================
-
-    const estoqueBase =
-        goldFitCarregarEstoqueBase();
-
-
-    const estoqueAtualizado =
-        estoqueBase.map(
-            variacao => {
-
-                const chaveVariacao =
-                    goldFitChaveProduto(
-                        variacao.produto,
-                        variacao.marca
-                    );
-
-
-                if (
-                    chaveVariacao !==
-                    chave
-                ) {
-
-                    return variacao;
-
-                }
-
-
-                return {
-
-                    ...variacao,
-
-                    grupo:
-                        produtoAtualizado.grupo,
-
-                    categoria:
-                        produtoAtualizado.categoria,
-
-                    preco:
-                        produtoAtualizado.preco,
-
-                    foto:
-                        fotoFoiAlterada
-                            ?
-                            produtoAtualizado.fotoPrincipal
-                            :
-                            variacao.foto
-
-                };
-
-            }
-        );
-
-
-    goldFitSalvarEstoque(
-        estoqueAtualizado
-    );
-
+    try {
+        const resposta = await fetch("/api/loja/modelo", {
+            method: "POST", credentials: "same-origin", cache: "no-store",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ chave, alteracoes: {
+                grupo: produtoAtualizado.grupo, categoria: produtoAtualizado.categoria,
+                preco: produtoAtualizado.preco, fotoPrincipal: produtoAtualizado.fotoPrincipal,
+                corCapa: produtoAtualizado.corCapa, publicado: produtoAtualizado.publicado,
+                destaque: produtoAtualizado.destaque, lancamento: produtoAtualizado.lancamento,
+                ordem: produtoAtualizado.ordem
+            } })
+        });
+        const dados = await resposta.json().catch(() => ({}));
+        if (!resposta.ok || dados.status !== "ok") throw new Error(dados.mensagem || "Erro ao salvar no banco");
+        produtosSite[indice] = dados.modelo;
+        localStorage.setItem(GOLD_FIT_PRODUCTS_KEY, JSON.stringify(produtosSite));
+        // Preço/categoria das variações serão sincronizados na leitura do banco.
+    } catch (erro) {
+        console.error("Falha ao publicar:", erro);
+        mostrarToast(`Falha ao publicar no PostgreSQL: ${erro.message}`);
+        return;
+    }
 
     fecharModal();
-
-
     renderizarTudo();
-
-
-    mostrarToast(
-        "Produto atualizado no site."
-    );
+    mostrarToast((window.GoldFitDemoStatic ? "Publicação salva nesta demonstração. Atualize a vitrine para conferir." : "Publicacao confirmada no banco. Atualize a vitrine para conferir."));
 
 }
 
@@ -1510,3 +1602,9 @@ function mostrarToast(
         );
 
 }
+// V27: refletir sincronizacao da API sem desmontar a pagina administrativa.
+window.addEventListener("goldfit:estado-atualizado", () => {
+    // Durante a edicao, nao substituir os campos preenchidos pelo administrador.
+    if (modal && !modal.classList.contains("hidden")) return;
+    renderizarTudo();
+});

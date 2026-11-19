@@ -1,0 +1,16 @@
+/* Gold Fit Pro V14 - Referencias do produto, sem alterar o restante do gerador */
+.gf14-referencias{margin-top:20px;padding:18px;border:1px solid #dedede;border-radius:8px;background:#fcfcfc}
+.gf14-referencias h3{margin:0 0 8px;font-size:14px;font-weight:800;color:#141414}
+.gf14-referencias h3 small{font-size:11px;font-weight:500;color:#707070}
+.gf14-referencias>p{margin:0 0 14px;color:#555;font-size:12px;line-height:1.6}
+.gf14-referencias-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.gf14-referencias-grid label{min-width:0;padding:12px;border:1px solid #dedede;background:white;border-radius:6px;font-size:12px;font-weight:700}
+.gf14-referencias-grid input{display:block;width:100%;max-width:100%;margin:9px 0;font:inherit;font-size:11px}
+.gf14-referencias-grid small{display:block;color:#777;font-size:11px;font-weight:400;line-height:1.6}
+.gf14-referencias-status{margin:14px 0 0!important;font-size:11px!important;color:#646464!important}
+@media(max-width:660px){.gf14-referencias-grid{grid-template-columns:1fr}}
+
+.gf14-classificacao-principal{margin-top:15px;margin-bottom:16px;border:1px solid #e6e6e6;padding:13px;background:#fafafa;border-radius:6px}
+.gf14-classificacao-principal label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}
+.gf14-classificacao-principal select,.gf14-referencias-grid select{padding:9px;width:100%;border:1px solid #ddd;background:white;color:#333;font-size:12px}
+.gf14-classificacao-principal small{display:block;font-size:11px;color:#666;line-height:1.5;margin-top:6px}

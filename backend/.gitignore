@@ -1,12 +1,40 @@
 
-# Configurações privadas
-.env
-.env.local
-.env.*.local
+# Editor
+.vscode/
+.idea/
 
-# Dependências do Node.js
+# Ambiente e credenciais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Dependências
 node_modules/
 
-# Arquivos de log
-npm-debug.log*
+# Fotografias armazenadas pelo backend
+backend/uploads/
+
+# Backups do banco de dados
+*.backup
+*.dump
+*.bak
+*.sql.gz
+
+# Arquivos temporários
 *.log
+*.tmp
+*.temp
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Builds futuros
+dist/
+build/
+.next/
+.vercel/
+coverage/

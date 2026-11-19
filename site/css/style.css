@@ -57,9 +57,7 @@
         border-box;
 :root {
     --font-main:
-        Arial,
-        Helvetica,
-        sans-serif;
+        "Montserrat", Arial, sans-serif;
 
     --black:
         #0a0a0a;
@@ -1721,7 +1719,7 @@ html {
 }
 
 :root {
-    --font-main: Arial, Helvetica, sans-serif;
+    --font-main: "Montserrat", Arial, sans-serif;
 
     --font-size-small: 10px;
     --font-size-normal: 12px;

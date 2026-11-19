@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Produtos e Estoque — Demonstração | Gold Fit</title><link rel="stylesheet" href="../css/painel-demo.css"></head>
+<body>
+<div class="bar"><span>GOLD FIT · PAINEL DEMONSTRATIVO</span><span>UFOPA · PROJETO ACADÊMICO</span></div>
+<header><a class="brand" href="../index.html"><span>GOLD</span> FIT</a><nav><a href="../index.html">Ver loja</a><a href="./estudio-demo.html">Modelos e fotografias</a><button id="sair" type="button">Sair</button></nav></header>
+<div class="wrapper"><aside><div class="admin"><b>A</b><div>Administrador Gold Fit<small>admin@goldfit.demo</small></div></div><a class="active" href="./painel-demo.html">01 · Produtos e Estoque</a><a href="./estudio-demo.html">02 · Gerador IA — histórico</a><p class="aside-tip">Modo estático: sem API, sem banco e sem geração.</p></aside>
+<main>
+<div class="eyebrow">GERENCIAMENTO / APRESENTAÇÃO</div><h1>Produtos e Estoque</h1><p class="subtitle">Modelos, cores, tamanhos, quantidades e publicação em uma única tela de demonstração.</p>
+<div class="notice"><b>DEMONSTRAÇÃO LOCAL</b> — Os dados iniciais são exemplos do código do projeto; <strong>não representam o estoque atual do PostgreSQL.</strong> As alterações são salvas somente neste navegador. Nenhum dado é enviado ao servidor ou ao GitHub.</div>
+<div class="stats"><article><small>MODELOS</small><b id="modelosTotal">—</b></article><article><small>VARIAÇÕES</small><b id="variacoesTotal">—</b></article><article><small>UNIDADES</small><b id="unidadesTotal">—</b></article><article><small>PUBLICADOS</small><b id="publicadosTotal">—</b></article></div>
+<section><div class="section-head"><div><div class="eyebrow">CATÁLOGO INTEGRADO</div><h2>Gerenciamento de produtos</h2></div><div class="actions"><button id="novo" class="primary">+ NOVO PRODUTO / VARIAÇÃO</button></div></div>
+<div class="toolbar"><input id="busca" type="search" placeholder="Buscar produto, cor, marca ou SKU" aria-label="Buscar"><select id="filtro"><option value="">Todas as categorias</option><option>Feminino</option><option>Masculino</option><option>Calçados</option><option>Acessórios</option></select></div>
+<div id="lista" class="lista"></div><p class="empty" id="vazio" hidden>Nenhum produto encontrado.</p></section>
+<section class="links"><a href="./estudio-demo.html">ABRIR HISTÓRICO DE FOTOS E MODELOS →</a><button id="restaurar" type="button">RESTAURAR EXEMPLOS DE DEMONSTRAÇÃO</button></section>
+</main></div>
+<dialog id="editor"><form id="form" method="dialog"><div class="modalhead"><h2 id="tituloModal">Editar variação</h2><button type="button" id="fechar" aria-label="Fechar">✕</button></div><div class="formgrid">
+<label>Modelo <input name="produto" required maxlength="120"></label><label>Marca <input name="marca" required maxlength="60"></label>
+<label>Grupo <select name="grupo"><option>Feminino</option><option>Masculino</option><option>Calçados</option><option>Acessórios</option></select></label><label>Categoria <input name="categoria" required maxlength="60"></label>
+<label>Cor <input name="cor" required maxlength="60"></label><label>Tamanho <input name="tamanho" required maxlength="35"></label>
+<label>SKU <input name="sku" required maxlength="100"></label><label>Quantidade <input name="quantidade" type="number" min="0" step="1" required></label>
+</div><div class="formactions"><button id="cancelar" type="button">CANCELAR</button><button type="submit" class="primary">SALVAR NA DEMONSTRAÇÃO</button></div><p id="erroForm" class="erro" aria-live="polite"></p></form></dialog>
+<script src="../js/painel-demo-dados.js"></script><script src="../js/painel-demo.js"></script>
+</body></html>

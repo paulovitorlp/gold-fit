@@ -3,15 +3,23 @@ const parametros = new URLSearchParams(window.location.search);
 const chaveProduto = parametros.get("produto");
 
 let estoque = goldFitCarregarEstoque();
+let configuracoesBanco = null;
 let produto = null;
 let corSelecionada = null;
 let tamanhoSelecionado = null;
 let quantidade = 1;
 let favoritos = carregarFavoritos();
+let galeriaFotosCor = new Map();
+let fotosGaleria = [];
+let bancoEstoqueConfirmado = false;
+let carregandoEstoque = true;
+const coresV11 = window.GoldFitGaleriaV11;
 
 iniciarProduto();
 
-function iniciarProduto() {
+async function iniciarProduto() {
+    // O estoque persistido no PostgreSQL e consultado antes de exibir disponibilidade.
+    await atualizarEstoqueDoBanco();
     localizarProduto();
 
     if (!produto) {
@@ -21,36 +29,38 @@ function iniciarProduto() {
 
     configurarEventos();
     preencherProduto();
+    await carregarGaleriaPorCor();
     atualizarCarrinho();
     renderizarRelacionados();
 }
 
-function agruparProdutos() {
-    const mapa = new Map();
-
-    estoque.forEach(item => {
-        const chave = `${item.produto}|${item.marca}`;
-
-        if (!mapa.has(chave)) {
-            mapa.set(chave, {
-                chave,
-                produto: item.produto,
-                marca: item.marca,
-                grupo: item.grupo,
-                categoria: item.categoria,
-                preco: Number(
-                    item.preco ||
-                    goldFitPrecoProduto(item.produto) ||
-                    0
-                ),
-                variacoes: []
-            });
+async function atualizarEstoqueDoBanco() {
+    try {
+        const resposta = await fetch("/api/loja/estado?visao=publica", { credentials: "same-origin", cache: "no-store" });
+        if (!resposta.ok) throw new Error("Estoque indisponível");
+        const dados = await resposta.json();
+        if (!Array.isArray(dados.estoque) || !Array.isArray(dados.produtos)) {
+            throw new Error("Publicacao ainda nao disponivel no PostgreSQL");
         }
+        configuracoesBanco = dados.produtos;
+        bancoEstoqueConfirmado = true;
+        // Não reutilizar cores antigas do localStorage: a API pública só devolve
+        // variações com fotos aprovadas da cor correspondente.
+        estoque = dados.estoque.map(item => ({
+            ...item, quantidade: Math.max(0, Number(item.quantidade) || 0)
+        }));
+    } catch (erro) {
+        console.warn("Não foi possível confirmar o estoque no PostgreSQL:", erro.message);
+    } finally {
+        carregandoEstoque = false;
+    }
+}
 
-        mapa.get(chave).variacoes.push(item);
-    });
-
-    return Array.from(mapa.values());
+function agruparProdutos() {
+    return goldFitAgruparModelosVitrine(
+        estoque,
+        Array.isArray(configuracoesBanco) ? configuracoesBanco : goldFitCarregarProdutosSite()
+    );
 }
 
 function localizarProduto() {
@@ -121,7 +131,8 @@ function obterConfiguracaoProduto() {
     }
 
     try {
-        const configuracoes = goldFitCarregarProdutosSite();
+        const configuracoes = Array.isArray(configuracoesBanco)
+            ? configuracoesBanco : goldFitCarregarProdutosSite();
 
         return configuracoes.find(config => {
             if (config.chave === produto.chave) {
@@ -144,33 +155,72 @@ function obterConfiguracaoProduto() {
     }
 }
 
-function obterFotosProduto() {
-    const fotos = [];
-
-    produto.variacoes.forEach(variacao => {
-        adicionarFoto(fotos, variacao.foto);
-        adicionarFoto(fotos, variacao.fotoPrincipal);
-        adicionarFoto(fotos, variacao.fotoSecundaria);
-        adicionarFoto(fotos, variacao.imagem);
-        adicionarFoto(fotos, variacao.url_imagem);
-        adicionarFoto(fotos, variacao.fotos);
-        adicionarFoto(fotos, variacao.imagens);
-    });
-
-    const configuracao = obterConfiguracaoProduto();
-
-    if (configuracao) {
-        adicionarFoto(fotos, configuracao.fotoPrincipal);
-        adicionarFoto(fotos, configuracao.fotoSecundaria);
-        adicionarFoto(fotos, configuracao.fotoHover);
-        adicionarFoto(fotos, configuracao.foto);
-        adicionarFoto(fotos, configuracao.fotos);
-        adicionarFoto(fotos, configuracao.imagens);
+async function carregarGaleriaPorCor() {
+    try {
+        const resposta = await fetch(`/api/galeria-produtos?visao=publica&chave=${encodeURIComponent(produto.chave)}`, {
+            cache: "no-store"
+        });
+        if (!resposta.ok) throw new Error("Galeria indisponível");
+        const dados = await resposta.json();
+        if (dados.status !== "ok") throw new Error(dados.mensagem || "Galeria indisponível");
+        fotosGaleria = Array.isArray(dados.fotos) ? dados.fotos : [];
+        galeriaFotosCor = new Map();
+        for (const foto of fotosGaleria) {
+            const chave = coresV11.chaveCor(foto.cor);
+            if (!galeriaFotosCor.has(chave)) galeriaFotosCor.set(chave, []);
+            galeriaFotosCor.get(chave).push(foto);
+        }
+        for (const itens of galeriaFotosCor.values()) itens.sort((a, b) => a.ordem - b.ordem);
+        renderizarCores();
+    } catch (erro) {
+        console.warn("Galeria por cor indisponível:", erro.message);
+        renderizarGaleria();
     }
+}
 
-    return fotos.length
-        ? fotos
-        : [goldFitPlaceholder(produto)];
+function obterFotosProduto() {
+    // Somente fotografias pertencentes à cor selecionada.
+    const album = coresV11.fotosDaCor(fotosGaleria, corSelecionada);
+    if (album.length) return album.map(foto => foto.url);
+
+    // Se a cor ainda não tem álbum, NUNCA utilizar a foto cadastrada para outra cor.
+    // O legado possui uma mesma foto principal atribuída a todas as variações.
+    const coresEstoque = coresV11.coresParaExibir([], produto.variacoes, []);
+    const corDaCapaAntiga = coresEstoque[0];
+    if (coresEstoque.length > 1 && !coresV11.mesmaCor(corSelecionada, corDaCapaAntiga)) {
+        return [goldFitPlaceholder(produto)];
+    }
+    if (fotosGaleria.length) return [goldFitPlaceholder(produto)];
+    // Sem galeria publicada, nenhuma cor pode ser considerada fotografada.
+    // A capa antiga fica apenas como legado, sem associacao falsa a outras cores.
+    if (!corSelecionada) return [goldFitPlaceholder(produto)];
+
+    const fotos = [];
+    for (const variacao of produto.variacoes.filter(v => !corSelecionada || coresV11.mesmaCor(v.cor, corSelecionada))) {
+        for (const campo of ["foto", "fotoPrincipal", "fotoSecundaria", "imagem", "url_imagem", "fotos", "imagens"]) {
+            adicionarFoto(fotos, variacao[campo]);
+        }
+    }
+    if (!fotos.length && (!corSelecionada || coresV11.mesmaCor(corSelecionada, corDaCapaAntiga))) {
+        const config = obterConfiguracaoProduto();
+        if (config) adicionarFoto(fotos, config.fotoPrincipal || config.foto);
+    }
+    return fotos.length ? fotos.slice(0, 4) : [goldFitPlaceholder(produto)];
+}
+
+function informarFotosDaCor() {
+    const aviso = document.getElementById("avisoFotosCor");
+    if (!aviso) return;
+    const album = coresV11.fotosDaCor(fotosGaleria, corSelecionada);
+    if (album.length) {
+        aviso.textContent = `${album.length} foto(s) cadastrada(s) da cor ${corSelecionada}.`;
+        aviso.classList.remove("gf11-sem-foto");
+    } else {
+        aviso.textContent = corSelecionada
+            ? `A cor ${corSelecionada} ainda nao tem foto de modelo aprovada.`
+            : "Imagem ilustrativa. Cadastre uma foto de modelo vestindo o produto para habilitar as cores e a compra.";
+        aviso.classList.add("gf11-sem-foto");
+    }
 }
 
 function definirImagemComFallback(elemento, src) {
@@ -184,12 +234,39 @@ function definirImagemComFallback(elemento, src) {
     elemento.src = src || fallback;
 }
 
+
+// Tenta harmonizar o painel com a cor das bordas da fotografia sem distorcer ou recomprimir a imagem.
+function harmonizarFundoFoto(img) {
+    if (!img) return;
+    const alvo = document.getElementById("areaImagemPrincipal");
+    if (!alvo) return;
+    const analisar = () => {
+        try {
+            if (!img.naturalWidth || !img.naturalHeight) return;
+            const canvas = document.createElement("canvas");
+            canvas.width = 4; canvas.height = 4;
+            const ctx = canvas.getContext("2d", {willReadFrequently:true});
+            ctx.drawImage(img,0,0,4,4);
+            const d = ctx.getImageData(0,0,4,4).data;
+            const indices = [0,3,12,15].map(i=>i*4);
+            const canais = [0,1,2].map(c=>Math.round(indices.reduce((s,i)=>s+d[i+c],0)/4));
+            if (indices.some(i=>d[i+3]<245)) return; // transparente: usar fundo neutro
+            const dist = Math.max(...canais)-Math.min(...canais);
+            if (dist > 27) return; // fundo colorido, nao tentar imitar
+            alvo.style.backgroundColor = `rgb(${canais.join(",")})`;
+        } catch (_) { /* Imagem nao legivel por politicas de origem: manter fundo neutro */ }
+    };
+    if (img.complete) analisar(); else img.addEventListener("load", analisar, {once:true});
+}
+
 function renderizarGaleria() {
     const fotos = obterFotosProduto();
     const principal = document.getElementById("imagemPrincipal");
 
     definirImagemComFallback(principal, fotos[0]);
-    principal.alt = produto.produto;
+    harmonizarFundoFoto(principal);
+    principal.alt = `${produto.produto} — cor ${corSelecionada || "não selecionada"}`;
+    informarFotosDaCor();
 
     document.getElementById("miniaturasProduto").innerHTML = fotos
         .map((foto, index) => `
@@ -229,6 +306,7 @@ function trocarFoto(indice) {
     const principal = document.getElementById("imagemPrincipal");
 
     definirImagemComFallback(principal, fotos[indice]);
+    harmonizarFundoFoto(principal);
 
     document.querySelectorAll(".thumbnail-button").forEach(
         (botao, index) => {
@@ -243,61 +321,61 @@ function trocarFoto(indice) {
 /* COR E TAMANHO */
 
 function obterVariacao(cor, tamanho) {
-    return produto.variacoes.find(
-        item =>
-            item.cor === cor &&
-            item.tamanho === tamanho
-    ) || null;
+    return coresV11.variacao(produto.variacoes, cor, tamanho);
 }
 
 function corTemEstoque(cor) {
-    return produto.variacoes.some(
-        item =>
-            item.cor === cor &&
-            Number(item.quantidade) > 0
-    );
+    return coresV11.quantidadeCor(produto.variacoes, cor) > 0;
 }
 
 function renderizarCores() {
-    const opcoes = goldFitOpcoesProduto(
-        produto.produto,
-        produto.variacoes
-    );
-
+    const opcoes = goldFitOpcoesProduto(produto.produto, produto.variacoes);
+    // Cores com fotografias cadastradas aparecem mesmo sem saldo em estoque.
+    const cores = coresV11.coresParaExibir(opcoes.cores, produto.variacoes, fotosGaleria)
+        .filter(cor => coresV11.fotosDaCor(fotosGaleria, cor).length > 0);
     const container = document.getElementById("coresProduto");
-
-    container.innerHTML = opcoes.cores.map(cor => {
-        const disponivel = corTemEstoque(cor);
-
-        return `
-            <button
-                type="button"
-                class="product-option-button ${
-                    disponivel ? "" : "color-unavailable"
-                }"
-                data-cor="${goldFitEscapeHtml(cor)}"
-            >
-                ${goldFitEscapeHtml(cor)}
-            </button>
-        `;
-    }).join("");
-
-    container.querySelectorAll("[data-cor]").forEach(botao => {
-        botao.addEventListener("click", () => {
-            selecionarCor(botao.dataset.cor);
-        });
-    });
-
-    const primeiraDisponivel =
-        opcoes.cores.find(corTemEstoque) ||
-        opcoes.cores[0];
-
-    if (primeiraDisponivel) {
-        selecionarCor(primeiraDisponivel);
+    if (!cores.length) {
+        corSelecionada = null;
+        tamanhoSelecionado = null;
+        container.innerHTML = "";
+        document.getElementById("corAtual").textContent = "Fotos em preparação";
+        renderizarGaleria();
+        renderizarTamanhos();
+        return;
     }
+    container.innerHTML = cores.map(cor => {
+        const emEstoque = corTemEstoque(cor);
+        const temFoto = coresV11.fotosDaCor(fotosGaleria, cor).length > 0;
+        return `
+            <button type="button"
+                class="product-option-button ${temFoto ? (emEstoque ? "" : "gf11-cor-esgotada") : "unavailable gf14-cor-sem-foto"}"
+                data-cor="${goldFitEscapeHtml(cor)}"
+                title="${temFoto ? (emEstoque ? "Fotos publicadas; disponível" : "Fotos publicadas; esgotado") : "Sem fotografia cadastrada para esta cor"}"
+                aria-label="Cor ${goldFitEscapeHtml(cor)}${temFoto ? (emEstoque ? "" : ", esgotada") : ", sem fotos disponíveis"}"
+                ${temFoto ? "" : "disabled"}>
+                ${goldFitEscapeHtml(cor)}
+            </button>`;
+    }).join("");
+    container.querySelectorAll("[data-cor]").forEach(botao => {
+        botao.addEventListener("click", () => selecionarCor(botao.dataset.cor));
+    });
+    const solicitada = new URLSearchParams(window.location.search).get("cor");
+    const anterior = cores.find(cor => coresV11.mesmaCor(cor, corSelecionada));
+    const corLink = cores.find(cor => coresV11.mesmaCor(cor, solicitada));
+    const temGaleria = cor => coresV11.fotosDaCor(fotosGaleria, cor).length > 0;
+    const primeira = cores.find(cor => temGaleria(cor) && corTemEstoque(cor)) || cores.find(temGaleria);
+    // Link ?cor tem prioridade; sem cor no link, respeita a capa definida no painel.
+    const capaConfigurada = obterConfiguracaoProduto()?.corCapa;
+    const corCapa = cores.find(cor => coresV11.mesmaCor(cor, capaConfigurada));
+    const selecionada = (corLink && temGaleria(corLink) ? corLink : null)
+        || (anterior && temGaleria(anterior) ? anterior : null)
+        || (corCapa && temGaleria(corCapa) ? corCapa : null)
+        || primeira;
+    if (selecionada) selecionarCor(selecionada);
 }
 
 function selecionarCor(cor) {
+    if (!coresV11.fotosDaCor(fotosGaleria, cor).length) return;
     corSelecionada = cor;
     tamanhoSelecionado = null;
     quantidade = 1;
@@ -315,33 +393,14 @@ function selecionarCor(cor) {
         );
     });
 
-    const variacaoComFoto = produto.variacoes.find(item => {
-        if (item.cor !== corSelecionada) {
-            return false;
-        }
-
-        return Boolean(
-            item.foto ||
-            item.fotoPrincipal ||
-            item.imagem ||
-            item.url_imagem
-        );
-    });
-
-    if (variacaoComFoto) {
-        const foto =
-            variacaoComFoto.foto ||
-            variacaoComFoto.fotoPrincipal ||
-            variacaoComFoto.imagem ||
-            variacaoComFoto.url_imagem;
-
-        definirImagemComFallback(
-            document.getElementById("imagemPrincipal"),
-            foto
-        );
-    }
-
+    renderizarGaleria();
     renderizarTamanhos();
+    // A cor pode ser compartilhada por link sem interferir na disponibilidade.
+    try {
+        const endereco = new URL(window.location.href);
+        endereco.searchParams.set("cor", cor);
+        history.replaceState(null, "", endereco.pathname + endereco.search + endereco.hash);
+    } catch (_) { /* compatibilidade com testes locais */ }
 }
 
 function renderizarTamanhos() {
@@ -351,6 +410,12 @@ function renderizarTamanhos() {
     );
 
     const container = document.getElementById("tamanhosProduto");
+    if (!corSelecionada) {
+        container.innerHTML = "";
+        document.getElementById("tamanhoAtual").textContent = "Aguardando fotos";
+        atualizarStatus();
+        return;
+    }
 
     container.innerHTML = opcoes.tamanhos.map(tamanho => {
         const variacao = obterVariacao(
@@ -359,7 +424,7 @@ function renderizarTamanhos() {
         );
 
         const disponivel =
-            variacao &&
+            bancoEstoqueConfirmado && variacao &&
             Number(variacao.quantidade) > 0;
 
         return `
@@ -391,7 +456,7 @@ function renderizarTamanhos() {
         );
 
         return (
-            variacao &&
+            bancoEstoqueConfirmado && variacao &&
             Number(variacao.quantidade) > 0
         );
     });
@@ -440,14 +505,18 @@ function atualizarStatus() {
     const variacao = variacaoAtual();
 
     const disponivel =
-        variacao &&
+        bancoEstoqueConfirmado && variacao &&
         Number(variacao.quantidade) > 0;
 
     const status = document.getElementById("statusEstoque");
 
-    status.textContent = disponivel
-        ? `Disponível • ${variacao.quantidade} unidade(s)`
-        : "Combinação indisponível";
+    status.textContent = !bancoEstoqueConfirmado
+        ? "Estoque ainda não confirmado. Consulte a loja."
+        : !corSelecionada
+            ? "Produto publicado para demonstração. Fotos em preparação; compra indisponível até cadastrar foto de modelo para a cor."
+            : disponivel
+                ? `Disponível • ${variacao.quantidade} unidade(s)`
+                : `Cor ${corSelecionada} sem estoque no tamanho escolhido.`;
 
     status.classList.toggle("out", !disponivel);
 
@@ -494,11 +563,11 @@ function atualizarQuantidade() {
 
 function obterFotoCarrinho(variacao) {
     return (
+        obterFotosProduto()[0] ||
         variacao.foto ||
         variacao.fotoPrincipal ||
         variacao.imagem ||
         variacao.url_imagem ||
-        obterFotosProduto()[0] ||
         goldFitPlaceholder(produto)
     );
 }
@@ -507,6 +576,7 @@ function adicionarCarrinho() {
     const variacao = variacaoAtual();
 
     if (
+        !bancoEstoqueConfirmado ||
         !variacao ||
         Number(variacao.quantidade) <= 0
     ) {
@@ -757,22 +827,6 @@ function configurarEventos() {
                 sessao && sessao.perfil === "admin"
                     ? "./admin/estoque.html"
                     : "./login.html";
-        });
-
-    document.getElementById("btnAvaliarProduto")
-        .addEventListener("click", () => {
-            const sessao = goldFitCarregarSessao();
-
-            if (!sessao) {
-                window.location.href =
-                    `./login.html?next=${encodeURIComponent(window.location.href)}`;
-
-                return;
-            }
-
-            mostrarToast(
-                "Módulo de avaliações será conectado ao banco posteriormente."
-            );
         });
 
     document.getElementById("btnGuiaMedidas")

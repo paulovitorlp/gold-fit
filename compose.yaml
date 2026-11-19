@@ -1,0 +1,80 @@
+name: goldfit-pro
+services:
+  site:
+    build:
+      context: .
+      dockerfile: docker/site/Dockerfile
+    ports:
+      - "127.0.0.1:${SITE_PORT:-8080}:80"
+    depends_on:
+      painel:
+        condition: service_started
+    restart: unless-stopped
+    networks:
+      - goldfit
+
+  painel:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+      PGHOST: banco
+      PGPORT: 5432
+      PGDATABASE: ${PGDATABASE:-goldfit_db}
+      PGUSER: ${PGUSER:-postgres}
+      PGPASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD no .env da raiz}
+      SESSION_SECRET: ${SESSION_SECRET:?Configure SESSION_SECRET no .env da raiz}
+      GF_ADMIN_PASSWORD: ${GF_ADMIN_PASSWORD:?Configure GF_ADMIN_PASSWORD no .env da raiz}
+      GF_UPLOAD_TOKEN: ${GF_UPLOAD_TOKEN:-}
+      OPENAI_API_KEY: ${OPENAI_API_KEY:-}
+      GF_IMAGE_MODEL: ${GF_IMAGE_MODEL:-gpt-image-2.5-flare}
+      COOKIE_SECURE: "false"
+    ports:
+      - "127.0.0.1:${ADMIN_PORT:-3000}:3000"
+    volumes:
+      - ./backend/uploads:/app/backend/uploads
+    depends_on:
+      banco:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - goldfit
+
+  banco:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: ${PGDATABASE:-goldfit_db}
+      POSTGRES_USER: ${PGUSER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Configure POSTGRES_PASSWORD no .env da raiz}
+    ports:
+      - "127.0.0.1:${DB_PORT:-5433}:5432"
+    volumes:
+      - goldfit_pgdata:/var/lib/postgresql/data
+      - ./banco-de-dados/02_criar_tabelas.sql:/docker-entrypoint-initdb.d/10_tabelas.sql:ro
+      - ./banco-de-dados/12_gerador_imagens_ia.sql:/docker-entrypoint-initdb.d/20_modelos.sql:ro
+      - ./banco-de-dados/13_importar_base_modelos_poliamida_lisa.sql:/docker-entrypoint-initdb.d/30_estilos.sql:ro
+      - ./banco-de-dados/14_estado_loja_pro.sql:/docker-entrypoint-initdb.d/40_estado_loja.sql:ro
+      - ./banco-de-dados/15_melhoria_gerador_ia_lotes_historico.sql:/docker-entrypoint-initdb.d/50_lotes_historico.sql:ro
+      - ./banco-de-dados/16_referencias_aprovadas_pose.sql:/docker-entrypoint-initdb.d/60_referencias_aprovadas_pose.sql:ro
+      - ./banco-de-dados/17_galeria_produtos_cor.sql:/docker-entrypoint-initdb.d/70_galeria_produtos_cor.sql:ro
+      - ./banco-de-dados/18_correcao_imagens_ia.sql:/docker-entrypoint-initdb.d/80_correcao_imagens_ia.sql:ro
+      - ./banco-de-dados/19_variacoes_automaticas_ia.sql:/docker-entrypoint-initdb.d/90_variacoes_automaticas.sql:ro
+      - ./banco-de-dados/20_categorias_correcao_v13.sql:/docker-entrypoint-initdb.d/95_categorias_correcao_v13.sql:ro
+      - ./banco-de-dados/21_referencias_multiplas_produto_ia.sql:/docker-entrypoint-initdb.d/98_referencias_multiplas_produto_ia.sql:ro
+      - ./banco-de-dados/22_fotos_modelo_vitrine.sql:/docker-entrypoint-initdb.d/99_fotos_modelo_vitrine.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+    restart: unless-stopped
+    networks:
+      - goldfit
+
+volumes:
+  goldfit_pgdata:
+networks:
+  goldfit:
+    driver: bridge

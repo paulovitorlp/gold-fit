@@ -12,7 +12,7 @@
     >
 
     <title>
-        Gerenciamento de Produtos | Gold Fit
+        Produtos e Estoque | Gold Fit
     </title>
 
 
@@ -24,13 +24,21 @@
 
     <link
         rel="stylesheet"
-        href="../css/produtos-admin.css"
+        href="../css/produtos-admin.css?v=19"
     >
 
-</head>
+    <link rel="stylesheet" href="../css/pro.css?v=19">
+    <link rel="stylesheet" href="../css/galeria-v8.css?v=19">
+    <link rel="stylesheet" href="../css/unificado-v21.css?v=21">
+<style>.gf29-indicator{position:sticky;top:0;z-index:200;background:#fff8da;color:#5a4400;padding:9px 22px;border-left:4px solid #e9bb00;font:600 12px Arial,sans-serif}.gf29-indicator[hidden]{display:none}</style></head>
 
 
 <body class="admin-body">
+<div class="gf29-indicator" id="gf29Indicator" hidden>DEMONSTRAÇÃO ACADÊMICA — mesmas telas do painel, dados editáveis neste navegador. API privada; geração de imagens desativada.</div>
+<script src="../js/painel-demo-dados.js?v=29"></script>
+<script src="../js/estudio-demo-dados.js?v=29"></script>
+<script src="../js/static-admin-bridge.js?v=29"></script>
+
 
 
     <div class="admin-promo">
@@ -228,63 +236,17 @@
 
 
             <nav class="admin-nav">
-
-
-                <a
-                    href="./estoque.html"
-                    class="admin-nav-item"
-                >
-
-                    <span class="admin-nav-number">
-                        01
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Estoque
-                        </strong>
-
-                        <small>
-                            Variações e quantidades
-                        </small>
-
-                    </div>
-
+                <a href="./produtos.html" class="admin-nav-item active">
+                    <span class="admin-nav-number">01</span>
+                    <div><strong>Produtos e Estoque</strong><small>Modelos, cores e publicação</small></div>
                 </a>
-
-
-                <a
-                    href="./produtos.html"
-                    class="admin-nav-item active"
-                >
-
-                    <span class="admin-nav-number">
-                        02
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Produtos
-                        </strong>
-
-                        <small>
-                            Conteúdo do site
-                        </small>
-
-                    </div>
-
-                </a>
-
 
                 <!-- GERADOR DE IMAGENS IA - FEMININO -->
                 <a
                     href="./gerador-imagens.html"
                     class="admin-nav-item"
                 >
-                    <span class="admin-nav-number">
-                        06
+                    <span class="admin-nav-number">02
                     </span>
                     <div>
                         <strong>Gerador IA</strong>
@@ -293,76 +255,13 @@
                 </a>
 
 
-                <a
-                    href="#"
-                    class="admin-nav-item modulo-futuro"
-                >
-
-                    <span class="admin-nav-number">
-                        03
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Pedidos
-                        </strong>
-
-                        <small>
-                            Vendas
-                        </small>
-
-                    </div>
-
-                </a>
+                
 
 
-                <a
-                    href="#"
-                    class="admin-nav-item modulo-futuro"
-                >
-
-                    <span class="admin-nav-number">
-                        04
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Clientes
-                        </strong>
-
-                        <small>
-                            Cadastros
-                        </small>
-
-                    </div>
-
-                </a>
+                
 
 
-                <a
-                    href="#"
-                    class="admin-nav-item modulo-futuro"
-                >
-
-                    <span class="admin-nav-number">
-                        05
-                    </span>
-
-                    <div>
-
-                        <strong>
-                            Avaliações
-                        </strong>
-
-                        <small>
-                            Moderação
-                        </small>
-
-                    </div>
-
-                </a>
+                
 
 
             </nav>
@@ -396,24 +295,18 @@
                     </span>
 
                     <h1>
-                        Produtos
+                        Produtos e Estoque
                     </h1>
 
                     <p>
-                        Escolha o que aparece no site,
-                        quais produtos são destaque,
-                        lançamentos, preço e ordem.
+                        Cadastre modelos, variações, estoque, fotos e publicação em um só lugar.
+                        Uma cor só aparece na loja com fotografia de modelo vestindo a peça.
                     </p>
 
                 </div>
 
 
-                <a
-                    href="./estoque.html"
-                    class="admin-primary-button product-stock-link"
-                >
-                    GERENCIAR ESTOQUE
-                </a>
+                <button type="button" id="gf21Novo" class="admin-primary-button product-stock-link">+ NOVO PRODUTO / VARIAÇÃO</button>
 
 
             </section>
@@ -450,7 +343,7 @@
                     </strong>
 
                     <small>
-                        Visíveis no site
+                        Marcados como publicados; fotos aprovadas definem a visibilidade
                     </small>
 
                 </article>
@@ -503,7 +396,7 @@
                     </span>
 
                     <h2>
-                        Gerenciamento de produtos
+                        Gerenciamento de produtos e estoque
                     </h2>
 
                 </div>
@@ -739,10 +632,32 @@
                         </button>
 
 
-                        <small>
-                            Essa é a foto principal
-                            apresentada na Home e catálogo.
-                        </small>
+                        <small>Essa foto é a capa antiga do produto. A galeria por cor abaixo terá prioridade no catálogo e na página do produto.</small>
+                        <section class="gf8-editor" id="gf8GaleriaArea" aria-label="Galeria de fotografias por cor">
+                            <h3>GALERIA POR COR</h3>
+                            <p>Até quatro fotografias por cor. Apenas cores com foto de modelo vestindo aparecerao no site. As imagens e quantidades ficam preservadas.</p>
+                            <label for="gf8GaleriaCor">Cor do produto</label>
+                            <select id="gf8GaleriaCor"></select>
+                            <div class="gf11-adicionar-cor">
+                                <label for="gf11NovaCor">Nova cor (opcional — mesmo sem estoque)</label>
+                                <div class="gf11-nova-cor-campos">
+                                    <input id="gf11NovaCor" type="text" maxlength="90" placeholder="Ex.: Verde menta" autocomplete="off">
+                                    <button id="gf11AdicionarCor" type="button">ADICIONAR COR</button>
+                                </div>
+                                <small>Ao cadastrar as fotos, a cor ficará visível na loja. Sem estoque, a compra ficará bloqueada.</small>
+                            </div>
+                            <strong id="gf8GaleriaContador">0/4 fotografias</strong>
+                            <p class="gf8-instrucao-ordem">Arraste as fotos ou use as setas para mudar a ordem. <strong>A Foto 1 será a capa do produto no site.</strong> As alterações são salvas automaticamente.</p>
+                            <div id="gf8GaleriaFotos" class="gf8-fotos"></div>
+                            <label for="gf8GaleriaUpload">Adicionar fotos desta cor</label>
+                            <input id="gf8GaleriaUpload" type="file" accept="image/jpeg,image/png,image/webp" multiple>
+                            <label class="gf19-classificar"><input id="gf19FotoModelo" type="checkbox" checked>
+                              Esta foto mostra uma modelo vestindo a peca na cor selecionada
+                            </label>
+                            <small>Somente fotos marcadas como modelo vestindo serao exibidas na loja.</small>
+                            <button type="button" id="gf8GaleriaEnviar" class="gf8-button">SALVAR FOTOS DESTA COR</button>
+                            <p id="gf8GaleriaAviso" role="status"></p>
+                        </section>
 
 
                     </div>
@@ -816,9 +731,7 @@
                                         Feminino
                                     </option>
 
-                                    <option value="Masculino">
-                                        Masculino
-                                    </option>
+                                    
 
                                     <option value="Calçados">
                                         Calçados
@@ -868,6 +781,11 @@
                         </div>
 
 
+                        <div class="gf21-cor-capa-box">
+                            <label for="gf21CorCapa"><strong>Cor de capa (imagem inicial do produto)</strong></label>
+                            <select id="gf21CorCapa"><option value="">Automática — primeira cor com foto</option></select>
+                            <small>Somente uma cor com foto de modelo na galeria poderá ser usada. Salvar no estoque não troca a foto da galeria.</small>
+                        </div>
                         <div class="product-visibility-box">
 
 
@@ -991,11 +909,34 @@
     </div>
 
 
-    <script src="../js/store-common.js"></script>
+    <div id="gf21VarModal" class="gf21-overlay" hidden>
+        <form id="gf21VarForm" class="gf21-modal">
+            <div class="gf21-modal-title"><div><small>GOLD FIT</small><h2 id="gf21VarTitle">Cadastrar variação</h2></div><button type="button" id="gf21VarFechar" aria-label="Fechar">✕</button></div>
+            <div class="gf21-form-grid">
+                <label>Grupo <select id="gf21Grupo" required><option>Feminino</option><option>Masculino</option><option>Calçados</option><option>Acessórios</option></select></label>
+                <label>Categoria <select id="gf21Categoria" required></select></label>
+                <label>Modelo / Produto <input id="gf21Nome" required maxlength="120" placeholder="Ex.: Cropped ALO"></label>
+                <label>Marca <input id="gf21Marca" required maxlength="80" placeholder="Ex.: ALO"></label>
+                <label>Cor <input id="gf21Cor" required maxlength="80" placeholder="Ex.: Bege"></label>
+                <label>Tamanho <input id="gf21Tamanho" required maxlength="40" placeholder="Ex.: Único"></label>
+                <label>SKU <input id="gf21Sku" required maxlength="90" placeholder="Ex.: CRO-ALO-BEGE"></label>
+                <label>Preço do modelo (R$) <input id="gf21Preco" type="number" min="0" step="0.01" required></label>
+                <label>Quantidade <input id="gf21Qtd" type="number" min="0" step="1" required></label>
+                <label class="gf21-foto">Foto de identificação no estoque (opcional) <input id="gf21Foto" type="file" accept="image/png,image/jpeg,image/webp"><small>Essa imagem não publica uma cor no site; use a galeria com foto de modelo vestindo.</small><img id="gf21Preview" alt="Pré-visualização" hidden></label>
+            </div>
+            <p class="gf21-help">Os modelos são agrupados automaticamente. Depois de salvar, use <strong>EDITAR / FOTOS</strong> para publicar, definir capa e cadastrar a galeria de cada cor.</p>
+            <div class="gf21-actions"><button type="button" id="gf21VarCancelar">CANCELAR</button><button id="gf21VarSalvar" type="submit">SALVAR VARIAÇÃO</button></div>
+            <p id="gf21VarMensagem" role="status" aria-live="polite"></p>
+        </form>
+    </div>
+    <script src="../js/store-common.js?v=27"></script>
 
-    <script src="../js/produtos-admin.js"></script>
+    <script src="../js/produtos-admin.js?v=27"></script>
+    <script src="../js/galeria-produtos-admin.js?v=21"></script>
+    <script src="../js/unificado-v21.js?v=21"></script>
 
 
+    <script src="../js/admin-pro.js"></script>
 </body>
 
 </html>

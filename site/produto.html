@@ -5,9 +5,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Produto | Gold Fit</title>
-    <link rel="stylesheet" href="./css/produto.css">
+    <link rel="stylesheet" href="./css/loja.css?v=20">
+    <link rel="stylesheet" href="./css/produto.css?v=20">
+    <link rel="stylesheet" href="./css/pro.css?v=2">
+    <link rel="stylesheet" href="./css/galeria-v8.css?v=19">
 </head>
 <body>
+<script src="js/painel-demo-dados.js?v=29"></script>
+<script src="js/estudio-demo-dados.js?v=29"></script>
+<script src="js/static-admin-bridge.js?v=29"></script>
+
 
     <div class="promo-bar">
         <div class="promo-content">
@@ -16,168 +23,304 @@
         </div>
     </div>
 
-    <header class="product-header">
-        <div class="product-header-container">
+    <header class="header">
 
-            <a href="./index.html" class="logo">
-                <span>GOLD</span> FIT
-            </a>
+
+        <div class="header-top">
+
 
             <button
+                id="btnMenuProduto" aria-controls="mainNavProduto" aria-expanded="false"
+                class="mobile-menu"
                 type="button"
-                id="btnMenuProduto"
-                class="product-mobile-menu"
-                aria-label="Abrir menu de categorias"
-                aria-controls="menuCategoriasProduto"
-                aria-expanded="false"
+                aria-label="Abrir menu"
             >
-                <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.7"
-                    stroke-linecap="round"
-                >
-                    <path d="M4 6h16M4 12h16M4 18h16"></path>
-                </svg>
+                ☰
             </button>
 
-            <nav
-                id="menuCategoriasProduto"
-                class="product-nav"
-                aria-label="Navegação de produtos"
+
+            <a
+                href="./index.html"
+                class="logo"
             >
+                <span>
+                    GOLD
+                </span>
+                FIT
+            </a>
 
-                <a class="product-nav-home" href="./index.html">
-                    INÍCIO
-                </a>
 
-                <div
-                    class="product-nav-department"
-                    data-product-department="Feminino"
+            <div class="header-search">
+
+                <input
+                    type="text"
+                    id="pesquisaTopoProduto"
+                    placeholder="O que você está buscando?"
                 >
-                    <button
-                        type="button"
-                        class="product-nav-trigger"
-                        data-product-menu-trigger="Feminino"
-                        aria-expanded="false"
-                    >
-                        FEMININO
-                        <span class="product-nav-chevron">⌄</span>
-                    </button>
 
-                    <div
-                        class="product-nav-panel"
-                        data-product-menu-panel="Feminino"
-                    ></div>
-                </div>
-
-                <div
-                    class="product-nav-department"
-                    data-product-department="Masculino"
-                >
-                    <button
-                        type="button"
-                        class="product-nav-trigger"
-                        data-product-menu-trigger="Masculino"
-                        aria-expanded="false"
-                    >
-                        MASCULINO
-                        <span class="product-nav-chevron">⌄</span>
-                    </button>
-
-                    <div
-                        class="product-nav-panel"
-                        data-product-menu-panel="Masculino"
-                    ></div>
-                </div>
-
-                <div
-                    class="product-nav-department"
-                    data-product-department="Calçados"
-                >
-                    <button
-                        type="button"
-                        class="product-nav-trigger"
-                        data-product-menu-trigger="Calçados"
-                        aria-expanded="false"
-                    >
-                        CALÇADOS
-                        <span class="product-nav-chevron">⌄</span>
-                    </button>
-
-                    <div
-                        class="product-nav-panel"
-                        data-product-menu-panel="Calçados"
-                    ></div>
-                </div>
-
-                <div
-                    class="product-nav-department"
-                    data-product-department="Acessórios"
-                >
-                    <button
-                        type="button"
-                        class="product-nav-trigger"
-                        data-product-menu-trigger="Acessórios"
-                        aria-expanded="false"
-                    >
-                        ACESSÓRIOS
-                        <span class="product-nav-chevron">⌄</span>
-                    </button>
-
-                    <div
-                        class="product-nav-panel"
-                        data-product-menu-panel="Acessórios"
-                    ></div>
-                </div>
-
-            </nav>
-
-            <div class="product-header-actions">
 
                 <button
                     type="button"
-                    id="btnContaProduto"
-                    class="icon-button"
-                    aria-label="Minha conta"
+                    id="btnPesquisaTopoProduto"
+                    aria-label="Pesquisar"
                 >
+
                     <svg
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        stroke-width="1.7"
+                        stroke-width="1.8"
                         stroke-linecap="round"
-                        stroke-linejoin="round"
                     >
-                        <circle cx="12" cy="8" r="4"></circle>
-                        <path d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"></path>
-                    </svg>
-                </button>
 
-                <button
-                    type="button"
-                    id="btnCarrinhoProduto"
-                    class="icon-button cart-icon"
-                    aria-label="Carrinho"
-                >
-                    <svg
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        stroke-width="1.7"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                    >
-                        <path d="M6 8h12l1 13H5L6 8Z"></path>
-                        <path d="M9 9V6a3 3 0 0 1 6 0v3"></path>
+                        <circle
+                            cx="11"
+                            cy="11"
+                            r="7"
+                        ></circle>
+
+                        <path
+                            d="m20 20-4-4"
+                        ></path>
+
                     </svg>
 
-                    <span id="contadorCarrinhoProduto">0</span>
                 </button>
 
             </div>
+
+
+            <div class="header-actions">
+
+
+                <button
+                    id="btnContaProduto"
+                    type="button"
+                    class="header-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <circle
+                            cx="12"
+                            cy="8"
+                            r="4"
+                        ></circle>
+
+                        <path
+                            d="M4.5 21c.8-4.2 3.3-6.3 7.5-6.3s6.7 2.1 7.5 6.3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span
+                        class="header-button-text"
+                        id="textoContaProduto"
+                    >
+                        Entrar
+                    </span>
+
+                </button>
+
+
+                <button
+                    id="btnFavoritosProduto"
+                    type="button"
+                    class="header-button icon-only"
+                    aria-label="Favoritos"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8L12 21l8.8-8.6a5.5 5.5 0 0 0 0-7.8Z"
+                        ></path>
+
+                    </svg>
+
+                </button>
+
+
+                <button
+                    id="btnCarrinhoProduto"
+                    type="button"
+                    class="header-button cart-button"
+                >
+
+                    <svg
+                        class="header-svg-icon"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                    >
+
+                        <path
+                            d="M6 8h12l1 13H5L6 8Z"
+                        ></path>
+
+                        <path
+                            d="M9 9V6a3 3 0 0 1 6 0v3"
+                        ></path>
+
+                    </svg>
+
+
+                    <span class="cart-label">
+                        Carrinho
+                    </span>
+
+
+                    <strong id="contadorCarrinhoProduto">
+                        0
+                    </strong>
+
+                </button>
+
+
+            </div>
+
         </div>
+
+
+        <!-- ==================================================
+             MENU PRINCIPAL
+        ================================================== -->
+
+        <nav
+            id="mainNavProduto"
+            class="navigation"
+        >
+
+
+            <a
+                href="./index.html"
+                class="nav-item nav-link"
+            >
+                INÍCIO
+            </a>
+
+
+            <!-- FEMININO -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Feminino"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Feminino"
+                >
+
+                    FEMININO
+
+                    
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Feminino"
+                ></div>
+
+            </div>
+
+
+            <!-- MASCULINO -->
+
+            
+
+
+            <!-- CALÇADOS -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Calçados"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Calçados"
+                >
+
+                    CALÇADOS
+
+                    
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Calçados"
+                ></div>
+
+            </div>
+
+
+            <!-- ACESSÓRIOS -->
+
+            <div
+                class="nav-dropdown"
+                data-menu-dropdown="Acessórios"
+            >
+
+                <button
+                    type="button"
+                    class="nav-item nav-dropdown-trigger"
+                    data-menu-toggle="Acessórios"
+                >
+
+                    ACESSÓRIOS
+
+                    
+
+                </button>
+
+
+                <div
+                    class="dropdown-panel"
+                    data-menu-panel="Acessórios"
+                ></div>
+
+            </div>
+
+
+            <button
+                id="navLancamentosProduto"
+                class="nav-item"
+                type="button"
+            >
+                LANÇAMENTOS
+            </button>
+
+
+        </nav>
+
+
     </header>
 
     <main>
@@ -229,6 +372,7 @@
                     </button>
 
                 </div>
+                <p id="avisoFotosCor" class="gf11-aviso-fotos" aria-live="polite"></p>
             </div>
 
             <aside class="product-details">
@@ -424,29 +568,7 @@
 
         </section>
 
-        <section id="avaliacoes" class="reviews-section">
-
-            <span class="section-label">AVALIAÇÕES</span>
-            <h2>Opiniões de clientes</h2>
-
-            <div class="rating-summary">
-
-                <div>
-                    <strong>—</strong>
-                    <span>☆☆☆☆☆</span>
-                    <p>Este produto ainda não possui avaliações.</p>
-                </div>
-
-                <button
-                    id="btnAvaliarProduto"
-                    type="button"
-                >
-                    AVALIAR PRODUTO
-                </button>
-
-            </div>
-
-        </section>
+        
 
         <section class="related">
 
@@ -504,9 +626,10 @@
 
     <div id="toastProduto" class="toast"></div>
 
-    <script src="./js/store-common.js"></script>
-    <script src="./js/menu-produto.js"></script>
-    <script src="./js/produto.js"></script>
+    <script src="./js/store-common.js?v=27"></script>
+    <script src="./js/menu-produto.js?v=27"></script>
+    <script src="./js/variacoes-galeria-v11.js?v=11"></script>
+    <script src="./js/produto.js?v=24"></script>
 
 </body>
 </html>

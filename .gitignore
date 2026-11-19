@@ -1,37 +1,39 @@
-
-# Editor
-.vscode/
-.idea/
-
-# Ambiente e credenciais
+# Credenciais e variaveis locais
 .env
 .env.*
 !.env.example
+**/.env
+**/.env.*
+!**/.env.example
 *.pem
 *.key
 
-# Dependências
+# Dependencias e compilados
 node_modules/
+**/node_modules/
+.next/
+dist/
+build/
+coverage/
 
-# Backups do banco de dados
-*.backup
+# Backup e dados locais do PostgreSQL
 *.dump
+*.backup
 *.bak
 *.sql.gz
 
-# Arquivos temporários
+# Fotos brutas e geradas no servidor (galeria publica esta em site/assets/estudio-demo/)
+backend/uploads/
+
+# Pacotes locais e temporarios
+*.zip
 *.log
 *.tmp
 *.temp
 
-# Sistema operacional
+# IDE e sistema
+.vscode/
+.idea/
 .DS_Store
 Thumbs.db
 desktop.ini
-
-# Builds futuros
-dist/
-build/
-.next/
-.vercel/
-coverage/

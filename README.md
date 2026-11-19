@@ -1,124 +1,60 @@
-# GOLD FIT
-### Sistema Web Integrado para Vendas, Controle de Estoque e Geração de Imagens com IA
+# Gold Fit Pro
 
-Projeto acadêmico desenvolvido por **Paulo Vitor Loiola Palheta**, estudante de Ciência da Computação da Universidade Federal do Oeste do Pará (UFOPA).
+**Sistema web de catálogo, controle de estoque e estúdio de imagens com IA.**
 
-## 1. Sobre o projeto
+Projeto acadêmico de **Paulo Vitor Loiola Palheta**, do curso de Ciência da Computação da **Universidade Federal do Oeste do Pará (UFOPA)**, aplicado a uma loja de moda fitness em Santarém (PA).
 
-O Gold Fit é um sistema web desenvolvido para informatizar os processos de vendas, gerenciamento de produtos e controle de estoque de uma loja de roupas e acessórios fitness em Santarém (PA).
+**Links:** [Site](https://paulovitorlp.github.io/gold-fit/) · [Repositório](https://github.com/paulovitorlp/gold-fit) · [Histórico de imagens](https://paulovitorlp.github.io/gold-fit/admin/estudio-demo.html)
 
-O sistema contempla:
+## Objetivo
 
-- Loja virtual com catálogo e carrinho;
-- Painel administrativo de produtos;
-- Controle de estoque por cor, tamanho e SKU;
-- Banco de dados PostgreSQL;
-- Backend Node.js com API REST;
-- Contato pelo WhatsApp;
-- Geração de imagens de produtos com inteligência artificial.
+Integrar a loja virtual ao gerenciamento de produtos, estoque e fotografias, evitando cadastros duplicados. Cada modelo reúne variações de **cor, tamanho, SKU e quantidade** e pode ser publicado diretamente pelo painel administrativo.
 
-## 2. Tecnologias
+## Tecnologias
 
 | Camada | Tecnologias |
-|---|---|
-| Frontend | HTML, CSS e JavaScript |
-| Backend | Node.js e Express |
+| --- | --- |
+| Interface | HTML, CSS e JavaScript |
+| API e autenticação | Node.js e Express |
 | Banco de dados | PostgreSQL 16 |
-| Infraestrutura | Docker e Docker Compose |
-| Inteligência Artificial | OpenAI API |
-| Versionamento | Git e GitHub |
+| Infraestrutura | Docker, Docker Compose e Nginx |
+| Imagens com IA | API da OpenAI, utilizada somente pelo backend privado |
+| Versionamento e demonstração | Git, GitHub Actions e GitHub Pages |
 
-## 3. Arquitetura
+O Docker executa três serviços: **`site`** (Nginx), **`painel`** (API Node.js, estoque e Gerador IA) e **`banco`** (PostgreSQL).
 
-A aplicação será organizada em três contêineres Docker:
+## Funcionalidades
 
-1. **Site:** frontend da loja e interfaces administrativas.
-2. **Estoque:** backend Node.js, API REST e regras de negócio.
-3. **Banco:** PostgreSQL e armazenamento persistente.
+- Loja com catálogo, categorias, pesquisa, carrinho e páginas de produtos.
+- Painel **Produtos e Estoque** unificado, com variações, preços, quantidades, fotos e publicação.
+- Galeria por cor com definição da foto de capa e organização das imagens.
+- Produtos publicados podem aparecer com imagem provisória; **uma cor só é liberada para compra quando há foto de uma modelo vestindo essa cor e estoque disponível**.
+- Estúdio IA com seleção de modelos, referências de produtos e histórico de imagens geradas.
+- Demonstração pública com painel semelhante ao original, **5 modelos virtuais e 36 imagens do histórico**.
 
-O Docker será utilizado para isolar os serviços e facilitar a implantação.
+## Executar o sistema completo
 
-## 4. Banco de dados
-
-O PostgreSQL possui **16 tabelas**, com relacionamentos, índices, funções, triggers e views.
-
-A estrutura contempla produtos, categorias, variações, tamanhos, estoque, clientes, pedidos e pagamentos.
-
-Arquivo principal:
-
-`banco-de-dados/11_estrutura_atual.sql`
-
-## 5. Inteligência artificial
-
-Está previsto um módulo para geração de fotografias comerciais utilizando a OpenAI API.
-
-O administrador poderá enviar a foto de um produto, selecionar uma modelo virtual e gerar imagens da peça sendo utilizada.
-
-O sistema contará inicialmente com:
-
-- 5 modelos virtuais femininos;
-- 5 modelos virtuais masculinos;
-- Geração de imagens em diferentes cores;
-- Prompts padronizados;
-- Revisão e aprovação antes da publicação.
-
-**Não haverá agente de atendimento por IA.** O WhatsApp será utilizado apenas como canal de contato com os clientes.
-
-## 6. Situação atual
-
-### Desenvolvido
-
-- [x] Loja virtual demonstrativa;
-- [x] Catálogo e página de produtos;
-- [x] Carrinho demonstrativo;
-- [x] Interfaces administrativas;
-- [x] Estrutura PostgreSQL;
-- [x] Estrutura inicial do backend;
-- [x] Publicação no GitHub Pages.
-
-### Próximas etapas
-
-- [ ] Finalizar a conexão Node.js/PostgreSQL;
-- [ ] Configurar os três contêineres Docker;
-- [ ] Integrar frontend, backend e banco;
-- [ ] Implementar autenticação e pedidos;
-- [ ] Adicionar o botão de WhatsApp;
-- [ ] Desenvolver o gerador de imagens com IA;
-- [ ] Realizar testes e publicar a versão completa.
-
-## 7. Execução local
-
-Clone o repositório:
-
-```bash
-git clone https://github.com/paulovitorlp/gold-fit.git
-cd gold-fit
-```
-
-Para iniciar o backend no Windows:
+Com o **Docker Desktop** aberto, na pasta que contém `compose.yaml`, configure seu `.env` local e execute:
 
 ```powershell
-cd backend
-npm.cmd install
-npm.cmd start
+docker compose up -d --build
+docker compose ps
 ```
 
-Configure antes o arquivo `backend/.env` utilizando `.env.example` como referência.
+**Acessos locais:** [Loja](http://127.0.0.1:8080/) · [Produtos e Estoque](http://127.0.0.1:8080/admin/produtos.html) · [Gerador IA](http://127.0.0.1:8080/admin/gerador-imagens.html).
 
-O servidor utiliza a porta `3000`. A conexão PostgreSQL ainda está em fase de validação.
+## Demonstração no GitHub Pages / Live Server
 
-A execução completa via Docker será disponibilizada nas próximas etapas.
+A versão pública permite entrar no **painel demonstrativo**, explorar o estoque, testar cadastros e publicação, selecionar modelos e consultar imagens já geradas. Essas alterações ficam **apenas no navegador de quem está testando**, sem sincronizar com o PostgreSQL privado. **Não é possível gerar novas imagens com IA** nessa versão.
 
-## 8. Links
+**Acesso demonstrativo:** `admin@goldfit.demo` / `goldfitjade2026`.
 
-**Repositório:**  
-https://github.com/paulovitorlp/gold-fit
+O catálogo demonstrativo pode mostrar imagens provisórias: as quatro fotos adicionais da atualização V30 **não fazem parte desta versão**.
 
-**Site demonstrativo:**  
-https://paulovitorlp.github.io/gold-fit/
+> **Segurança:** a API e o banco permanecem privados. Nunca publique o `.env`, chaves da OpenAI, backups `.dump` ou fotos privadas. A senha demonstrativa visível não deve ser reutilizada como senha de um servidor público.
+
+O GitHub Pages publica a pasta `site/` por meio de `.github/workflows/deploy.yml`. Para atualizar o site público, envie os arquivos revisados ao repositório na branch `main`.
 
 ---
 
-**Autor:** Paulo Vitor Loiola Palheta  
-**Curso:** Ciência da Computação — UFOPA  
-**Local:** Santarém — Pará
+**UFOPA · Ciência da Computação · Santarém (PA) · 2026**

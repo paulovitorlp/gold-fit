@@ -1,832 +1,223 @@
-const toast =
-    document.getElementById(
-        "toast"
-    );
+"use strict";
+/* GOLD FIT PRO V14 — Uma tela de login; privilégios de administrador
+ * SEMPRE dependem da sessão do backend (/api/admin/login).
+ * O cadastro local de clientes nunca é usado como autorização de painel.
+ */
+(() => {
+    const $ = id => document.getElementById(id);
+    const parametros = new URLSearchParams(location.search);
+    // Links sempre relativos à pasta do site, inclusive em /gold-fit/ no GitHub Pages.
+    const pastaSite = new URL('./', location.href);
+    const urlSite = caminho => new URL(String(caminho).replace(/^\/+/, ''), pastaSite).href;
+    let apiDisponivel = false;
+    const proximo = parametros.get("next") || "";
+    const rotaAdmin = /^\/?admin\/(?:estoque|produtos|gerador-imagens)\.html$/;
+    const acessoAdmin = parametros.get("modo") === "admin" || rotaAdmin.test(proximo);
+    const destinoAdmin = urlSite(rotaAdmin.test(proximo) ? proximo : "admin/produtos.html");
+    const formLogin = $("formLogin");
+    const formCadastro = $("formCadastro");
+    const area = $("areaAuth");
+    const sessaoCaixa = $("sessaoAtual");
+    const abas = document.querySelector(".auth-tabs");
+    const emailInput = $("loginEmail");
+    const senhaInput = $("loginSenha");
+    const toast = $("toast");
+    const preencherDemo = $("gf17PreencherDemo");
+    if (preencherDemo) preencherDemo.addEventListener("click", () => {
+        emailInput.value = "admin@goldfit.demo";
+        senhaInput.value = "goldfitjade2026";
+        senhaInput.focus();
+    });
+    let timerAviso;
 
-
-const next =
-    new URLSearchParams(
-        window.location.search
-    )
-    .get(
-        "next"
-    );
-
-
-goldFitCarregarUsuarios();
-
-configurarAbas();
-
-configurarForms();
-
-mostrarSessao();
-
-
-// ======================================================
-// ABAS
-// ======================================================
-
-function configurarAbas() {
-
-    document
-        .querySelectorAll(
-            ".auth-tab"
-        )
-        .forEach(
-            tab => {
-
-                tab.addEventListener(
-                    "click",
-                    function () {
-
-                        document
-                            .querySelectorAll(
-                                ".auth-tab"
-                            )
-                            .forEach(
-                                item => {
-
-                                    item.classList.toggle(
-
-                                        "active",
-
-                                        item ===
-                                        tab
-
-                                    );
-
-                                }
-                            );
-
-
-                        document
-                            .getElementById(
-                                "formLogin"
-                            )
-                            .classList
-                            .toggle(
-
-                                "active",
-
-                                tab.dataset.tab ===
-                                "login"
-
-                            );
-
-
-                        document
-                            .getElementById(
-                                "formCadastro"
-                            )
-                            .classList
-                            .toggle(
-
-                                "active",
-
-                                tab.dataset.tab ===
-                                "cadastro"
-
-                            );
-
-                    }
-                );
-
+    function aviso(texto) {
+        if (!toast) return;
+        clearTimeout(timerAviso);
+        toast.textContent = texto;
+        toast.classList.add("show");
+        timerAviso = setTimeout(() => toast.classList.remove("show"), 4400);
+    }
+    function trocarAba(aba) {
+        document.querySelectorAll(".auth-tab").forEach(b => b.classList.toggle("active", b.dataset.tab === aba));
+        formLogin.classList.toggle("active", aba === "login");
+        formCadastro.classList.toggle("active", aba === "cadastro");
+    }
+    function limparAdminLocalFalso() {
+        const local = goldFitCarregarSessao();
+        if (local?.perfil === "admin") goldFitSair();
+    }
+    async function verificarSessaoAdmin() {
+        try {
+            // Em GitHub Pages/Live Server a rota não existe. Não assumir que
+            // qualquer resposta 200 seja uma API válida (pode ser HTML).
+            const r = await fetch(urlSite("api/admin/session"), {
+                credentials: "same-origin", cache: "no-store",
+                headers: { Accept: "application/json" }
+            });
+            if (!r.ok) return { api: false, admin: false };
+            const dados = await r.json();
+            if (dados?.status !== "ok" || typeof dados.admin !== "boolean") {
+                return { api: false, admin: false };
             }
-        );
-
-}
-
-
-// ======================================================
-// FORM LOGIN
-// ======================================================
-
-function configurarForms() {
-
-
-    document
-        .getElementById(
-            "formLogin"
-        )
-        .addEventListener(
-            "submit",
-            function (
-                event
-            ) {
-
-                event.preventDefault();
-
-
-                const email =
-                    document
-                        .getElementById(
-                            "loginEmail"
-                        )
-                        .value
-                        .trim()
-                        .toLowerCase();
-
-
-                const senha =
-                    document
-                        .getElementById(
-                            "loginSenha"
-                        )
-                        .value;
-
-
-                const usuario =
-                    goldFitCarregarUsuarios()
-                        .find(
-                            item =>
-
-                                String(
-                                    item.email
-                                )
-                                .toLowerCase()
-                                ===
-                                email
-
-                                &&
-
-                                item.senha ===
-                                senha
-                        );
-
-
-                if (
-                    !usuario
-                ) {
-
-                    mostrarToast(
-                        "E-mail ou senha inválidos."
-                    );
-
-
-                    return;
-
-                }
-
-
-                const sessao = {
-
-                    id:
-                        usuario.id,
-
-                    nome:
-                        usuario.nome,
-
-                    email:
-                        usuario.email,
-
-                    perfil:
-                        usuario.perfil
-
-                };
-
-
-                goldFitSalvarSessao(
-                    sessao
-                );
-
-
-                if (
-                    sessao.perfil ===
-                    "admin"
-                ) {
-
-                    window.location.href =
-                        "./login.html";
-
-
-                    return;
-
-                }
-
-
-                redirecionarCliente();
-
-            }
-        );
-
-
-    document
-        .getElementById(
-            "formCadastro"
-        )
-        .addEventListener(
-            "submit",
-            function (
-                event
-            ) {
-
-                event.preventDefault();
-
-
-                const nome =
-                    document
-                        .getElementById(
-                            "cadastroNome"
-                        )
-                        .value
-                        .trim();
-
-
-                const email =
-                    document
-                        .getElementById(
-                            "cadastroEmail"
-                        )
-                        .value
-                        .trim()
-                        .toLowerCase();
-
-
-                const senha =
-                    document
-                        .getElementById(
-                            "cadastroSenha"
-                        )
-                        .value;
-
-
-                const usuarios =
-                    goldFitCarregarUsuarios();
-
-
-                const existe =
-                    usuarios.some(
-                        usuario =>
-                            String(
-                                usuario.email
-                            )
-                            .toLowerCase()
-                            ===
-                            email
-                    );
-
-
-                if (
-                    existe
-                ) {
-
-                    mostrarToast(
-                        "Já existe uma conta com esse e-mail."
-                    );
-
-
-                    return;
-
-                }
-
-
-                const usuario = {
-
-                    id:
-                        `cliente-${Date.now()}`,
-
-                    nome:
-                        nome,
-
-                    email:
-                        email,
-
-                    senha:
-                        senha,
-
-                    perfil:
-                        "cliente"
-
-                };
-
-
-                usuarios.push(
-                    usuario
-                );
-
-
-                goldFitSalvarUsuarios(
-                    usuarios
-                );
-
-
-                goldFitSalvarSessao({
-
-                    id:
-                        usuario.id,
-
-                    nome:
-                        usuario.nome,
-
-                    email:
-                        usuario.email,
-
-                    perfil:
-                        "cliente"
-
-                });
-
-
-                redirecionarCliente();
-
-            }
-        );
-
-}
-
-
-// ======================================================
-// REDIRECIONAMENTO
-// ======================================================
-
-function redirecionarCliente() {
-
-    if (
-        next
-    ) {
-
-        if (
-            /^https?:\/\//i.test(
-                next
-            )
-        ) {
-
-            window.location.href =
-                next;
-
-
-            return;
-
+            return { api: true, admin: dados.admin };
+        } catch (_) {
+            return { api: false, admin: false };
         }
-
-
-        window.location.href =
-            `./${
-                next.replace(
-                    /^\.\//,
-                    ""
-                )
-            }`;
-
-
-        return;
-
     }
-
-
-    window.location.href =
-        "./index.html";
-
-}
-
-
-// ======================================================
-// CONTA
-// ======================================================
-
-function mostrarSessao() {
-
-    const sessao =
-        goldFitCarregarSessao();
-
-
-    if (
-        !sessao
-    ) {
-
-        return;
-
+    function preencherPainel() {
+        area.hidden = true;
+        sessaoCaixa.hidden = false;
+        sessaoCaixa.replaceChildren();
+        const titulo = document.createElement("h2");
+        titulo.textContent = "Administrador Gold Fit";
+        const descricao = document.createElement("p");
+        descricao.textContent = "Acesso administrativo confirmado pelo servidor.";
+        sessaoCaixa.append(titulo, descricao);
+        for (const [label, endereco] of [
+            ["PRODUTOS E ESTOQUE", "admin/produtos.html"],
+            ["GERADOR DE IMAGENS", "admin/gerador-imagens.html"]
+        ]) {
+            const botao = document.createElement("button");
+            botao.type = "button"; botao.textContent = label;
+            botao.className = "auth-submit";
+            botao.style.cssText = "display:block;width:100%;margin:10px 0;padding:14px;font-size:11px";
+            botao.addEventListener("click", () => location.assign(urlSite(endereco)));
+            sessaoCaixa.append(botao);
+        }
+        const sair = document.createElement("button");
+        sair.type = "button"; sair.textContent = "SAIR DA CONTA";
+        sair.className = "auth-submit";
+        sair.style.cssText = "background:#eee;display:block;width:100%;margin-top:16px;padding:14px;color:#111";
+        sair.addEventListener("click", async () => {
+            try { await fetch("/api/admin/logout", {method:"POST", credentials:"same-origin"}); }
+            finally { goldFitSair(); location.replace(urlSite("login.html?modo=admin")); }
+        });
+        sessaoCaixa.append(sair);
     }
-
-
-    document
-        .getElementById(
-            "areaAuth"
-        )
-        .hidden =
-        true;
-
-
-    const box =
-        document.getElementById(
-            "sessaoAtual"
-        );
-
-
-    box.hidden =
-        false;
-
-
-    const inicial =
-        String(
-            sessao.nome
-            ||
-            "U"
-        )
-        .charAt(
-            0
-        )
-        .toUpperCase();
-
-
-    const ehAdmin =
-        sessao.perfil ===
-        "admin";
-
-
-    box.innerHTML =
-        `
-
-        <div
-            style="
-                display:flex;
-                align-items:center;
-                gap:14px;
-                margin-bottom:22px;
-            "
-        >
-
-            <div
-                style="
-                    width:52px;
-                    height:52px;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    border-radius:50%;
-                    background:#f3c600;
-                    color:#111;
-                    font-size:20px;
-                    font-weight:900;
-                "
-            >
-                ${goldFitEscapeHtml(
-                    inicial
-                )}
-            </div>
-
-
-            <div>
-
-                <small
-                    style="
-                        display:block;
-                        margin-bottom:4px;
-                        color:#888;
-                        font-size:10px;
-                        font-weight:900;
-                        letter-spacing:1px;
-                    "
-                >
-                    CONTA GOLD FIT
-                </small>
-
-
-                <strong
-                    style="
-                        font-size:20px;
-                        font-weight:900;
-                    "
-                >
-                    ${goldFitEscapeHtml(
-                        sessao.nome
-                    )}
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div
-            style="
-                padding:18px 0;
-                border-top:1px solid #e5e5e5;
-                border-bottom:1px solid #e5e5e5;
-            "
-        >
-
-            <div
-                style="
-                    margin-bottom:14px;
-                "
-            >
-
-                <small
-                    style="
-                        display:block;
-                        margin-bottom:4px;
-                        color:#999;
-                        font-size:10px;
-                        font-weight:900;
-                    "
-                >
-                    E-MAIL
-                </small>
-
-
-                <strong
-                    style="
-                        font-size:12px;
-                    "
-                >
-                    ${goldFitEscapeHtml(
-                        sessao.email
-                    )}
-                </strong>
-
-            </div>
-
-
-            <div>
-
-                <small
-                    style="
-                        display:block;
-                        margin-bottom:4px;
-                        color:#999;
-                        font-size:10px;
-                        font-weight:900;
-                    "
-                >
-                    PERFIL
-                </small>
-
-
-                <strong
-                    style="
-                        font-size:12px;
-                    "
-                >
-                    ${
-                        ehAdmin
-                            ?
-                            "Administrador"
-                            :
-                            "Cliente"
-                    }
-                </strong>
-
-            </div>
-
-        </div>
-
-
-        <div
-            style="
-                margin-top:18px;
-                display:grid;
-                gap:8px;
-            "
-        >
-
-
-            ${
-                ehAdmin
-
-                    ?
-
-                    `
-
-                    <button
-                        type="button"
-                        id="btnGerenciarProdutos"
-                        style="
-                            width:100%;
-                            height:48px;
-                            margin:0;
-                            border:0;
-                            background:#f3c600;
-                            color:#111;
-                            font-size:10px;
-                            font-weight:900;
-                        "
-                    >
-                        GERENCIAR PRODUTOS DO SITE
-                    </button>
-
-
-                    <button
-                        type="button"
-                        id="btnGerenciarEstoque"
-                        style="
-                            width:100%;
-                            height:48px;
-                            margin:0;
-                            border:1px solid #111;
-                            background:white;
-                            color:#111;
-                            font-size:10px;
-                            font-weight:900;
-                        "
-                    >
-                        GERENCIAMENTO DE ESTOQUE
-                    </button>
-
-                    `
-
-                    :
-
-                    ""
-            }
-
-
-            <button
-                type="button"
-                id="btnVoltarLoja"
-                style="
-                    width:100%;
-                    height:46px;
-                    margin:0;
-                    border:1px solid #111;
-                    background:#111;
-                    color:white;
-                    font-size:10px;
-                    font-weight:900;
-                "
-            >
-                VOLTAR PARA A LOJA
-            </button>
-
-
-            ${
-                next
-                &&
-                !ehAdmin
-
-                    ?
-
-                    `
-                    <button
-                        type="button"
-                        id="btnContinuarCompra"
-                        style="
-                            width:100%;
-                            height:46px;
-                            margin:0;
-                            border:1px solid #ddd;
-                            background:white;
-                            color:#111;
-                            font-size:10px;
-                            font-weight:900;
-                        "
-                    >
-                        CONTINUAR COMPRA
-                    </button>
-                    `
-
-                    :
-
-                    ""
-            }
-
-
-            <button
-                type="button"
-                id="btnSair"
-                style="
-                    width:100%;
-                    height:42px;
-                    margin:4px 0 0;
-                    border:0;
-                    background:#f2f2f2;
-                    color:#8a3030;
-                    font-size:10px;
-                    font-weight:900;
-                "
-            >
-                SAIR DA CONTA
-            </button>
-
-        </div>
-
-        `;
-
-
-    if (
-        ehAdmin
-    ) {
-
-        document
-            .getElementById(
-                "btnGerenciarProdutos"
-            )
-            .addEventListener(
-                "click",
-                function () {
-
-                    window.location.href =
-                        "./admin/produtos.html";
-
-                }
-            );
-
-
-        document
-            .getElementById(
-                "btnGerenciarEstoque"
-            )
-            .addEventListener(
-                "click",
-                function () {
-
-                    window.location.href =
-                        "./admin/estoque.html";
-
-                }
-            );
-
+    function preencherCliente(usuario) {
+        area.hidden = true;
+        sessaoCaixa.hidden = false;
+        sessaoCaixa.replaceChildren();
+        const h = document.createElement("h2"); h.textContent = `Olá, ${usuario.nome || "cliente"}`;
+        const d = document.createElement("p"); d.textContent = usuario.email || "Conta Gold Fit";
+        const loja = document.createElement("button"); loja.className="auth-submit";
+        loja.type="button"; loja.textContent="VOLTAR PARA A LOJA";
+        loja.onclick=()=>location.assign(urlSite("index.html"));
+        const sair = document.createElement("button"); sair.type="button";
+        sair.textContent="SAIR DA CONTA"; sair.style.cssText="padding:12px;margin-top:12px";
+        sair.onclick=()=>{ goldFitSair(); location.replace(urlSite("login.html")); };
+        sessaoCaixa.append(h,d,loja,sair);
     }
-
-
-    document
-        .getElementById(
-            "btnVoltarLoja"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                window.location.href =
-                    "./index.html";
-
+    async function autenticarAdmin(senha) {
+        if (!apiDisponivel) {
+            // GitHub Pages e Live Server: simula acesso SOMENTE no navegador.
+            // Não grava sessão admin do backend e não libera rotas privadas.
+            if (senha !== "goldfitjade2026" || emailInput.value.trim().toLowerCase() !== "admin@goldfit.demo") {
+                throw new Error("E-mail ou senha de demonstração incorretos.");
             }
-        );
-
-
-    const continuar =
-        document.getElementById(
-            "btnContinuarCompra"
-        );
-
-
-    if (
-        continuar
-    ) {
-
-        continuar.addEventListener(
-            "click",
-            redirecionarCliente
-        );
-
+            sessionStorage.setItem("gf_static_demo_access", "1");
+            location.assign(urlSite("admin/produtos.html"));
+            return;
+        }
+        const resposta = await fetch(urlSite("api/admin/login"), {
+            method: "POST", credentials: "same-origin",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({senha})
+        });
+        const dados = await resposta.json().catch(() => ({}));
+        if (!resposta.ok) throw new Error(dados.mensagem || "Senha administrativa incorreta.");
+        goldFitSalvarSessao({ id:"painel", nome:"Administrador Gold Fit", email:"admin@goldfit.demo", perfil:"admin" });
+        location.assign(destinoAdmin);
     }
-
-
-    document
-        .getElementById(
-            "btnSair"
-        )
-        .addEventListener(
-            "click",
-            function () {
-
-                goldFitSair();
-
-
-                window.location.href =
-                    "./index.html";
-
+    function destinoCliente() {
+        if (!proximo || rotaAdmin.test(proximo)) return urlSite("index.html");
+        // Somente caminhos internos; nunca redirecionar clientes para hosts externos.
+        if (!/^\/?(?:index|catalogo|carrinho|produto)\.html(?:\?[^#]*)?$/.test(proximo)) return urlSite("index.html");
+        return urlSite(proximo);
+    }
+    async function iniciar() {
+        const estado = await verificarSessaoAdmin();
+        apiDisponivel = estado.api;
+        const avisoEstatico = $("gfStaticLoginNotice");
+        if (avisoEstatico) avisoEstatico.style.display = apiDisponivel ? "none" : "block";
+        if (estado.admin) {
+            // Essencial: Produtos e Estoque exige também este registro local.
+            // Sem ele, o servidor envia ao painel e o painel devolve ao login
+            // indefinidamente, mesmo com o cookie do servidor válido.
+            goldFitSalvarSessao({
+                id: "painel", nome: "Administrador Gold Fit",
+                email: "admin@goldfit.demo", perfil: "admin"
+            });
+            if (acessoAdmin && rotaAdmin.test(proximo)) {
+                location.replace(destinoAdmin); return;
             }
-        );
-
-}
-
-
-// ======================================================
-// TOAST
-// ======================================================
-
-let toastTimer;
-
-
-function mostrarToast(
-    mensagem
-) {
-
-    clearTimeout(
-        toastTimer
-    );
-
-
-    toast.textContent =
-        mensagem;
-
-
-    toast.classList.add(
-        "show"
-    );
-
-
-    toastTimer =
-        setTimeout(
-            function () {
-
-                toast.classList.remove(
-                    "show"
-                );
-
-            },
-            3000
-        );
-
-}
+            preencherPainel(); return;
+        }
+        limparAdminLocalFalso();
+        if (!apiDisponivel && sessionStorage.getItem("gf_static_demo_access") === "1") {
+            area.hidden = true;
+            sessaoCaixa.hidden = false;
+            sessaoCaixa.replaceChildren();
+            const titulo = document.createElement("h2"); titulo.textContent = "Demonstração Gold Fit";
+            const texto = document.createElement("p"); texto.textContent = "Painel demonstrativo com a aparência e os formulários originais. As alterações são locais neste navegador; a geração de imagens está desativada.";
+            const painel = document.createElement("button"); painel.className = "auth-submit"; painel.type = "button"; painel.textContent = "ABRIR PRODUTOS E ESTOQUE";
+            painel.addEventListener("click", () => location.assign(urlSite("admin/produtos.html")));
+            const fotos = document.createElement("button"); fotos.className = "auth-submit"; fotos.type = "button"; fotos.textContent = "VER MODELOS E FOTOS EXPORTADAS"; fotos.style.marginTop = "12px";
+            fotos.addEventListener("click", () => location.assign(urlSite("admin/estudio-demo.html")));
+            const sair = document.createElement("button"); sair.className="auth-submit"; sair.type="button"; sair.textContent="SAIR DA DEMONSTRAÇÃO";
+            sair.style.cssText="background:#eee;color:#111;margin-top:12px";
+            sair.addEventListener("click", () => {sessionStorage.removeItem("gf_static_demo_access");location.replace(urlSite("login.html?modo=admin"));});
+            sessaoCaixa.append(titulo,texto,painel,fotos,sair);
+            return;
+        }
+        sessaoCaixa.hidden = true; area.hidden = false;
+        if (acessoAdmin) {
+            if (abas) abas.hidden = true;
+            emailInput.value = "admin@goldfit.demo";
+            emailInput.readOnly = true;
+            formLogin.querySelector("h2").textContent = "Entrar no painel";
+            formLogin.querySelector("p").textContent = apiDisponivel
+                ? "Informe a senha administrativa configurada no .env do projeto."
+                : "No Live Server/GitHub Pages, acesse uma demonstração local (sem PostgreSQL).";
+        } else {
+            const cliente = goldFitCarregarSessao();
+            if (cliente?.perfil === "cliente") preencherCliente(cliente);
+        }
+    }
+    document.querySelectorAll(".auth-tab").forEach(tab => {
+        tab.addEventListener("click", () => trocarAba(tab.dataset.tab));
+    });
+    formLogin.addEventListener("submit", async evento => {
+        evento.preventDefault();
+        const email = emailInput.value.trim().toLowerCase();
+        const senha = senhaInput.value;
+        const botao = formLogin.querySelector('button[type="submit"]');
+        botao.disabled = true;
+        try {
+            const usuarioLocal = goldFitCarregarUsuarios().find(u => String(u.email).toLowerCase() === email);
+            if (acessoAdmin || email === "admin@goldfit.demo" || email === "admin@goldfit.local" || usuarioLocal?.perfil === "admin") {
+                await autenticarAdmin(senha); return;
+            }
+            if (!usuarioLocal || usuarioLocal.perfil !== "cliente" || usuarioLocal.senha !== senha) {
+                throw new Error("E-mail ou senha inválidos.");
+            }
+            goldFitSalvarSessao({id:usuarioLocal.id,nome:usuarioLocal.nome,email:usuarioLocal.email,perfil:"cliente"});
+            location.assign(destinoCliente());
+        } catch (erro) { aviso(erro.message); botao.disabled = false; }
+    });
+    formCadastro.addEventListener("submit", evento => {
+        evento.preventDefault();
+        const nome = $("cadastroNome").value.trim();
+        const email = $("cadastroEmail").value.trim().toLowerCase();
+        const senha = $("cadastroSenha").value;
+        const usuarios = goldFitCarregarUsuarios();
+        if (!nome || !email || !senha || senha.length < 6) return aviso("Preencha corretamente nome, e-mail e senha.");
+        if (usuarios.some(u=>String(u.email).toLowerCase() === email)) return aviso("Esse e-mail já está cadastrado.");
+        const usuario = {id:`cliente-${Date.now()}`, nome, email, senha, perfil:"cliente"};
+        usuarios.push(usuario); goldFitSalvarUsuarios(usuarios);
+        goldFitSalvarSessao({id:usuario.id, nome, email, perfil:"cliente"});
+        location.assign(destinoCliente());
+    });
+    trocarAba("login");
+    iniciar().catch(erro => aviso(`Falha ao verificar o acesso: ${erro.message}`));
+})();

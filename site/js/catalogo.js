@@ -334,80 +334,7 @@ function configurarEventosCatalogo() {
 // ======================================================
 
 function agruparProdutosCatalogo() {
-
-    const mapa =
-        new Map();
-
-
-    estoque.forEach(
-        item => {
-
-            const chave =
-                `${item.produto}|${item.marca}`;
-
-
-            if (
-                !mapa.has(
-                    chave
-                )
-            ) {
-
-                mapa.set(
-                    chave,
-                    {
-
-                        chave:
-                            chave,
-
-                        produto:
-                            item.produto,
-
-                        marca:
-                            item.marca,
-
-                        grupo:
-                            item.grupo,
-
-                        categoria:
-                            item.categoria,
-
-                        preco:
-                            Number(
-                                item.preco
-                                ||
-                                goldFitPrecoProduto(
-                                    item.produto
-                                )
-                                ||
-                                0
-                            ),
-
-                        variacoes:
-                            []
-
-                    }
-                );
-
-            }
-
-
-            mapa
-                .get(
-                    chave
-                )
-                .variacoes
-                .push(
-                    item
-                );
-
-        }
-    );
-
-
-    return Array.from(
-        mapa.values()
-    );
-
+    return goldFitAgruparModelosVitrine(estoque);
 }
 
 
@@ -429,34 +356,15 @@ function obterProdutosFiltrados() {
             .filter(
                 produto => {
 
-                    const possuiEstoque =
-                        produto.variacoes
-                            .some(
-                                item =>
-                                    Number(
-                                        item.quantidade
-                                        ||
-                                        0
-                                    )
-                                    >
-                                    0
-                            );
-
-
-                    if (
-                        !possuiEstoque
-                    ) {
-
-                        return false;
-
-                    }
+                    // A publicação mostra o modelo, mesmo se suas cores ainda
+                    // estiverem sem fotografia ou sem saldo disponível.
 
 
                     if (
                         filtroGrupo
                         &&
-                        produto.grupo !==
-                        filtroGrupo
+                        goldFitGrupoMenu(produto.grupo) !==
+                        goldFitGrupoMenu(filtroGrupo)
                     ) {
 
                         return false;
@@ -659,10 +567,9 @@ function criarCardCatalogo(
     produto
 ) {
 
-    const primeira =
-        produto.variacoes[
-            0
-        ];
+    const primeira = produto.variacoes[0] || {};
+    const semFotos = produto.variacoes.length === 0;
+    const disponivel = produto.variacoes.some(item => Number(item.quantidade || 0) > 0);
 
 
     const foto =
@@ -721,8 +628,8 @@ function criarCardCatalogo(
                 >
 
 
-                <span class="stock-badge">
-                    DISPONÍVEL
+                <span class="stock-badge ${semFotos || !disponivel ? "out" : ""}">
+                    ${semFotos ? "FOTO EM BREVE" : disponivel ? "DISPONÍVEL" : "INDISPONÍVEL"}
                 </span>
 
 
@@ -775,36 +682,9 @@ function criarCardCatalogo(
 
 
                 <div class="product-meta">
-
-                    ${opcoes.cores.length}
-
-                    ${
-                        opcoes.cores.length ===
-                        1
-                            ?
-                            "cor"
-                            :
-                            "cores"
-                    }
-
-                    ·
-
-                    ${opcoes.tamanhos.length}
-
-                    ${
-                        opcoes.tamanhos.length ===
-                        1
-                            ?
-                            "tamanho"
-                            :
-                            "tamanhos"
-                    }
-
-                    ·
-
-                    ${quantidadeTotal}
-                    un.
-
+                    ${semFotos
+                        ? "Imagem ilustrativa · Fotos em preparação"
+                        : `${opcoes.cores.length} cor(es) · ${opcoes.tamanhos.length} tamanho(s) · ${quantidadeTotal} un.`}
                 </div>
 
 
@@ -1238,17 +1118,9 @@ function renderizarFiltrosRapidos() {
         );
 
 
-    const disponiveis =
-        estoque.filter(
-            item =>
-                Number(
-                    item.quantidade
-                    ||
-                    0
-                )
-                >
-                0
-        );
+    // Produtos publicados podem estar sem fotos: filtros seguem os modelos,
+    // não apenas variações com foto de modelo aprovada.
+    const disponiveis = goldFitAgruparModelosVitrine(estoque);
 
 
     let links =
@@ -1271,8 +1143,8 @@ function renderizarFiltrosRapidos() {
                     disponiveis
                         .filter(
                             item =>
-                                item.grupo ===
-                                filtroGrupo
+                                goldFitGrupoMenu(item.grupo) ===
+                                goldFitGrupoMenu(filtroGrupo)
 
                                 &&
 
@@ -1347,8 +1219,8 @@ function renderizarFiltrosRapidos() {
                     disponiveis
                         .filter(
                             item =>
-                                item.grupo ===
-                                filtroGrupo
+                                goldFitGrupoMenu(item.grupo) ===
+                                goldFitGrupoMenu(filtroGrupo)
                         )
                         .map(
                             item =>
@@ -1398,8 +1270,7 @@ function renderizarFiltrosRapidos() {
 
         [
             "Feminino",
-            "Masculino",
-            "Calçados",
+                "Calçados",
             "Acessórios"
         ]
         .forEach(
@@ -1408,7 +1279,7 @@ function renderizarFiltrosRapidos() {
                 if (
                     disponiveis.some(
                         item =>
-                            item.grupo ===
+                            goldFitGrupoMenu(item.grupo) ===
                             grupo
                     )
                 ) {
@@ -1452,60 +1323,25 @@ function renderizarFiltrosRapidos() {
 // ======================================================
 
 function renderizarMenusCatalogo() {
-
-    [
-        "Feminino",
-        "Masculino",
-        "Calçados",
-        "Acessórios"
-    ]
-    .forEach(
-        grupo => {
-
-            const painel =
-                document.querySelector(
-                    `[data-menu-panel="${grupo}"]`
-                );
-
-
-            if (
-                painel
-            ) {
-
-                painel.innerHTML =
-                    criarConteudoMenu(
-                        grupo
-                    );
-
-            }
-
-        }
-    );
-
+    const grupos = ["Feminino", "Calçados", "Acessórios"];
+    const renderizar = (modelos) => {
+        grupos.forEach(grupo => {
+            const painel = document.querySelector(`[data-menu-panel="${grupo}"]`);
+            if (painel) painel.innerHTML = criarConteudoMenu(grupo, modelos);
+        });
+    };
+    // Primeira renderizacao local; depois o PostgreSQL confirma os publicados.
+    renderizar(goldFitAgruparModelosVitrine(estoque));
+    if (typeof goldFitConsultarModelosPublicados === "function") {
+        goldFitConsultarModelosPublicados().then(renderizar)
+            .catch(erro => console.warn("Menu nao sincronizado:", erro.message));
+    }
 }
 
 
-function criarConteudoMenu(
-    grupo
-) {
-
-    const disponiveis =
-        estoque.filter(
-            item =>
-
-                item.grupo ===
-                grupo
-
-                &&
-
-                Number(
-                    item.quantidade
-                    ||
-                    0
-                )
-                >
-                0
-        );
+function criarConteudoMenu(grupo, modelos = goldFitAgruparModelosVitrine(estoque)) {
+    const disponiveis = modelos
+        .filter(item => goldFitGrupoMenu(item.grupo) === grupo);
 
 
     if (
@@ -2002,3 +1838,10 @@ function mostrarToastCatalogo(
         );
 
 }
+// V27: refletir estoque/produtos novos sem flash de recarregamento.
+window.addEventListener("goldfit:estado-atualizado", () => {
+    estoque = goldFitCarregarEstoque();
+    renderizarMenusCatalogo();
+    renderizarFiltrosRapidos();
+    renderizarCatalogo();
+});
