@@ -1,4 +1,4 @@
-# Gold Fit Pro
+# Gold Fit Santarém
 
 **Sistema web de catálogo, controle de estoque e estúdio de imagens com IA.**
 
